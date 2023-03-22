@@ -2,15 +2,17 @@ import { useAuth } from "@clerk/clerk-react";
 import "../../../App.css";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
+import DropDown from "./dropDown";
+import NavBtn from "./navBtn";
 
 export default function Index({ present }) {
-  let date = new Date();
+  // let date = new Date();
   const [data, setData] = useState(null);
   const [checked, setChecked] = useState(null);
-  const [startDate, setStartDate] = useState(date.toISOString().slice(0, 10));
-  const [endDate, setEndDate] = useState(
-    new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
-  );
+  // const [startDate, setStartDate] = useState(date.toISOString().slice(0, 10));
+  // const [endDate, setEndDate] = useState(
+  //   new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+  // );
   const { getToken } = useAuth();
 
   useEffect(() => {
@@ -50,75 +52,28 @@ export default function Index({ present }) {
   // console.log(data.filter((item) => item.status === false).length)
   // console.log(checked)
 
-  const handleOnChange = (index) => {
-    setChecked(
-      checked.map((item, i) => {
-        if (i === index) return (item = !item);
-        else return item;
-      })
-    );
-  };
-
   return (
     <>
-      <div className="flex justify-evenly items-center">
-        <p>
-          <span className="font-semibold">Ngày bắt đầu:&nbsp;</span>
-          <input
-            type="date"
-            className="rounded-[10px] overflow-hidden border-[1px] border-bordercl border-solid pl-[5px] pr-[5px]"
-            onChange={(e) => setStartDate(e.target.value)}
-            value={startDate}
-          />
-        </p>
-
-        <p>
-          <span className="font-semibold">Ngày kết thúc:&nbsp;</span>
-          <input
-            type="date"
-            className="rounded-[10px] overflow-hidden border-[1px] border-bordercl border-solid pl-[5px] pr-[5px]"
-            onChange={(e) => setEndDate(e.target.value)}
-            value={endDate}
-          />
-        </p>
-      </div>
-
       <div className="flex flex-col gap-[10px]">
-        <p className="font-semibold">Danh sách lớp môn học chưa duyệt</p>
         {data && checked ? (
-          data
-            .filter((item) => item.status === false)
-            .map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  className="flex border-solid border-[1px] border-bordercl p-[20px] rounded-[10px] gap-[5%]"
-                >
-                  <label className="w-[15%]" htmlFor={index + "z"}>
-                    {item.subject_code}
-                  </label>
-                  <label className="w-[15%]" htmlFor={index + "z"}>
-                    {item.class_code}
-                  </label>
-                  <label className="w-[30%]" htmlFor={index + "z"}>
-                    {item.class_name}
-                  </label>
-                  <label className="w-[20%]" htmlFor={index + "z"}>
-                    {item.teacher_name}
-                  </label>
-                  <label className="w-[15%] text-center" htmlFor={index + "z"}>
-                    SS: {item.total_student}
-                  </label>
-                  <input
-                    // className="w-[5%]"
-                    id={index + "z"}
-                    type="checkbox"
-                    checked={checked[index]}
-                    onChange={() => handleOnChange(index)}
+          <>
+            <p className="font-semibold">Danh sách lớp môn học chưa duyệt</p>
+            <NavBtn data={data} checked={checked} setChecked={setChecked} />
+            {data
+              .filter((item) => item.status === false)
+              .map((item, index) => {
+                // console.log(item)
+                return (
+                  <DropDown
+                    key={index}
+                    item={item}
+                    index={index}
+                    checked={checked}
+                    setChecked={setChecked}
                   />
-                </div>
-              );
-            })
+                );
+              })}
+          </>
         ) : (
           <ReactLoading
             type="spin"

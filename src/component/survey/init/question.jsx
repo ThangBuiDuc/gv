@@ -79,6 +79,7 @@ export default function Index({ hocky, namhoc, setInited }) {
           .then((res) => res.json())
           .then((res) =>
             res.v_course.map((item) => {
+              item.end_date = item.end_date.split("T")[0];
               item.hocky = hocky;
               item.namhoc = namhoc;
               return item;
@@ -95,8 +96,7 @@ export default function Index({ hocky, namhoc, setInited }) {
             })}`,
           },
           body: JSON.stringify({ objects: question, objects1: preCourse }),
-        })
-          .then((res) => res.json())
+        }).then((res) => res.json());
 
         if (result.result && result.result1) {
           setInited(true);
