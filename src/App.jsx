@@ -431,6 +431,7 @@ function Clerk() {
 }
 
 function App() {
+  console.log(1)
   return <Clerk />;
 }
 
