@@ -45,11 +45,11 @@ const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
 export const RoleContext = createContext();
 
 function PreventRole() {
-  const { isSignedIn, getToken } = useAuth();
+  console.log(1)
+  const {  getToken } = useAuth();
   const [role, setRole] = useState(null);
   useLayoutEffect(() => {
     const callApi = async () => {
-      if (isSignedIn) {
         await fetch(`${import.meta.env.VITE_ROLE_API}`, {
           method: "GET",
           headers: {
@@ -65,11 +65,10 @@ function PreventRole() {
           .catch(() => {
             setRole("unAuth");
           });
-      }
     };
 
     callApi();
-  }, [isSignedIn]);
+  }, []);
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>
@@ -431,7 +430,6 @@ function Clerk() {
 }
 
 function App() {
-  console.log(1)
   return <Clerk />;
 }
 
