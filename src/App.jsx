@@ -382,7 +382,7 @@ function PreventRole() {
 }
 
 function Hard({ role }) {
-  // console.log(location.pathname)
+  console.log(location.pathname)
   if (location.pathname === "/home") {
     return (
       <div className="flex flex-col">
