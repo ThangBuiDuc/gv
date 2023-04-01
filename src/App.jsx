@@ -25,7 +25,7 @@ import {
   // RedirectToSignIn,
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import LoadingBar from "react-top-loading-bar";
+// import LoadingBar from "react-top-loading-bar";
 
 // import Init from "./component/survey/init";
 
