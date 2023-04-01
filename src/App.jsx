@@ -45,26 +45,26 @@ const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
 export const RoleContext = createContext();
 
 function PreventRole() {
-  console.log(1)
-  const {  getToken } = useAuth();
+  console.log(1);
+  const { getToken } = useAuth();
   const [role, setRole] = useState(null);
   useLayoutEffect(() => {
     const callApi = async () => {
-        await fetch(`${import.meta.env.VITE_ROLE_API}`, {
-          method: "GET",
-          headers: {
-            authorization: `Bearer ${await getToken({
-              template: import.meta.env.VITE_TEMPLATE_ROLE,
-            })}`,
-          },
+      await fetch(`${import.meta.env.VITE_ROLE_API}`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_ROLE,
+          })}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.result) setRole(res.result[0]);
         })
-          .then((res) => res.json())
-          .then((res) => {
-            if (res.result) setRole(res.result[0]);
-          })
-          .catch(() => {
-            setRole("unAuth");
-          });
+        .catch(() => {
+          setRole("unAuth");
+        });
     };
 
     callApi();
@@ -341,7 +341,7 @@ function PreventRole() {
             }
           />
 
-<Route
+          <Route
             path="/qldt/gv"
             element={
               <>
@@ -381,39 +381,17 @@ function PreventRole() {
   );
 }
 
-function Hard({ role }) {
-  console.log(location.pathname)
-  if (location.pathname === "/home") {
-    return (
-      <div className="flex flex-col">
-        <Header />
-        <div className="flex pl-[15px] pr-[15px] mt-[40px] gap-[2%] flex-row-reverse">
-          <SideBar />
-          <Outlet />
-        </div>
-        <Footer />
+function Hard() {
+  return (
+    <div className="flex flex-col">
+      <Header />
+      <div className="flex pl-[15px] pr-[15px] mt-[40px] gap-[2%] flex-row-reverse">
+        <SideBar />
+        <Outlet />
       </div>
-    );
-  } else if (role || role === "unAuth") {
-    return (
-      <div className="flex flex-col">
-        <Header />
-        <div className="flex pl-[15px] pr-[15px] mt-[40px] gap-[2%] flex-row-reverse">
-          <SideBar />
-          <Outlet />
-        </div>
-        <Footer />
-      </div>
-    );
-  } else
-    return (
-      <LoadingBar
-        progress={100}
-        color="#0083C2"
-        height={5}
-        waitingTime={1000000}
-      />
-    );
+      <Footer />
+    </div>
+  );
 }
 
 function Clerk() {
