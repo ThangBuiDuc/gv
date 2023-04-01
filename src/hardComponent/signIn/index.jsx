@@ -44,7 +44,7 @@ export default function SignIn() {
       setProgress("blankEmail");
       setLoading(false);
     } else {
-      var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+      var pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       // Check the sign in response to
       // decide what to do next.
       await signIn
@@ -171,15 +171,15 @@ export default function SignIn() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={style.input}
-                placeholder="Email hoặc mã sinh viên"
+                placeholder="Email"
               />
               {progress === "blankEmail" ? (
                 <p style={{ color: "red", fontSize: "14px" }}>
-                  Vui lòng nhập email hoặc mã sinh viên!
+                  Vui lòng nhập email hoặc mã giáo viên!
                 </p>
               ) : progress === "Couldn't find your account." ? (
                 <p style={{ color: "red", fontSize: "14px" }}>
-                  Email hoặc mã sinh viên không tồn tại!
+                  Email hoặc mã giáo viên không tồn tại!
                 </p>
               ) : (
                 <></>

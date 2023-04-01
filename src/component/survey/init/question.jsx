@@ -12,7 +12,12 @@ export default function Index({ hocky, namhoc, setInited }) {
 
   useLayoutEffect(() => {
     const callApi = async () => {
-      await fetch(`${import.meta.env.VITE_PRE_QUESTION_API}`)
+      await fetch(`${import.meta.env.VITE_PRE_QUESTION_API}`,{
+        method:'GET',
+        headers:{
+          authorization:`Bearer ${await getToken({template:import.meta.env.VITE_TEMPLATE_GV_CREATOR})}`
+        }
+      })
         .then((res) => res.json())
         .then((res) => {
           if (res.question.length > 0) setData(res.question);
@@ -61,6 +66,7 @@ export default function Index({ hocky, namhoc, setInited }) {
           delete item.point_id;
           delete item.level_point;
           delete item.content_question;
+          delete item.description;
           if (checked[index]) return [...total, item];
           else return total;
         }, []);
@@ -80,6 +86,7 @@ export default function Index({ hocky, namhoc, setInited }) {
           .then((res) =>
             res.v_course.map((item) => {
               item.end_date = item.end_date.split("T")[0];
+              item.start_date = item.start_date.split("T")[0];
               item.hocky = hocky;
               item.namhoc = namhoc;
               return item;

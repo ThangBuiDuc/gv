@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-export default function Index({ item }) {
+export default function Index({ item ,index}) {
     let location = useLocation();
   const [subnav, setSubnav] = useState(true);
   const handleOnclick = () => {
@@ -12,7 +12,7 @@ export default function Index({ item }) {
   // console.log(location.pathname)
 
   return (
-    <div className="gap-[10px] flex flex-col">
+    <div className="gap-[10px] flex flex-col" key={index}>
       <button
         className=" flex border-none font-bold bg-transparent cursor-pointer h-fit text-[18px] leading-[30px] text-left rounded-[5px] text-black hover:bg-hovercl"
         onClick={handleOnclick}

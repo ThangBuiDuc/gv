@@ -15,7 +15,10 @@ module.exports = {
         primary:'#0083C2',
         hovercl: 'rgba(0, 0, 0, 0.05)',
         bordercl: 'rgba(0, 0, 0, 0.1)'
-      } 
+      },
+      transitionProperty:{
+        'height': 'max-height',
+      }
     },
   },
   plugins: [],

@@ -1,14 +1,60 @@
 import { useAuth } from "@clerk/clerk-react";
 import "../../../App.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
+import { AiOutlineRight } from "react-icons/ai";
 import ReactLoading from "react-loading";
 import DropDown from "./dropDown";
 import NavBtn from "./navBtn";
+import { animated, useSpring } from "react-spring";
+import useMeasure from "react-use-measure";
+
+const ACTION = {
+  FIRST: "first",
+  SECOND: "second",
+};
+
+function Reducer(state, action) {
+  switch (action.type) {
+    case ACTION.FIRST: {
+      let cache = { ...state };
+      cache.toggle1 = !cache.toggle1;
+      return cache;
+    }
+    case ACTION.SECOND: {
+      let cache = { ...state };
+      cache.toggle2 = !cache.toggle2;
+      return cache;
+    }
+    default:
+      return state;
+  }
+}
 
 export default function Index({ present }) {
   // let date = new Date();
+  const [ref1, bounds1] = useMeasure();
+  const [ref2, bounds2] = useMeasure();
   const [data, setData] = useState(null);
   const [checked, setChecked] = useState(null);
+  const [status, setStatus] = useState(false);
+  const [toggle, dispatch] = useReducer(Reducer, {
+    toggle1: false,
+    toggle2: true,
+  });
+  const spring1 = useSpring({
+    height: toggle.toggle1 ? bounds1.height : 0,
+    opacity: toggle.toggle1 ? 1 : 0,
+    config: {
+      duration: 200,
+    },
+  });
+  const spring2 = useSpring({
+    height: toggle.toggle2 ? bounds2.height : 0,
+    opacity: toggle.toggle2 ? 1 : 0,
+    config: {
+      duration: 200,
+    },
+  });
   // const [startDate, setStartDate] = useState(date.toISOString().slice(0, 10));
   // const [endDate, setEndDate] = useState(
   //   new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
@@ -38,7 +84,7 @@ export default function Index({ present }) {
     };
 
     callApi();
-  }, []);
+  }, [status]);
 
   useEffect(() => {
     if (data)
@@ -57,22 +103,87 @@ export default function Index({ present }) {
       <div className="flex flex-col gap-[10px]">
         {data && checked ? (
           <>
-            <p className="font-semibold">Danh sách lớp môn học chưa duyệt</p>
-            <NavBtn data={data} checked={checked} setChecked={setChecked} />
-            {data
-              .filter((item) => item.status === false)
-              .map((item, index) => {
-                // console.log(item)
-                return (
-                  <DropDown
-                    key={index}
-                    item={item}
-                    index={index}
-                    checked={checked}
-                    setChecked={setChecked}
-                  />
-                );
-              })}
+            <div
+              className="font-semibold flex gap-[5px] cursor-pointer w-fit"
+              onClick={() => {
+                dispatch({ type: ACTION.FIRST });
+              }}
+            >
+              Danh sách lớp môn học chưa duyệt{" "}
+              <label
+                className={`${
+                  toggle.toggle1
+                    ? "rotate-90 transition-transform duration-200"
+                    : ""
+                } cursor-pointer`}
+              >
+                <AiOutlineRight size={"22px"} />
+              </label>
+            </div>
+            <animated.div className={"overflow-hidden"} style={spring1}>
+              <div ref = {ref1} className="flex flex-col gap-[10px]">
+                <NavBtn
+                  data={data.filter((item) => item.status === false)}
+                  checked={checked}
+                  setChecked={setChecked}
+                  present={present}
+                  setStatus={setStatus}
+                  status={status}
+                />
+                {data
+                  .filter((item) => item.status === false)
+                  .map((item, index) => {
+                    // console.log(item)
+                    return (
+                      <DropDown
+                        key={index}
+                        item={item}
+                        index={index}
+                        checked={checked}
+                        setChecked={setChecked}
+                        present={present}
+                      />
+                    );
+                  })}
+              </div>
+            </animated.div>
+
+            <div
+              className="font-semibold flex gap-[5px] cursor-pointer w-fit"
+              onClick={() => {
+                dispatch({ type: ACTION.SECOND });
+              }}
+            >
+              Danh sách lớp môn học đã duyệt{" "}
+              <label
+                className={`${
+                  toggle.toggle2
+                    ? "rotate-90 transition-transform duration-200"
+                    : ""
+                } cursor-pointer`}
+              >
+                <AiOutlineRight size={"22px"} />
+              </label>
+            </div>
+            <animated.div className={"overflow-hidden"} style={spring2}>
+              <div ref = {ref2} className="flex flex-col gap-[10px]">
+                {data
+                  .filter((item) => item.status === true)
+                  .map((item, index) => {
+                    // console.log(item)
+                    return (
+                      <DropDown
+                        key={index}
+                        item={item}
+                        index={index}
+                        checked={checked}
+                        setChecked={setChecked}
+                        present={present}
+                      />
+                    );
+                  })}
+              </div>
+            </animated.div>
           </>
         ) : (
           <ReactLoading
