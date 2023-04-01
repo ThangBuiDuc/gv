@@ -396,7 +396,7 @@ function Hard({ role }) {
         <Footer />
       </div>
     );
-  } else if (role || role === 0) {
+  } else if (role.role_id === 0) {
     return (
       <div className="flex flex-col">
         <Header />
