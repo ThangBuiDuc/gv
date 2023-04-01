@@ -169,7 +169,7 @@ export default function Index() {
           (style, point) =>
             point && (
               <animated.div style={style} className={'w-fit ml-[10px]'}>
-                <button  ref={ref} className="btn">Hoàn Thành</button>
+                <button  ref={ref} className="btn min-w-20px flex">Hoàn Thành</button>
               </animated.div>
             )
         )}

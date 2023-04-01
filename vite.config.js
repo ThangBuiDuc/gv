@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(),eslint()],
   server: {
     hmr:{
-      overlay:false
+      overlay:true
     }
   }
 })
