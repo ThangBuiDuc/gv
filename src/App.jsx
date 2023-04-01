@@ -1,7 +1,7 @@
 import "./App.css";
 import React, {
   Suspense,
-  useLayoutEffect,
+  useEffect,
   useState,
   createContext,
 } from "react";
@@ -25,7 +25,7 @@ import {
   // RedirectToSignIn,
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-// import LoadingBar from "react-top-loading-bar";
+import LoadingBar from "react-top-loading-bar";
 
 // import Init from "./component/survey/init";
 
@@ -45,30 +45,32 @@ const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
 export const RoleContext = createContext();
 
 function PreventRole() {
-  console.log(1);
-  const { getToken } = useAuth();
+  const { isSignedIn, getToken } = useAuth();
   const [role, setRole] = useState(null);
-  useLayoutEffect(() => {
+  useEffect(() => {
     const callApi = async () => {
-      await fetch(`${import.meta.env.VITE_ROLE_API}`, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${await getToken({
-            template: import.meta.env.VITE_TEMPLATE_ROLE,
-          })}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.result) setRole(res.result[0]);
+      if (isSignedIn) {
+        await fetch(`${import.meta.env.VITE_ROLE_API}`, {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${await getToken({
+              template: import.meta.env.VITE_TEMPLATE_ROLE,
+            })}`,
+          },
         })
-        .catch(() => {
-          setRole("unAuth");
-        });
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.result) setRole(res.result[0]);
+          })
+          .catch(() => {
+            setRole({role_id:0});
+          });
+      }
+      else setRole({role_id:0})
     };
 
     callApi();
-  }, []);
+  }, [isSignedIn]);
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>
@@ -381,17 +383,39 @@ function PreventRole() {
   );
 }
 
-function Hard() {
-  return (
-    <div className="flex flex-col">
-      <Header />
-      <div className="flex pl-[15px] pr-[15px] mt-[40px] gap-[2%] flex-row-reverse">
-        <SideBar />
-        <Outlet />
+function Hard({ role }) {
+  // console.log(location.pathname)
+  if (location.pathname === "/home") {
+    return (
+      <div className="flex flex-col">
+        <Header />
+        <div className="flex pl-[15px] pr-[15px] mt-[40px] gap-[2%] flex-row-reverse">
+          <SideBar />
+          <Outlet />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
+    );
+  } else if (role || role === 0) {
+    return (
+      <div className="flex flex-col">
+        <Header />
+        <div className="flex pl-[15px] pr-[15px] mt-[40px] gap-[2%] flex-row-reverse">
+          <SideBar />
+          <Outlet />
+        </div>
+        <Footer />
+      </div>
+    );
+  } else
+    return (
+      <LoadingBar
+        progress={100}
+        color="#0083C2"
+        height={5}
+        waitingTime={1000000}
+      />
+    );
 }
 
 function Clerk() {
