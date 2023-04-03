@@ -102,22 +102,22 @@ export default function Index({
             }
           ).then((res) => res.status);
 
-          let result1;
-          if (result === 200) {
-            result1 = await fetch(`/api/sv-final-result`, {
-              method: "POST",
-              body: JSON.stringify({
-                class_code: data.class_code,
-                subject_code: data.subject_code,
-                present,
-                token: await getToken({
-                  template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
-                }),
-              }),
-            }).then((res) => res.status);
-          }
+          // let result1;
+          // if (result === 200) {
+          //   result1 = await fetch(`/api/sv-final-result`, {
+          //     method: "POST",
+          //     body: JSON.stringify({
+          //       class_code: data.class_code,
+          //       subject_code: data.subject_code,
+          //       present,
+          //       token: await getToken({
+          //         template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+          //       }),
+          //     }),
+          //   }).then((res) => res.status);
+          // }
 
-          if (result1 === 200) {
+          if (result === 200) {
             setToggle(!toggle);
             setAfterUpdate(!afterUpdate);
             Swal.fire({
