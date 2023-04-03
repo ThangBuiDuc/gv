@@ -13,6 +13,8 @@ import {
   useReactTable,
   flexRender,
 } from "@tanstack/react-table";
+import Swal from "sweetalert2";
+import { useAuth } from "@clerk/clerk-react";
 
 const data = [
   {
@@ -87,9 +89,17 @@ const columns = [
   },
 ];
 
-export default function Index() {
+export default function Index({
+  dataCourse,
+  present,
+  afterUpdate,
+  setAfterUpdate,
+  toggle,
+  setToggle,
+}) {
   const [point, setPoint] = useState();
   const [ref, { width }] = useMeasure();
+  const { getToken } = useAuth();
   const transitions = useTransition(point, {
     from: { opacity: 0, width: 0, overflow: "hidden" },
     // to:{opacity: 1, height: 100 },
@@ -102,6 +112,100 @@ export default function Index() {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const handleOnClick = () => {
+
+    if (
+      new Date().setHours(0, 0, 0, 0) <
+      new Date(dataCourse.end_date).setHours(0, 0, 0, 0)  
+    ) {
+      Swal.fire({
+        title: "Môn học chưa kết thúc",
+        text: `Môn học hiện tại chưa qua ngày kết thúc ${dataCourse.end_date}`,
+        icon: "warning",
+      });
+    } else {
+      Swal.fire({
+        title: `${
+          dataCourse.class_code +
+          " - " +
+          dataCourse.class_name +
+          " - " +
+          dataCourse.user.name
+        }`,
+        text: "Bạn có chắc chắn muốn cho điểm của giáo viên môn học này không?",
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelButtonText: "Huỷ",
+        confirmButtonText: "Xác nhận",
+        allowOutsideClick: () => !Swal.isLoading(),
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
+          let _set = {
+            qldt_result: point,
+            updated_at: new Date(),
+          };
+
+          let where = {
+            subject_code: {
+              _eq: dataCourse.subject_code,
+            },
+            class_code: {
+              _eq: dataCourse.class_code,
+            },
+            hocky: {
+              _eq: present.hocky,
+            },
+            namhoc: {
+              _eq: present.manamhoc,
+            },
+          };
+
+          let result = await fetch(
+            `${import.meta.env.VITE_QLDT_UPDATE_COURSE}`,
+            {
+              method: "PUT",
+              headers: {
+                authorization: `Bearer ${await getToken({
+                  template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+                })}`,
+              },
+              body: JSON.stringify({ _set, where }),
+            }
+          ).then((res) => res.status);
+
+          let result1;
+
+          if (result === 200) {
+            result1 = await fetch(`/api/gv-final-result`, {
+              method: "POST",
+              body: JSON.stringify({
+                class_code: data.class_code,
+                subject_code: data.subject_code,
+                present,
+                token: await getToken({
+                  template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+                }),
+              }),
+            }).then((res) => res.status);
+          }
+
+          if (result1 === 200) {
+            setToggle(!toggle);
+            setAfterUpdate(!afterUpdate);
+            Swal.fire({
+              title: "Cho điểm điểm giáo viên thành công!",
+              icon: "success",
+            });
+          } else
+            Swal.fire({
+              title: "Cho điểm điểm giáo viên không thành công",
+              icon: "error",
+            });
+        },
+      });
+    }
+  };
   //   console.log(sv)
   return (
     <>
@@ -148,7 +252,7 @@ export default function Index() {
           </tbody>
         </table>
       </div>
-      <div  className="flex justify-center items-center gap-[5px]">
+      <div className="flex justify-center items-center gap-[5px]">
         <h3>Điểm đánh giá:</h3>
         <input
           type="number"
@@ -158,7 +262,7 @@ export default function Index() {
           className="max-w-[10%] border-[1px] border-solid border-bordercl overflow-hidden p-[5px] rounded-[5px]"
           value={point ? point : ""}
           maxLength={5}
-          pattern="[0-9]{4}"
+          // pattern="[0-9]{4}"
           onChange={(e) =>
             setPoint(
               e.target.value > 10 ? 10 : e.target.value < 0 ? 0 : e.target.value
@@ -168,8 +272,14 @@ export default function Index() {
         {transitions(
           (style, point) =>
             point && (
-              <animated.div style={style} className={'w-fit ml-[10px]'}>
-                <button  ref={ref} className="btn min-w-20px flex">Hoàn Thành</button>
+              <animated.div style={style} className={"ml-[10px]"}>
+                <button
+                  ref={ref}
+                  className="btn text-center whitespace-nowrap"
+                  onClick={() => handleOnClick()}
+                >
+                  Hoàn Thành
+                </button>
               </animated.div>
             )
         )}

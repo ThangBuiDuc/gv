@@ -9,6 +9,7 @@ export default function Index() {
   const { getToken } = useAuth();
   const [present, setPresent] = useState(null);
   const [course, setCourse] = useState(null);
+  const [afterUpdate,setAfterUpdate] = useState(false)
 
   useLayoutEffect(() => {
     let callApi = async () => {
@@ -44,7 +45,7 @@ export default function Index() {
         });
     };
     if (present) callApi();
-  }, [present]);
+  }, [present,afterUpdate]);
 
   return (
     <div className="wrap">
@@ -59,7 +60,7 @@ export default function Index() {
         course.map((item,index) => {
           return (
             <div className="flex flex-col" key={index}>
-              <Content data={item} present={present}/>
+              <Content data={item} present={present} afterUpdate={afterUpdate} setAfterUpdate={setAfterUpdate}/>
             </div>
           );
         })

@@ -114,7 +114,7 @@ export default function Index({
               ...total,
               objects.map((i) => {
                 let data = Object.assign({}, i);
-                delete data.end_date
+                data.end_date
                 data.question_id = current.question_id;
                 return data;
               }),

@@ -1,7 +1,7 @@
 import "./App.css";
 import React, {
   Suspense,
-  useEffect,
+  useLayoutEffect,
   useState,
   createContext,
 } from "react";
@@ -47,7 +47,7 @@ export const RoleContext = createContext();
 function PreventRole() {
   const { isSignedIn, getToken } = useAuth();
   const [role, setRole] = useState(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const callApi = async () => {
       if (isSignedIn) {
         await fetch(`${import.meta.env.VITE_ROLE_API}`, {
@@ -396,7 +396,7 @@ function Hard({ role }) {
         <Footer />
       </div>
     );
-  } else if (role.role_id === 0) {
+  } else if (role || role?.role_id === 0) {
     return (
       <div className="flex flex-col">
         <Header />
