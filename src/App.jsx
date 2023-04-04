@@ -41,6 +41,8 @@ const Partner = React.lazy(() => import("./component/survey-gv/partner"));
 const Assign = React.lazy(() => import("./component/survey-gv/assign"));
 const QLDTSV = React.lazy(() => import("./component/qldt/sv"));
 const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
+const Total = React.lazy(() => import("./component/qldt/total"));
+const Work = React.lazy(()=>import('./component/calendar/work'))
 
 export const RoleContext = createContext();
 
@@ -49,7 +51,6 @@ function PreventRole() {
   const [role, setRole] = useState(null);
   useLayoutEffect(() => {
     const callApi = async () => {
-      if (isSignedIn) {
         await fetch(`${import.meta.env.VITE_ROLE_API}`, {
           method: "GET",
           headers: {
@@ -63,13 +64,15 @@ function PreventRole() {
             if (res.result) setRole(res.result[0]);
           })
           .catch(() => {
-            setRole({role_id:0});
+            setRole({ role_id: 0 });
           });
-      }
-      else setRole({role_id:0})
     };
 
-    callApi();
+    if (isSignedIn) {
+      callApi();
+    } else if (isSignedIn !== undefined) {
+      setRole({ role_id: 0 });
+    }
   }, [isSignedIn]);
 
   return (
@@ -308,6 +311,37 @@ function PreventRole() {
             }
           />
 
+<Route
+            path="/calendar/work"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    <Work />
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  <Navigate to="/sign-in" />
+                </SignedOut>
+              </>
+            }
+          />
+
+
+
           <Route
             path="/qldt/sv"
             element={
@@ -377,6 +411,41 @@ function PreventRole() {
               </>
             }
           />
+
+          <Route
+            path="/qldt/total"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
+                      (item) => item === role?.role_id.toString()
+                    ) ? (
+                      <Total />
+                    ) : (
+                      <Navigate to="/home" replace={true} />
+                    )}
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  <Navigate to="/sign-in" />
+                </SignedOut>
+              </>
+            }
+          />
         </Route>
       </Routes>
     </RoleContext.Provider>
@@ -384,8 +453,9 @@ function PreventRole() {
 }
 
 function Hard({ role }) {
-  // console.log(location.pathname)
-  if (location.pathname === "/home") {
+  
+
+  if (role) {
     return (
       <div className="flex flex-col">
         <Header />
@@ -396,18 +466,7 @@ function Hard({ role }) {
         <Footer />
       </div>
     );
-  } else if (role || role?.role_id === 0) {
-    return (
-      <div className="flex flex-col">
-        <Header />
-        <div className="flex pl-[15px] pr-[15px] mt-[40px] gap-[2%] flex-row-reverse">
-          <SideBar />
-          <Outlet />
-        </div>
-        <Footer />
-      </div>
-    );
-  } else
+  } else {
     return (
       <LoadingBar
         progress={100}
@@ -416,6 +475,7 @@ function Hard({ role }) {
         waitingTime={1000000}
       />
     );
+  }
 }
 
 function Clerk() {

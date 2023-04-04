@@ -5,7 +5,7 @@ import { AiOutlineRight } from "react-icons/ai";
 import ReactLoading from "react-loading";
 import DropDown from "./dropDown";
 import NavBtn from "./navBtn";
-import { animated, useSpring } from "react-spring";
+import { animated, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
 
 const ACTION = {
@@ -41,19 +41,34 @@ export default function Index({ present }) {
     toggle1: false,
     toggle2: true,
   });
-  const spring1 = useSpring({
-    height: toggle.toggle1 ? bounds1.height : 0,
-    opacity: toggle.toggle1 ? 1 : 0,
-    config: {
-      duration: 200,
-    },
+  // const spring1 = useSpring({
+  //   height: toggle.toggle1 ? bounds1.height : 0,
+  //   opacity: toggle.toggle1 ? 1 : 0,
+  //   config: {
+  //     duration: 200,
+  //   },
+  // });
+  // const spring2 = useSpring({
+  //   height: toggle.toggle2 ? bounds2.height : 0,
+  //   opacity: toggle.toggle2 ? 1 : 0,
+  //   config: {
+  //     duration: 200,
+  //   },
+  // });
+  const transitions1 = useTransition(toggle.toggle1, {
+    from: { opacity: 0, heigth: 0, overflow: "hidden" },
+    // to:{opacity: 1, height: 100 },
+    enter: { opacity: 1, height: bounds1.height, overflow: "visible" },
+    leave: { opacity: 0, height: 0, overflow: "hidden" },
+    update: { height: bounds1.height },
   });
-  const spring2 = useSpring({
-    height: toggle.toggle2 ? bounds2.height : 0,
-    opacity: toggle.toggle2 ? 1 : 0,
-    config: {
-      duration: 200,
-    },
+
+  const transitions2 = useTransition(toggle.toggle2, {
+    from: { opacity: 0, heigth: 0, overflow: "hidden" },
+    // to:{opacity: 1, height: 100 },
+    enter: { opacity: 1, height: bounds2.height, overflow: "visible" },
+    leave: { opacity: 0, height: 0, overflow: "hidden" },
+    update: { height: bounds2.height },
   });
   // const [startDate, setStartDate] = useState(date.toISOString().slice(0, 10));
   // const [endDate, setEndDate] = useState(
@@ -120,33 +135,40 @@ export default function Index({ present }) {
                 <AiOutlineRight size={"22px"} />
               </label>
             </div>
-            <animated.div className={"overflow-hidden"} style={spring1}>
-              <div ref = {ref1} className="flex flex-col gap-[10px]">
-                <NavBtn
-                  data={data.filter((item) => item.status === false)}
-                  checked={checked}
-                  setChecked={setChecked}
-                  present={present}
-                  setStatus={setStatus}
-                  status={status}
-                />
-                {data
-                  .filter((item) => item.status === false)
-                  .map((item, index) => {
-                    // console.log(item)
-                    return (
-                      <DropDown
-                        key={index}
-                        item={item}
-                        index={index}
-                        checked={checked}
-                        setChecked={setChecked}
-                        present={present}
-                      />
-                    );
-                  })}
-              </div>
-            </animated.div>
+            <div>
+              {transitions1(
+                (style, toggle) =>
+                  toggle && (
+                    <animated.div className={"overflow-hidden"} style={style}>
+                      <div ref={ref1} className="flex flex-col gap-[10px]">
+                        <NavBtn
+                          data={data.filter((item) => item.status === false)}
+                          checked={checked}
+                          setChecked={setChecked}
+                          present={present}
+                          setStatus={setStatus}
+                          status={status}
+                        />
+                        {data
+                          .filter((item) => item.status === false)
+                          .map((item, index) => {
+                            // console.log(item)
+                            return (
+                              <DropDown
+                                key={index}
+                                item={item}
+                                index={index}
+                                checked={checked}
+                                setChecked={setChecked}
+                                present={present}
+                              />
+                            );
+                          })}
+                      </div>
+                    </animated.div>
+                  )
+              )}
+            </div>
 
             <div
               className="font-semibold flex gap-[5px] cursor-pointer w-fit"
@@ -165,25 +187,32 @@ export default function Index({ present }) {
                 <AiOutlineRight size={"22px"} />
               </label>
             </div>
-            <animated.div className={"overflow-hidden"} style={spring2}>
-              <div ref = {ref2} className="flex flex-col gap-[10px]">
-                {data
-                  .filter((item) => item.status === true)
-                  .map((item, index) => {
-                    // console.log(item)
-                    return (
-                      <DropDown
-                        key={index}
-                        item={item}
-                        index={index}
-                        checked={checked}
-                        setChecked={setChecked}
-                        present={present}
-                      />
-                    );
-                  })}
-              </div>
-            </animated.div>
+            <div>
+              {transitions2(
+                (style, toggle) =>
+                  toggle && (
+                    <animated.div className={"overflow-hidden"} style={style}>
+                      <div ref={ref2} className="flex flex-col gap-[10px]">
+                        {data
+                          .filter((item) => item.status === true)
+                          .map((item, index) => {
+                            // console.log(item)
+                            return (
+                              <DropDown
+                                key={index}
+                                item={item}
+                                index={index}
+                                checked={checked}
+                                setChecked={setChecked}
+                                present={present}
+                              />
+                            );
+                          })}
+                      </div>
+                    </animated.div>
+                  )
+              )}
+            </div>
           </>
         ) : (
           <ReactLoading

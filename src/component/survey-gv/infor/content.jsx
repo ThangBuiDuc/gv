@@ -36,7 +36,8 @@ export default function Index({ data }) {
         </label>
       </div>
       <animated.div style={spring} className={"overflow-hidden"}>
-        <div ref={ref} className="flex justify-between p-[10px]">
+        <div ref={ref} className="flex flex-col">
+          <div className="flex justify-between p-[10px]">
           <p>
             <span className="font-semibold">Mã lớp: </span>
             {data.class_code}
@@ -49,6 +50,21 @@ export default function Index({ data }) {
             <span className="font-semibold">Ngày kết thúc: </span>
             {data.end_date.split("-").reverse().join("-")}
           </p>
+          </div>
+          <div className="flex justify-between p-[10px]">
+          <p>
+            <span className="font-semibold ">Điểm sinh viên: </span>
+            {data.student_result?data.student_result:'NULL'}
+          </p>
+          <p>
+            <span className="font-semibold">Điểm giảng viên: </span>
+            {data.teacher_result?data.teacher_result:'NULL'}
+          </p>
+          <p>
+            <span className="font-semibold">Điểm quản lý đào tạo: </span>
+            {data.qldt?data.qldt_result:'NULL'}
+          </p>
+          </div>
         </div>
       </animated.div>
     </div>

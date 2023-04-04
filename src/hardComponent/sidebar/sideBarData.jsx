@@ -9,9 +9,13 @@ import { TiTickOutline } from "react-icons/ti";
 import {
   AiOutlineQuestionCircle,
   AiOutlineUsergroupDelete,
+  AiOutlineCalculator
 } from "react-icons/ai";
 import { IoCreateOutline } from "react-icons/io5";
 import { HiOutlineInformationCircle } from "react-icons/hi";
+import { SlCalender } from "react-icons/sl";
+import{BsCalendarCheck} from 'react-icons/bs'
+
 export const sideBarData = [
   {
     title: "Phản hồi CTGD",
@@ -36,6 +40,18 @@ export const sideBarData = [
     ],
   },
   {
+    title: "Lịch",
+    icon: <SlCalender size={'30px'}/>,
+    path: "/calendar",
+    subNav: [
+      {
+        title: "Lịch công tác",
+        path: "/calendar/work",
+        icon: <BsCalendarCheck size={'22px'}/>,
+      }
+    ],
+  },
+  {
     title: "Quản lý đào tạo",
     path: "/qldt",
     icon: <MdOutlineManageAccounts size={"30px"} />,
@@ -51,6 +67,11 @@ export const sideBarData = [
         path: "/qldt/gv",
         icon: <MdAppRegistration size={"22px"} />,
       },
+      {
+        title:'Tổng kết',
+        path:'/qldt/total',
+        icon: <AiOutlineCalculator size={'22px'}/>
+      }
     ],
   },
   {

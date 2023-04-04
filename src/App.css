@@ -25,6 +25,37 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* imgSlider HomePage*/
+.awssld {
+  height: 300px;
+}
+
+.awssld__wrapper {
+  border-radius: 10px;
+}
+
+.awssld__bullets {
+  bottom: 20px !important;
+  z-index: 2;
+}
+
+.wrapSlider {
+  height: 300px;
+}
+
+.des {
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+/* Calendar */
+.fc-v-event {
+ background-color : transparent;
+ border : none
+}
+

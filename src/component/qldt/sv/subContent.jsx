@@ -5,6 +5,17 @@ import ReactLoading from "react-loading";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
+function compare( a, b ) {
+  if ( a.tinhhinh < b.tinhhinh ){
+    return -1;
+  }
+  if ( a.tinhhinh > b.tinhhinh ){
+    return 1;
+  }
+  return 0;
+}
+
+
 export default function Index({
   data,
   present,
@@ -18,8 +29,8 @@ export default function Index({
   const [sv, setSv] = useState();
   useLayoutEffect(() => {
     let callApi = async () => {
-      fetch(
-        `${import.meta.env.VITE_GV_QLDT_SV}${data.class_code}/${
+      let result = await fetch(
+        `${import.meta.env.VITE_QLGD_QLDT_SV}${data.class_code}/${
           data.subject_code
         }`,
         {
@@ -32,38 +43,61 @@ export default function Index({
         }
       )
         .then((res) => res.json())
-        .then((res) => {
-          if (res.result.length > 0)
-            setSv(
-              res.result.map((item) => {
-                item.status = item.tinhhinh
-                  ? item.tinhhinh > 25
-                    ? false
-                    : true
-                  : true;
-                return item;
-              })
-            );
-        });
+        .then((res) => res.result);
+
+        let result1 = await fetch(
+          `${import.meta.env.VITE_GV_QLDT_SV}`,
+          {
+            method: "POST",
+            headers: {
+              authorization: `Bearer ${await getToken({
+                template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+              })}`,
+              
+            },
+            body: JSON.stringify({
+              subject_code:data.subject_code,
+              class_code: data.class_code,
+              hocky:present.hocky,
+              namhoc:present.manamhoc
+            })
+          }
+        )
+          .then((res) => res.json())
+          .then((res) => res.result);
+
+          let merged = [];
+
+          for(let i=0; i<result.length; i++) {
+            merged.push({
+             ...result[i], 
+             ...result1[i]
+            });
+          }
+
+          setSv(merged.map(item => {
+            item.tinhhinh = item.tinhhinh?item.tinhhinh:0
+            return item
+          }).sort(compare))
     };
 
     callApi();
   }, []);
 
   const handleOnClick = async () => {
-    if (
-      new Date().setHours(0, 0, 0, 0) <
-      new Date(data.end_date).setHours(0, 0, 0, 0)
-    ) {
-      Swal.fire({
-        title: "Môn học chưa kết thúc",
-        text: `Môn học hiện tại chưa qua ngày kết thúc ${data.end_date}`,
-        icon: "warning",
-      });
-    } else {
+    // if (
+    //   new Date().setHours(0, 0, 0, 0) <
+    //   new Date(data.end_date).setHours(0, 0, 0, 0)
+    // ) {
+    //   Swal.fire({
+    //     title: "Môn học chưa kết thúc",
+    //     text: `Môn học hiện tại chưa qua ngày kết thúc ${data.end_date}`,
+    //     icon: "warning",
+    //   });
+    // } else {
       Swal.fire({
         title: `${data.class_code} - ${data.class_name}`,
-        text: `Bạn có chắc chắn muốn tổng kết điểm của tất cả sinh viên cho môn học này?`,
+        text: `Bạn có chắc chắn muốn xét điều kiện của tất cả sinh viên cho môn học này?`,
         showCancelButton: true,
         showConfirmButton: true,
         confirmButtonText: "Xác nhận",
@@ -131,7 +165,7 @@ export default function Index({
             });
         },
       });
-    }
+    // }
   };
 
   //   console.log(sv)
