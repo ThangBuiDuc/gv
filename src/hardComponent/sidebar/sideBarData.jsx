@@ -45,7 +45,7 @@ export const sideBarData = [
     path: "/calendar",
     subNav: [
       {
-        title: "Lịch công tác",
+        title: "Lịch giảng dạy",
         path: "/calendar/work",
         icon: <BsCalendarCheck size={'22px'}/>,
       }

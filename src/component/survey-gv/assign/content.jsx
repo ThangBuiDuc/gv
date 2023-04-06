@@ -52,7 +52,7 @@ export default function Index({ data, staff ,present ,status,setStatus,question}
             toggle && (
               <animated.div style={style}>
                 <div className="flex gap-[20px] justify-between flex-col " ref={ref}>
-                  <SubSelectContent data={data} staff={staff} question={question} present={present} status={status} setStatus={setStatus}/>
+                  <SubSelectContent toggle={toggle} setToggle={setToggle} data={data} staff={staff} question={question} present={present} status={status} setStatus={setStatus}/>
                 </div>
               </animated.div>
             )

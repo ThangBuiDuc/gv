@@ -69,7 +69,7 @@ function Index() {
           Tính năng đang trong quá trình phát triển ...
         </h2> */}
       <div  className="flex justify-center">
-        <h2  className="text-primary">Lịch giảng dạy</h2>
+        <h2  className="text-primary">Thời khoá biểu</h2>
       </div>
       {data ? (
         data.length > 0 ? (

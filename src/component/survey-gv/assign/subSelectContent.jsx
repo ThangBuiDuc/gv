@@ -6,7 +6,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { useAuth } from "@clerk/clerk-react";
 
-export default function Index({ staff, data, question, present ,status,setStatus}) {
+export default function Index({ staff, data, question, present ,status,setStatus , toggle,setToggle}) {
   const { getToken } = useAuth();
   // console.log(present);
   // const select =
@@ -145,6 +145,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
 
         if (result === 200){
           setStatus(!status)
+          setToggle(!toggle)
           Swal.fire({ title: "Phân công dự giờ thành công!", icon: "success" });
         }
           

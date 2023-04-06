@@ -54,15 +54,15 @@ export default function Index({ data }) {
           <div className="flex justify-between p-[10px]">
           <p>
             <span className="font-semibold ">Điểm sinh viên: </span>
-            {data.student_result?data.student_result:'NULL'}
+            {data.student_result?data.student_result:'Chờ tổng hợp...'}
           </p>
           <p>
             <span className="font-semibold">Điểm giảng viên: </span>
-            {data.teacher_result?data.teacher_result:'NULL'}
+            {data.teacher_result?data.teacher_result:'Chờ tổng hợp...'}
           </p>
           <p>
             <span className="font-semibold">Điểm quản lý đào tạo: </span>
-            {data.qldt?data.qldt_result:'NULL'}
+            {data.qldt?data.qldt_result:'Chờ tổng hợp...'}
           </p>
           </div>
         </div>

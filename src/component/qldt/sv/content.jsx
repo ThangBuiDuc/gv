@@ -22,9 +22,10 @@ export default function Index({ data , present , afterUpdate,setAfterUpdate}) {
   return (
     <div className="flex border-t border-bordercl border-solid justify-between p-[10px] flex-col gap-[20px]">
       <div className="flex  ">
-        <h3 className={`w-[30%]`}>{data.subject_code}</h3>
-        <h3 className={`w-[30%]`}>{data.class_code}</h3>
-        <h3 className={`w-[35%]`}>{data.class_name}</h3>
+        <h3 className={`w-[15%]`}>{data.subject_code}</h3>
+        <h3 className={`w-[20%]`}>{data.class_code}</h3>
+        <h3 className={`w-[30%]`}>{data.class_name}</h3>
+        <h3 className={`w-[30%]`}>{data.user.name}</h3>
           <label
             onClick={() => setToggle(!toggle)}
             className={`w-[5%] justify-end flex`}

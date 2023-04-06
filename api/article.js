@@ -12,11 +12,11 @@ export default async function article(req, res) {
         headers: {
           "Content-Type": "application/json",
           Authorization:
-            "Bearer 73FFE2D4D085F825F817BDB9CDE300191828ADC476E9F5B9140ED57FB023506D",
+            "Bearer E56D41F8B89389530FF40F356C3597BFFC3342F5E765D59E914E5626D16F9FFF",
           "Access-Control-Allow-Origin": "*",
         },
       }
-    );
+    )
 
     const data1 = await data.json();
     return res.status(200).json({ data1 });
