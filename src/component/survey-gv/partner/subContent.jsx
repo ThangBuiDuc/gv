@@ -40,10 +40,12 @@ export default function Index({ toggle, setToggle, dataSent,afterUpdate,setAfter
   }, []);
 
   useEffect(() => {
-    if (preData) setPoint(new Array(preData.length).fill(5.01));
+    if (preData) setPoint(new Array(preData.length).fill(''));
   }, [preData]);
 
   const handleOnClick = () => {
+    if(point.every(item => item !== '')){
+
     Swal.fire({
       title: "Bạn có chắc chắn muốn hoàn thành đánh giá không?",
       showCancelButton: true,
@@ -104,7 +106,13 @@ export default function Index({ toggle, setToggle, dataSent,afterUpdate,setAfter
             icon: "error",
           });
       },
-    });
+    });}
+    else{
+      Swal.fire({
+        title: "Vui lòng nhập điểm đánh giá",
+        icon: "warning",
+      });
+    }
   };
 
   return preData ? (

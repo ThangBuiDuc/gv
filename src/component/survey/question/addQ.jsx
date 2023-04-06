@@ -121,7 +121,7 @@ export default function AddQ() {
           let description =
             "Rất không đồng ý//Không đồng ý//Lưỡng lự//Đồng ý//Rất đồng ý";
           let result = await fetch(
-            `${import.meta.env.VITE_POST_QUESTION_API}`,
+            `${import.meta.env.VITE_REST_QUESTION_API}`,
             {
               method: "POST",
               headers: {
