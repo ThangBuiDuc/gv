@@ -8,6 +8,7 @@ import { useAuth } from "@clerk/clerk-react";
 
 export default function Index({ staff, data, question, present ,status,setStatus , toggle,setToggle}) {
   const { getToken } = useAuth();
+
   // console.log(present);
   // const select =
   const select = staff
@@ -104,6 +105,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               user_code: selectedOption.value,
               hocky: present.hocky,
               namhoc: present.manamhoc,
+              end_date: data.end_date
             },
             {
               question_id: curr.question_id,
@@ -112,6 +114,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               user_code: selectedOption1.value,
               hocky: present.hocky,
               namhoc: present.manamhoc,
+              end_date: data.end_date
             },
             {
               question_id: curr.question_id,
@@ -120,6 +123,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               user_code: selectedOption2.value,
               hocky: present.hocky,
               namhoc: present.manamhoc,
+              end_date: data.end_date
             },
           ];
           return [...total, ...item];

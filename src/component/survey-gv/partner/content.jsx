@@ -7,8 +7,8 @@ export default function Index({ data, present , afterUpdate,setAfterUpdate}) {
   const [toggle, setToggle] = useState(false);
   const [dataSent,setDataSent] = useState();
 
-  const handleOnclick = (subject_code,class_code) => {
-    setDataSent({subject_code,class_code,present})
+  const handleOnclick = (subject_code,class_code,class_name,teacher_name) => {
+    setDataSent({subject_code,class_code,present,class_name,teacher_name})
     setToggle(!toggle)
   }
   return (
@@ -21,6 +21,7 @@ export default function Index({ data, present , afterUpdate,setAfterUpdate}) {
             Danh sách các môn học đánh giá trong kỳ
           </h3>
           {data.map((item, index) => {
+            console.log(item.respond_result)
             return (
               <div
                 key={index}
@@ -48,7 +49,7 @@ export default function Index({ data, present , afterUpdate,setAfterUpdate}) {
                   </p>
                 ) : (
                   <div className="w-[25%] flex justify-center">
-                    <button className="btn" onClick={() =>{ handleOnclick(item.subject_code,item.class_code)}}>
+                    <button className="btn" onClick={() =>{ handleOnclick(item.subject_code,item.class_code,item.class_name,item.teacher_name)}}>
                       Đánh giá
                     </button>
                   </div>
