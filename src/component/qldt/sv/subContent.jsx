@@ -51,7 +51,7 @@ export default function Index({
             method: "POST",
             headers: {
               authorization: `Bearer ${await getToken({
-                template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+                template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
               })}`,
               
             },
@@ -129,7 +129,7 @@ export default function Index({
               method: "PUT",
               headers: {
                 authorization: `Bearer ${await getToken({
-                  template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+                  template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
                 })}`,
               },
               body: JSON.stringify({ updates }),
@@ -145,7 +145,7 @@ export default function Index({
           //       subject_code: data.subject_code,
           //       present,
           //       token: await getToken({
-          //         template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+          //         template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
           //       }),
           //     }),
           //   }).then((res) => res.status);
@@ -155,12 +155,12 @@ export default function Index({
             setToggle(!toggle);
             setAfterUpdate(!afterUpdate);
             Swal.fire({
-              title: "Tổng kết điểm môn học thành công!",
+              title: "Duyệt tư cách sinh viên cho môn học thành công!",
               icon: "success",
             });
           } else
             Swal.fire({
-              title: "Tổng kết điểm môn học không thành công",
+              title: "Duyệt tư cách sinh viên cho môn học không thành công",
               icon: "error",
             });
         },

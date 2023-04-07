@@ -10,19 +10,18 @@ export default function Index({
   toggle,
   setToggle,
 }) {
-  console.log(dataCourse);
   const { getToken } = useAuth();
   const handleOnClickSV = () => {
-    if (
-      new Date().setHours(0, 0, 0, 0) <
-      new Date(dataCourse.end_date).setHours(0, 0, 0, 0)
-    ) {
-      Swal.fire({
-        title: "Môn học chưa kết thúc",
-        text: `Môn học hiện tại chưa qua ngày kết thúc ${dataCourse.end_date}`,
-        icon: "warning",
-      });
-    } else {
+    // if (
+    //   new Date().setHours(0, 0, 0, 0) <
+    //   new Date(dataCourse.end_date).setHours(0, 0, 0, 0)
+    // ) {
+    //   Swal.fire({
+    //     title: "Môn học chưa kết thúc",
+    //     text: `Môn học hiện tại chưa qua ngày kết thúc ${dataCourse.end_date}`,
+    //     icon: "warning",
+    //   });
+    // } else {
       Swal.fire({
         title: `${
           dataCourse.class_code +
@@ -52,7 +51,7 @@ export default function Index({
           }).then((res) => res.status);
 
           if (result === 200) {
-            setToggle(!toggle);
+            // setToggle(!toggle);
             setAfterUpdate(!afterUpdate);
             Swal.fire({
               title: "Tổng kết điểm sinh viên thành công!",
@@ -65,20 +64,20 @@ export default function Index({
             });
         },
       });
-    }
+    // }
   };
 
   const handleOnClickGV = () => {
-    if (
-      new Date().setHours(0, 0, 0, 0) <
-      new Date(dataCourse.end_date).setHours(0, 0, 0, 0)
-    ) {
-      Swal.fire({
-        title: "Môn học chưa kết thúc",
-        text: `Môn học hiện tại chưa qua ngày kết thúc ${dataCourse.end_date}`,
-        icon: "warning",
-      });
-    } else {
+    // if (
+    //   new Date().setHours(0, 0, 0, 0) <
+    //   new Date(dataCourse.end_date).setHours(0, 0, 0, 0)
+    // ) {
+    //   Swal.fire({
+    //     title: "Môn học chưa kết thúc",
+    //     text: `Môn học hiện tại chưa qua ngày kết thúc ${dataCourse.end_date}`,
+    //     icon: "warning",
+    //   });
+    // } else {
       Swal.fire({
         title: `${
           dataCourse.class_code +
@@ -109,7 +108,7 @@ export default function Index({
 
           if (result === 200) {
             setToggle(!toggle);
-            setAfterUpdate(!afterUpdate);
+            // setAfterUpdate(!afterUpdate);
             Swal.fire({
               title: "Tổng kết điểm giảng viên thành công!",
               icon: "success",
@@ -121,7 +120,7 @@ export default function Index({
             });
         },
       });
-    }
+    // }
   };
   return (
     <>
@@ -133,7 +132,7 @@ export default function Index({
           </span>
         </p>
         <p>
-          Điểm giảng viên:{" "}
+          Điểm giảng viên dự giờ:{" "}
           <span className="font-semibold">
             {dataCourse.teacher_result ? dataCourse.teacher_result : "NULL"}
           </span>

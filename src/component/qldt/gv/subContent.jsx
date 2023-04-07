@@ -115,16 +115,16 @@ export default function Index({
 
   const handleOnClick = () => {
 
-    if (
-      new Date().setHours(0, 0, 0, 0) <
-      new Date(dataCourse.end_date).setHours(0, 0, 0, 0)  
-    ) {
-      Swal.fire({
-        title: "Môn học chưa kết thúc",
-        text: `Môn học hiện tại chưa qua ngày kết thúc ${dataCourse.end_date}`,
-        icon: "warning",
-      });
-    } else {
+    // if (
+    //   new Date().setHours(0, 0, 0, 0) <
+    //   new Date(dataCourse.end_date).setHours(0, 0, 0, 0)  
+    // ) {
+    //   Swal.fire({
+    //     title: "Môn học chưa kết thúc",
+    //     text: `Môn học hiện tại chưa qua ngày kết thúc ${dataCourse.end_date}`,
+    //     icon: "warning",
+    //   });
+    // } else {
       Swal.fire({
         title: `${
           dataCourse.class_code +
@@ -167,7 +167,7 @@ export default function Index({
               method: "PUT",
               headers: {
                 authorization: `Bearer ${await getToken({
-                  template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+                  template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
                 })}`,
               },
               body: JSON.stringify({ _set, where }),
@@ -184,7 +184,7 @@ export default function Index({
           //       subject_code: data.subject_code,
           //       present,
           //       token: await getToken({
-          //         template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+          //         template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
           //       }),
           //     }),
           //   }).then((res) => res.status);
@@ -204,7 +204,7 @@ export default function Index({
             });
         },
       });
-    }
+    // }
   };
   //   console.log(sv)
   return (

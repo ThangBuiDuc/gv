@@ -33,7 +33,7 @@ export default function Index() {
           method: "GET",
           headers: {
             authorization: `Bearer ${await getToken({
-              template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+              template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
             })}`,
           },
         }

@@ -55,7 +55,7 @@ export const sideBarData = [
     title: "Quản lý đào tạo",
     path: "/qldt",
     icon: <MdOutlineManageAccounts size={"30px"} />,
-    role: import.meta.env.VITE_ROLE_ADMIN.split("||"),
+    role: import.meta.env.VITE_ROLE_QLDT.split("||"),
     subNav: [
       {
         title: "Duyệt kết quả sinh viên",
@@ -66,16 +66,11 @@ export const sideBarData = [
         title: "Đánh giá giảng viên",
         path: "/qldt/gv",
         icon: <MdAppRegistration size={"22px"} />,
-      },
-      {
-        title:'Tổng kết',
-        path:'/qldt/total',
-        icon: <AiOutlineCalculator size={'22px'}/>
       }
     ],
   },
   {
-    title: "Tạo đợi thăm dò",
+    title: "Quản lý thăm dò CTGD",
     icon: <IoCreateOutline size={"30px"} />,
     path: "/survey",
     role: import.meta.env.VITE_ROLE_ADMIN.split("||"),
@@ -95,6 +90,11 @@ export const sideBarData = [
         path: "/survey/approve",
         icon: <TiTickOutline size={"22px"} />,
       },
+      {
+        title:'Tổng kết',
+        path:'/survey/total',
+        icon: <AiOutlineCalculator size={'22px'}/>
+      }
     ],
   },
 ];
