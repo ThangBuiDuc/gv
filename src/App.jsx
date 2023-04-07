@@ -22,7 +22,6 @@ import {
   SignedIn,
   SignedOut,
   useAuth,
-  RedirectToSignIn,
   useUser,
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
@@ -141,7 +140,7 @@ function PreventRole() {
                 </Suspense>
               </SignedIn>
               <SignedOut>
-                <RedirectToSignIn />
+              <Navigate to='/sign-in' />
               </SignedOut>
             </>
           }
@@ -200,8 +199,8 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
-                  {/* <Navigate to="/sign-in" /> */}
+                  {/* <RedirectToSignIn /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey/init')}`} />
                 </SignedOut>
               </>
             }
@@ -235,8 +234,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey/approve')}`} />
                 </SignedOut>
               </>
             }
@@ -270,8 +270,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey/question')}`} />
                 </SignedOut>
               </>
             }
@@ -303,8 +304,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey-gv/infor')}`} />
                 </SignedOut>
               </>
             }
@@ -331,8 +333,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey-gv/partner')}`} />
                 </SignedOut>
               </>
             }
@@ -359,8 +362,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey-gv/assign')}`} />
                 </SignedOut>
               </>
             }
@@ -388,8 +392,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/calendar/work')}`} />
                 </SignedOut>
               </>
             }
@@ -423,8 +428,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/qldt/sv')}`} />
                 </SignedOut>
               </>
             }
@@ -458,8 +464,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/qldt/gv')}`} />
                 </SignedOut>
               </>
             }
@@ -493,8 +500,9 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  <RedirectToSignIn />
+                  {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
+                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey/total')}`} />
                 </SignedOut>
               </>
             }
