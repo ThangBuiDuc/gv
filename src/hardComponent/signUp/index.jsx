@@ -10,10 +10,8 @@ export default function SignUp() {
   const [codeProgress, setCodeProgress] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
   const [verifyCode, setVerifyCode] = useState("");
   const [name, setName] = useState("");
-  const [verifyEmail, setVerifyEmail] =useState('')
   const [loading, setLoading] = useState(false);
 
   // console.log(ref)
@@ -37,7 +35,7 @@ export default function SignUp() {
               },
               body: JSON.stringify({
                 id: `${result.createdUserId}`,
-                masv: `${result.username.substring(
+                magv: `${result.username.substring(
                   0,
                   result.username.length - 1
                 )}`,
@@ -53,7 +51,7 @@ export default function SignUp() {
             });
           }
         })
-        .catch((err) => {
+        .catch(() => {
           //   console.log("error", err.errors[0].message);
           setCodeProgress("is incorrect");
           setVerifyCode("");
@@ -87,31 +85,24 @@ export default function SignUp() {
   async function submit(e) {
     e.preventDefault();
     setProgress("");
-    if (username === "" || emailAddress === "" || password === "") {
+    if ( emailAddress === "" || password === "") {
       setProgress("empty");
       setLoading(false);
     } else {
       // Check the sign up response to
       // decide what to do next.
       setLoading(true);
-      await fetch(`${process.env.REACT_APP_API_SIGN_UP}${username}`)
+      if(emailAddress.includes('@hpu.edu.vn')){
+        await fetch(`${import.meta.env.VITE_APP_API_SIGN_UP}${emailAddress}`)
         .then((res) => res.json())
         .then(async (res) => {
-          if (res.verify.length === 0) setProgress("invalidCode");
-          else if (res.verify[0].email && res.verify[0].email !== emailAddress){
-            setProgress("unduplicated");
-            setVerifyEmail(res.verify[0].email);
-          }
-            
-          else if (!res.verify[0].email) setProgress("emptyEmail");
-
-          if (res.verify.length !== 0 && res.verify[0].email === emailAddress) {
-            setName(res.verify[0].hoten);
+          if (res.result.length !== 0) {
+            setName(res.result[0].name);
             await signUp
               .create({
                 emailAddress: emailAddress,
                 password: password,
-                username: username + "z",
+                username: res.result[0].magiaovien + "z",
               })
               .then(async (result) => {
                 if (result.status === "missing_requirements") {
@@ -119,8 +110,6 @@ export default function SignUp() {
                 }
                 await signUp
                   .prepareEmailAddressVerification()
-                  .then((result) => console.log(result))
-                  .catch((err) => console.log("error", err.errors[0].message));
               })
               .catch((err) => {
                 // console.log("error", err.errors[0].message);
@@ -128,18 +117,61 @@ export default function SignUp() {
               });
             // setProgress('missing_requirements')
           }
-
-          // console.log(res)
+          else{
+            setProgress('none')
+            setLoading(false)
+          }
         })
-        // .catch((e)=>{
-        //   setLoading(false);
-        //   // console.log("1")
-        // })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }
+      }else{
+        setProgress('invalid')
+        setLoading(false)
+      }
+    //   await fetch(`${process.env.REACT_APP_API_SIGN_UP}${emailAddress}`)
+    //     .then((res) => res.json())
+    //     .then(async (res) => {
+    //       if (res.verify.length === 0) setProgress("invalidCode");
+    //       else if (res.verify[0].email && res.verify[0].email !== emailAddress){
+    //         setProgress("unduplicated");
+    //         setVerifyEmail(res.verify[0].email);
+    //       }
+            
+    //       else if (!res.verify[0].email) setProgress("emptyEmail");
+
+    //       if (res.verify.length !== 0 && res.verify[0].email === emailAddress) {
+    //         setName(res.verify[0].hoten);
+    //         await signUp
+    //           .create({
+    //             emailAddress: emailAddress,
+    //             password: password,
+    //             username: username + "z",
+    //           })
+    //           .then(async (result) => {
+    //             if (result.status === "missing_requirements") {
+    //               setProgress(result.status);
+    //             }
+    //             await signUp
+    //               .prepareEmailAddressVerification()
+    //               .then((result) => console.log(result))
+    //               .catch((err) => console.log("error", err.errors[0].message));
+    //           })
+    //           .catch((err) => {
+    //             // console.log("error", err.errors[0].message);
+    //             setProgress(err.errors[0].message);
+    //           });
+    //         // setProgress('missing_requirements')
+    //       }
+
+    //       // console.log(res)
+    //     })
+    //     // .catch((e)=>{
+    //     //   setLoading(false);
+    //     //   // console.log("1")
+    //     // })
+    //     .finally(() => {
+    //       setLoading(false);
+    //     });
+    // }
+  }}
 
   return progress === "missing_requirements" ? (
     <div
@@ -198,8 +230,7 @@ export default function SignUp() {
       <div className={style.Wrapform}>
         <h2 style={{ color: "black", textAlign: "center" }}>Đăng ký</h2>
         <form className={style.form} onSubmit={submit}>
-          <div>
-            {/* <label>Mã sinh viên</label> */}
+          {/* <div>
             <input
               type="text"
               value={username}
@@ -215,7 +246,7 @@ export default function SignUp() {
             ) : (
               <></>
             )}
-          </div>
+          </div> */}
           <div>
             {/* <label htmlFor="email">Email</label> */}
             <input
@@ -246,10 +277,9 @@ export default function SignUp() {
               <p style={{ color: "red", fontSize: "12px" }}>
                 Mật khẩu phải dài hơn 8 ký tự!
               </p>
-            ) : progress === "unduplicated" ? (
+            ) : progress === "invalid" ? (
               <p style={{ color: "red", fontSize: "12px" }}>
-                Email không trùng với hệ thống! Gợi ý:{" "}
-                {verifyEmail.replace(/(\w{4})[\w.-]+@([\w.]+\w)/, "$1***@$2")}
+                Vui lòng nhập email @hpu.edu.vn
               </p>
             ) : progress === "empty" ? (
               <p style={{ color: "red", fontSize: "12px" }}>
@@ -260,16 +290,9 @@ export default function SignUp() {
               <p style={{ color: "red", fontSize: "12px" }}>
                 Mật khẩu yếu. Nhập mật khẩu mạnh hơn!
               </p>
-            ) : progress === "invalidCode" ? (
-              <p style={{ color: "red", fontSize: "12px" }}>
-                Mã sinh viên không tồn tại!
-              </p>
-            ) : progress === "emptyEmail" ? (
-              <p style={{ color: "red", fontSize: "12px" }}>
-                Sinh viên chưa đăng ký email với hệ thống, vui lòng liên hệ
-                phòng đào tạo để đăng ký!
-              </p>
-            ) : (
+            )  :progress === 'none' ?(<p style={{ color: "red", fontSize: "12px" }}>
+            Email không tồn tại trong hệ thống!
+          </p>): (
               <></>
             )}
           </div>

@@ -22,7 +22,8 @@ import {
   SignedIn,
   SignedOut,
   useAuth,
-  // RedirectToSignIn,
+  RedirectToSignIn,
+  useUser,
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
@@ -30,7 +31,8 @@ import LoadingBar from "react-top-loading-bar";
 // import Init from "./component/survey/init";
 
 import SignIn from "./hardComponent/signIn";
-// import SignUp from './hardComponent/signUp'
+import SignUp from "./hardComponent/signUp";
+import ResetPass from "./hardComponent/resetPass";
 
 const HomePage = React.lazy(() => import("./component/homePage"));
 const Init = React.lazy(() => import("./component/survey/init"));
@@ -41,37 +43,42 @@ const Partner = React.lazy(() => import("./component/survey-gv/partner"));
 const Assign = React.lazy(() => import("./component/survey-gv/assign"));
 const QLDTSV = React.lazy(() => import("./component/qldt/sv"));
 const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
-const Total = React.lazy(() => import("./component/qldt/total"));
-const Work = React.lazy(()=>import('./component/calendar/work'))
+const Total = React.lazy(() => import("./component/survey/total"));
+const Work = React.lazy(() => import("./component/calendar/work"));
 
 export const RoleContext = createContext();
 
 function PreventRole() {
   const { isSignedIn, getToken } = useAuth();
+  const { user } = useUser();
   const [role, setRole] = useState(null);
   useLayoutEffect(() => {
     const callApi = async () => {
-        await fetch(`${import.meta.env.VITE_ROLE_API}`, {
-          method: "GET",
-          headers: {
-            authorization: `Bearer ${await getToken({
-              template: import.meta.env.VITE_TEMPLATE_ROLE,
-            })}`,
-          },
+      await fetch(`${import.meta.env.VITE_ROLE_API}`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_ROLE,
+          })}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.result) setRole(res.result[0]);
         })
-          .then((res) => res.json())
-          .then((res) => {
-            if (res.result) setRole(res.result[0]);
-          })
-          .catch(() => {
-            setRole({ role_id: 0 });
-          });
+        .catch(() => {
+          setRole({ role_id: 0 });
+        });
     };
 
-    if (isSignedIn) {
+    if (isSignedIn && user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")) {
       callApi();
     } else if (isSignedIn !== undefined) {
       setRole({ role_id: 0 });
+    }
+
+    if(isSignedIn && !user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")){
+      window.location.href = 'https://sv.hpu.edu.vn/home'
     }
   }, [isSignedIn]);
 
@@ -83,10 +90,58 @@ function PreventRole() {
           element={
             <>
               <SignedIn>
-                <Navigate to="/home" replace />
+                {location.hash === "" ? (
+                  <Navigate to="/home" replace />
+                ) : (
+                  <Navigate
+                    to={decodeURIComponent(
+                      location.hash.substring(16, location.hash.length)
+                    )}
+                    replace
+                  />
+                )}
               </SignedIn>
               <SignedOut>
                 <SignIn />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={
+            <>
+              <SignedIn>
+                <Navigate to="/home" replace />
+              </SignedIn>
+              <SignedOut>
+                <SignUp />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <>
+              <SignedIn>
+                <Suspense
+                  fallback={
+                    <div className="loading">
+                      <ReactLoading
+                        type="spin"
+                        color="#0083C2"
+                        width={"50px"}
+                        height={"50px"}
+                      />
+                    </div>
+                  }
+                >
+                  <ResetPass />
+                </Suspense>
+              </SignedIn>
+              <SignedOut>
+                <RedirectToSignIn />
               </SignedOut>
             </>
           }
@@ -145,8 +200,8 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
@@ -180,8 +235,8 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
@@ -215,8 +270,8 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
@@ -248,8 +303,8 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
@@ -276,8 +331,8 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
@@ -304,14 +359,14 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
           />
 
-<Route
+          <Route
             path="/calendar/work"
             element={
               <>
@@ -333,14 +388,12 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
           />
-
-
 
           <Route
             path="/qldt/sv"
@@ -359,7 +412,7 @@ function PreventRole() {
                       </div>
                     }
                   >
-                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
+                    {import.meta.env.VITE_ROLE_QLDT.split("||").find(
                       (item) => item === role?.role_id.toString()
                     ) ? (
                       <QLDTSV />
@@ -370,8 +423,8 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
@@ -394,7 +447,7 @@ function PreventRole() {
                       </div>
                     }
                   >
-                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
+                    {import.meta.env.VITE_ROLE_QLDT.split("||").find(
                       (item) => item === role?.role_id.toString()
                     ) ? (
                       <QLDTGV />
@@ -405,15 +458,15 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
           />
 
           <Route
-            path="/qldt/total"
+            path="/survey/total"
             element={
               <>
                 <SignedIn>
@@ -440,8 +493,8 @@ function PreventRole() {
                 </SignedIn>
 
                 <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate to="/sign-in" />
+                  <RedirectToSignIn />
+                  {/* <Navigate to="/sign-in" /> */}
                 </SignedOut>
               </>
             }
@@ -453,8 +506,6 @@ function PreventRole() {
 }
 
 function Hard({ role }) {
-  
-
   if (role) {
     return (
       <div className="flex flex-col">

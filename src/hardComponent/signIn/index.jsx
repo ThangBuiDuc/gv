@@ -21,7 +21,7 @@ export default function SignIn() {
   //   decodeURIComponent(location.hash.substring(16, location.hash.length))
   // );
 
-  const { isLoaded, signIn , setActive} = useSignIn();
+  const { isLoaded, signIn, setActive } = useSignIn();
 
   const forGot = () => {
     setForGotPass(!forGotPass);
@@ -43,35 +43,27 @@ export default function SignIn() {
     if (email === "") {
       setProgress("blankEmail");
       setLoading(false);
-    } else {
-      var pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    } else if (email.includes("@hpu.edu.vn")) {
+      // var pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       // Check the sign in response to
       // decide what to do next.
       await signIn
         .create({
-          identifier: email.match(pattern) ? email : email + "z",
+          identifier: email,
           password,
-          // redirectUrl: `${window.location.origin}/home`
         })
         .then(async (result) => {
-          // console.log('1' + searchParams.get('redirect_url'))
           if (result.status === "complete")
-            setActive({session: result.createdSessionId});
-            // location.hash === ""
-            //   ? navigate('home')
-            //   : navigate(
-            //       decodeURIComponent(
-            //         location.hash.substring(16, location.hash.length)
-            //       )
-            //     );
-            // navigate('/qanda')
+            setActive({ session: result.createdSessionId });
         })
         .catch((err) => {
-          // console.error("error", err.errors[0].message);
           if (email === "") setProgress("blankEmail");
           else setProgress(err.errors[0].message);
           setLoading(false);
         });
+    } else {
+      setProgress("Couldn't find your account.");
+      setLoading(false);
     }
   }
 
@@ -81,20 +73,26 @@ export default function SignIn() {
     // Prepare sign in with strategy and identifier
     setLoading(true);
     // console.log(email)
-    await signIn
-      .create({
-        strategy: "email_link",
-        identifier: email,
-        redirectUrl: `${window.location.origin}/reset-password`,
-      })
-      .then((res) => {
-        if (res.status === "needs_first_factor") setProgress("forGotPassSent");
-        setLoading(false);
-      })
-      .catch((err) => {
-        setProgress(err.errors[0].message);
-        setLoading(false);
-      });
+    if (email.includes("@hpu.edu.vn")) {
+      await signIn
+        .create({
+          strategy: "email_link",
+          identifier: email,
+          redirectUrl: `${window.location.origin}/reset-password`,
+        })
+        .then((res) => {
+          if (res.status === "needs_first_factor")
+            setProgress("forGotPassSent");
+          setLoading(false);
+        })
+        .catch((err) => {
+          setProgress(err.errors[0].message);
+          setLoading(false);
+        });
+    } else {
+      setProgress("Couldn't find your account.");
+      setLoading(false);
+    }
   }
 
   return (

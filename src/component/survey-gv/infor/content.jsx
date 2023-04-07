@@ -26,7 +26,7 @@ export default function Index({ data }) {
         {data.result_evaluate ? (
           <>
             <h3 className="w-[30%]">{data.result_evaluate}</h3>
-            <h3 className="text-green-50 w-[30%]">Đã hoàn thành</h3>
+            <h3 className="text-green-500 w-[30%]">Đã hoàn thành</h3>
           </>
         ) : (
           <h3 className="w-[45%]">Đang tiến hành</h3>
@@ -62,7 +62,7 @@ export default function Index({ data }) {
           </p>
           <p>
             <span className="font-semibold">Điểm quản lý đào tạo: </span>
-            {data.qldt?data.qldt_result:'Chờ tổng hợp...'}
+            {data.qldt_result?data.qldt_result:'Chờ tổng hợp...'}
           </p>
           </div>
         </div>
