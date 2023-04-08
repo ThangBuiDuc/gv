@@ -250,7 +250,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
       ) : data.teacher_attend_1 ? (
         <div className="flex gap-[5%] justify-between">
           <p className="w-[35%]">
-            Thư ký hội đồng:{" "}
+          Chủ tịch hội đồng:{" "}
             <span className="font-semibold">
               {staff.find((item) => item.code === data.teacher_attend_1).name}
             </span>
@@ -340,7 +340,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
       ) : data.teacher_attend_3 ? (
         <div className="flex gap-[5%] justify-between">
           <p className="w-[35%]">
-            Thư ký hội đồng:{" "}
+          Giảng viên:{" "}
             <span className="font-semibold">
               {staff.find((item) => item.code === data.teacher_attend_3).name}
             </span>
