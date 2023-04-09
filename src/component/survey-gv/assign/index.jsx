@@ -100,13 +100,13 @@ export default function Index() {
       {role.is_truong_khoa ? (
         data === "empty" ? (
           <div className="flex justify-center">
-            <h3>Hiện tại chưa có môn học nào được duyệt khảo sát trong kỳ</h3>
+            <h3>Hiện tại chưa có lớp môn học nào được duyệt khảo sát trong kỳ</h3>
           </div>
         ) : data ? (
           <>
             <div className="flex flex-col gap-[20px]">
               <h3 className="self-center text-primary">
-                Những môn học chưa phân công dự giờ
+                Những lớp môn học chưa phân công dự giờ
               </h3>
               {data
                 .filter((item) => item.teacher_attend_1 === null)
@@ -120,7 +120,7 @@ export default function Index() {
             </div>
             <div className="flex flex-col gap-[20px]">
               <h3 className="self-center text-primary">
-                Những môn học đã phân công dự giờ
+                Những lớp môn học đã phân công dự giờ
               </h3>
               {data
                 .filter((item) => item.teacher_attend_1 !== null)
