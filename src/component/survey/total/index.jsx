@@ -7,12 +7,23 @@ import ReactLoading from "react-loading";
 import { CSVLink } from "react-csv";
 import Swal from "sweetalert2";
 
+function compare(a, b) {
+  // if ( a.class_name < b.class_name ){
+  //   return -1;
+  // }
+  // if ( a.class_name > b.class_name ){
+  //   return 1;
+  // }
+  // return 0;
+  return a.class_name.localeCompare(b.class_name);
+}
+
 export default function Index() {
   const { getToken } = useAuth();
   const [present, setPresent] = useState(null);
   const [course, setCourse] = useState(null);
   const [afterUpdate, setAfterUpdate] = useState(false);
-  const [csv,setCsv] = useState([])
+  const [csv, setCsv] = useState([]);
 
   useLayoutEffect(() => {
     let callApi = async () => {
@@ -43,7 +54,7 @@ export default function Index() {
       )
         .then((res) => res.json())
         .then((res) => {
-          if (res.result.length > 0) setCourse(res.result);
+          if (res.result.length > 0) setCourse(res.result.sort(compare));
           else setCourse("empty");
         });
     };
@@ -63,6 +74,7 @@ export default function Index() {
       "Điểm GV",
       "Điểm QLDT",
       "Điểm tổng kết",
+      "Xếp loại",
     ],
   ];
 
@@ -100,12 +112,17 @@ export default function Index() {
                       element.teacher_result,
                       element.qldt_result,
                       element.result_evaluate,
+                      element.xep_loai,
                     ]);
                   });
-                  setCsv(csvData)
-                }else{
-                  Swal.fire({title:'Hiện tại chưa có môn học nào có kết quả tổng kết',icon:'info',timer:2000})
-                  return false
+                  setCsv(csvData);
+                } else {
+                  Swal.fire({
+                    title: "Hiện tại chưa có môn học nào có kết quả tổng kết",
+                    icon: "info",
+                    timer: 2000,
+                  });
+                  return false;
                 }
               }}
             >

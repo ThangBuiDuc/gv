@@ -34,9 +34,9 @@ export default function Index({ data, staff ,present ,status,setStatus,question}
       //   onClick={() => setToggle(!toggle)}
     >
       <div className="flex justify-between ">
-        <h3 className="w-[10%]">{data.class_code}</h3>
-        <h3 className="w-[40%]">{data.class_name}</h3>
-        <h3 className="w-[40%]">{data.user.name}</h3>
+        <h3 className="w-[20%]">{data.class_code}</h3>
+        <h3 className="w-[35%]">{data.class_name}</h3>
+        <h3 className="w-[35%]">{data.user.name}</h3>
         <label
           onClick={() => setToggle(!toggle)}
           className={`${

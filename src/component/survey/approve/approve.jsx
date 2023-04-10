@@ -8,6 +8,10 @@ import NavBtn from "./navBtn";
 import { animated, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
 
+function compare( a, b ) {
+  return a.class_name.localeCompare(b.class_name)
+}
+
 const ACTION = {
   FIRST: "first",
   SECOND: "second",
@@ -94,7 +98,7 @@ export default function Index({ present }) {
         .then((res) => res.json())
         .then((res) => {
           // console.log(res);
-          if (res.result.length > 0) setData(res.result);
+          if (res.result.length > 0) setData(res.result.sort(compare));
         });
     };
 

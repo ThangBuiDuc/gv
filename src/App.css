@@ -13,7 +13,7 @@
   }
 
   .btn {
-    @apply border-[1px] border-bordercl rounded-[5px] p-[5px] hover:bg-primary hover:text-white md:hover:scale-[1.2] md:transition-all;
+    @apply border-[1px] border-bordercl rounded-[5px] p-[5px] hover:bg-primary hover:text-white md:hover:scale-[1.2] md:transition-all whitespace-nowrap text-center;
   }
 }
 
@@ -55,7 +55,6 @@ input[type="number"] {
 
 /* Calendar */
 .fc-v-event {
- background-color : transparent;
- border : none
+  background-color: transparent;
+  border: none;
 }
-

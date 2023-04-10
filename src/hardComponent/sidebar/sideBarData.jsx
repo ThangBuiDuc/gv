@@ -9,12 +9,12 @@ import { TiTickOutline } from "react-icons/ti";
 import {
   AiOutlineQuestionCircle,
   AiOutlineUsergroupDelete,
-  AiOutlineCalculator
+  AiOutlineCalculator,
 } from "react-icons/ai";
 import { IoCreateOutline } from "react-icons/io5";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { SlCalender } from "react-icons/sl";
-import{BsCalendarCheck} from 'react-icons/bs'
+import { BsCalendarCheck } from "react-icons/bs";
 
 export const sideBarData = [
   {
@@ -41,14 +41,14 @@ export const sideBarData = [
   },
   {
     title: "Lịch",
-    icon: <SlCalender size={'30px'}/>,
+    icon: <SlCalender size={"30px"} />,
     path: "/calendar",
     subNav: [
       {
         title: "Lịch giảng dạy",
         path: "/calendar/work",
-        icon: <BsCalendarCheck size={'22px'}/>,
-      }
+        icon: <BsCalendarCheck size={"22px"} />,
+      },
     ],
   },
   {
@@ -58,7 +58,7 @@ export const sideBarData = [
     role: import.meta.env.VITE_ROLE_QLDT.split("||"),
     subNav: [
       {
-        title: "Duyệt kết quả sinh viên",
+        title: "Duyệt tư cách sinh viên",
         path: "/qldt/sv",
         icon: <MdAppRegistration size={"22px"} />,
       },
@@ -66,7 +66,7 @@ export const sideBarData = [
         title: "Đánh giá giảng viên",
         path: "/qldt/gv",
         icon: <MdAppRegistration size={"22px"} />,
-      }
+      },
     ],
   },
   {
@@ -86,15 +86,15 @@ export const sideBarData = [
         icon: <MdCreateNewFolder size={"22px"} />,
       },
       {
-        title: "Duyệt môn học",
+        title: "Duyệt lớp môn học",
         path: "/survey/approve",
         icon: <TiTickOutline size={"22px"} />,
       },
       {
-        title:'Tổng kết',
-        path:'/survey/total',
-        icon: <AiOutlineCalculator size={'22px'}/>
-      }
+        title: "Tổng kết",
+        path: "/survey/total",
+        icon: <AiOutlineCalculator size={"22px"} />,
+      },
     ],
   },
 ];

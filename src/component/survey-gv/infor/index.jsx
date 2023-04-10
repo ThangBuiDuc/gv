@@ -6,6 +6,10 @@ import { useAuth } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
 
+function compare(a, b) {
+  return a.class_name.localeCompare(b.class_name);
+}
+
 export default function Index() {
   const [present, setPresent] = useState(null);
   const [data, setData] = useState(null);
@@ -40,7 +44,7 @@ export default function Index() {
       )
         .then((res) => res.json())
         .then((res) => {
-          if (res.result.length>0) setData(res.result);
+          if (res.result.length > 0) setData(res.result.sort(compare));
           else setData("empty");
         });
     };
@@ -57,11 +61,14 @@ export default function Index() {
       </div>
       {data === "empty" ? (
         <div className="flex justify-center">
-          <h3>Hiện tại chưa có môn học nào trong quá trình phản hồi công tác giảng dạy kỳ hiện tại</h3>
+          <h3>
+            Hiện tại chưa có môn học nào trong quá trình phản hồi công tác giảng
+            dạy kỳ hiện tại
+          </h3>
         </div>
       ) : data ? (
         data.map((item, index) => (
-          <div className='flex flex-col' key={index}>
+          <div className="flex flex-col" key={index}>
             <Content data={item} />
           </div>
         ))

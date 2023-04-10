@@ -6,6 +6,10 @@ import { useAuth } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
 
+function compare( a, b ) {
+  return a.class_name.localeCompare(b.class_name)
+}
+
 export default function Index() {
   const [present, setPresent] = useState();
   const [data, setData] = useState();
@@ -84,7 +88,7 @@ export default function Index() {
         .then((res) => res.json())
         .then((res) => {
           // console.log(res)
-          if (res.result.length > 0) setData(res.result);
+          if (res.result.length > 0) setData(res.result.sort(compare));
           else setData("empty");
         });
     }

@@ -5,11 +5,15 @@ import { useAuth } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
 
+function compare(a, b) {
+  return a.class_name.localeCompare(b.class_name);
+}
+
 export default function Index() {
   const { getToken } = useAuth();
   const [present, setPresent] = useState(null);
   const [course, setCourse] = useState(null);
-  const [afterUpdate,setAfterUpdate] = useState(false)
+  const [afterUpdate, setAfterUpdate] = useState(false);
 
   useLayoutEffect(() => {
     let callApi = async () => {
@@ -40,12 +44,12 @@ export default function Index() {
       )
         .then((res) => res.json())
         .then((res) => {
-          if (res.result.length > 0) setCourse(res.result);
+          if (res.result.length > 0) setCourse(res.result.sort(compare));
           else setCourse("empty");
         });
     };
     if (present) callApi();
-  }, [present,afterUpdate]);
+  }, [present, afterUpdate]);
 
   return (
     <div className="wrap">
@@ -57,10 +61,15 @@ export default function Index() {
           <h3>Hiện tại chưa có môn học trong kỳ được duyệt đánh giá</h3>
         </div>
       ) : course ? (
-        course.map((item,index) => {
+        course.map((item, index) => {
           return (
             <div className="flex flex-col" key={index}>
-              <Content data={item} present={present} afterUpdate={afterUpdate} setAfterUpdate={setAfterUpdate}/>
+              <Content
+                data={item}
+                present={present}
+                afterUpdate={afterUpdate}
+                setAfterUpdate={setAfterUpdate}
+              />
             </div>
           );
         })

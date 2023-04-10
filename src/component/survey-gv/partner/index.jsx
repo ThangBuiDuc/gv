@@ -3,6 +3,9 @@ import "../../../App.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
+function compare( a, b ) {
+  return a.class_name.localeCompare(b.class_name)
+}
 
 export default function Index() {
   const { getToken } = useAuth();
@@ -62,7 +65,7 @@ export default function Index() {
       )
         .then((res) => res.json())
         .then((res) => {
-          if (res.result.length > 0) setData(res.result);
+          if (res.result.length > 0) setData(res.result.sort(compare));
           else setData("empty");
         });
     };
