@@ -4,12 +4,12 @@ h2 {
   @apply text-[24px] font-semibold;
 }
 
-h3{
-  @apply text-[18.72px] font-semibold
+h3 {
+  @apply text-[18.72px] font-semibold;
 }
 
-p{
-  @apply font-normal 
+p {
+  @apply font-normal;
 }
 @tailwind components;
 @tailwind utilities;

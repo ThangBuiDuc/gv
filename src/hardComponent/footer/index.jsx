@@ -5,10 +5,10 @@ import zalo from "../../assets/zaloIcon.svg";
 
 export default function Index() {
   return (
-    <div className="h-[240px] w-full bg-primary mt-[50px] flex justify-evenly relative [&>div]:self-center [&>div]:w-[30%] [&>p]:absolute [&>p]:left-[5px] [&>p]:bottom-[5px] [&>p]:text-[16px] [&>p]:text-white">
+    <div className="flex-col  p-[10px] gap-[20px] md:flex-row md:h-[240px] w-full bg-primary mt-[50px] flex justify-evenly relative md:[&>div]:self-center md:[&>div]:w-[30%] md:[&>p]:absolute [&>p]:left-[5px] [&>p]:bottom-[5px] [&>p]:text-[16px] [&>p]:text-white">
       <div className="flex flex-col">
         <p className="font-bold text-[16px] text-white">Thông tin về HPU</p>
-        <p className="text-[16px] text-white mt-[15px]">
+        <p className="text-[16px] text-white md:mt-[15px]">
           <span className="font-bold">Địa chỉ:</span>
           &nbsp;Số 36, đường Dân lập, phường Dư Hàng Kênh, quận Lê Chân, thành
           phố Hải Phòng
@@ -21,12 +21,12 @@ export default function Index() {
           &nbsp;0936 821 821
         </p>
 
-        <p className="text-[16px] text-white mt-[15px]">
+        <p className="text-[16px] text-white md:mt-[15px]">
           <span className="font-bold">Email:</span>
           &nbsp;hpu@hpu.edu.vn
         </p>
 
-        <p className="text-[16px] text-white mt-[15px]">
+        <p className="text-[16px] text-white md:mt-[15px]">
           <span className="font-bold">Thời gian làm việc:</span>
           &nbsp;Thứ 2 - Sáng Thứ 7
         </p>
@@ -62,7 +62,10 @@ export default function Index() {
           </a>
         </div>
       </div>
-      <p><span className="font-bold">Dev by HPU-TTS:</span> Bùi Đức Thắng, Lưu Thanh Hoàng, Vũ Hoài Nam, Nguyễn Quốc Thụ, Đào Anh Ngọc</p>
+      <p>
+        <span className="font-bold">Dev by HPU-TTS:</span> Bùi Đức Thắng, Lưu
+        Thanh Hoàng, Vũ Hoài Nam, Nguyễn Quốc Thụ, Đào Anh Ngọc
+      </p>
     </div>
   );
 }

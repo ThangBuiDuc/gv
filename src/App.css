@@ -9,7 +9,7 @@
 
 @layer components {
   .wrap {
-    @apply flex flex-col w-[80%] rounded-[15px] p-[20px] min-h-[700px] border-solid border-bordercl border-[1px] gap-[50px];
+    @apply flex flex-col lg:w-[80%] lg:rounded-[15px] lg:p-[20px] min-h-[700px] md:min-h-[900px] border-solid border-bordercl lg:border-[1px] gap-[50px];
   }
 
   .btn {
@@ -57,4 +57,32 @@ input[type="number"] {
 .fc-v-event {
   background-color: transparent;
   border: none;
+}
+
+/* mobile */
+@media screen and (max-width: 46.1875em) {
+  .awssld {
+    height: 150px;
+  }
+
+  .awssld__bullets > button {
+    height: 8px !important;
+    width: 8px !important;
+  }
+
+  #one-time-code ~ div {
+    --ReactInputVerificationCode-itemWidth: 2.5rem;
+    --ReactInputVerificationCode-itemHeight: 3rem;
+    width: var(--ReactInputVerificationCode-itemWidth);
+    height: var(--ReactInputVerificationCode-itemHeight);
+  }
+
+  /* Reponsive Lich Hoc */
+  .fc-list-event-time {
+    font-size: 15px;
+  }
+
+  .fc-list-event-title {
+    font-size: 15px;
+  }
 }

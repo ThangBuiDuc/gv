@@ -25,12 +25,12 @@ export default function Index() {
             {blog.map((item, index) => {
               return (
                 <div
-                  className="flex h-fit w-[100%] g-[2%] [&>img]:object-cover [&>img]:w-[40%] [&>img]:max-h-[250px]"
+                  className="flex flex-col md:flex-row h-fit w-[100%] g-[2%] [&>img]:object-cover md:[&>img]:w-[40%] [&>img]:max-h-[250px]"
                   key={index}
                   style={{ gap: "2%" }}
                 >
                   <img src={item.image ? item.image.src : noIMG} alt="" />
-                  <div className="w-[58%]">
+                  <div className="md:w-[58%]">
                     <a
                       href={`https://hpu.edu.vn/blogs/lich-tuan/${item.handle}`}
                       className="no-underline"

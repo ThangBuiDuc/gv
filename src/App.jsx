@@ -4,12 +4,14 @@ import React, {
   useLayoutEffect,
   useState,
   createContext,
+  useEffect,
 } from "react";
 import {
   Routes,
   Route,
   Outlet,
   Navigate,
+  useLocation,
   // useLocation,
   // useNavigate,
 } from "react-router-dom";
@@ -26,6 +28,8 @@ import {
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
+import { AiOutlineMenu } from "react-icons/ai";
+import { useTransition, animated } from "react-spring";
 
 // import Init from "./component/survey/init";
 
@@ -70,14 +74,20 @@ function PreventRole() {
         });
     };
 
-    if (isSignedIn && user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")) {
+    if (
+      isSignedIn &&
+      user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")
+    ) {
       callApi();
     } else if (isSignedIn !== undefined) {
       setRole({ role_id: 0 });
     }
 
-    if(isSignedIn && !user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")){
-      window.location.href = 'https://sv.hpu.edu.vn/home'
+    if (
+      isSignedIn &&
+      !user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")
+    ) {
+      window.location.href = "https://sv.hpu.edu.vn/home";
     }
   }, [isSignedIn]);
 
@@ -140,7 +150,7 @@ function PreventRole() {
                 </Suspense>
               </SignedIn>
               <SignedOut>
-              <Navigate to='/sign-in' />
+                <Navigate to="/sign-in" />
               </SignedOut>
             </>
           }
@@ -200,7 +210,11 @@ function PreventRole() {
 
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey/init')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/survey/init"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -236,7 +250,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey/approve')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/survey/approve"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -272,7 +290,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey/question')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/survey/question"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -306,7 +328,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey-gv/infor')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/survey-gv/infor"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -335,7 +361,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey-gv/partner')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/survey-gv/partner"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -364,7 +394,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey-gv/assign')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/survey-gv/assign"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -394,7 +428,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/calendar/work')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/calendar/work"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -430,7 +468,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/qldt/sv')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/qldt/sv"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -466,7 +508,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/qldt/gv')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/qldt/gv"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -502,7 +548,11 @@ function PreventRole() {
                 <SignedOut>
                   {/* <RedirectToSignIn /> */}
                   {/* <Navigate to="/sign-in" /> */}
-                  <Navigate to={`/sign-in#/?redirect_url=${encodeURIComponent('/survey/total')}`} />
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/survey/total"
+                    )}`}
+                  />
                 </SignedOut>
               </>
             }
@@ -514,15 +564,82 @@ function PreventRole() {
 }
 
 function Hard({ role }) {
+  let location = useLocation();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [menuBtn, setMenuBtn] = useState(false);
+  const transitions = useTransition(menuBtn, {
+    from: { opacity: 0 },
+    // to:{opacity: 1, height: 100 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: {
+      duration: 200,
+    },
+  });
+  useEffect(() => {
+    const resize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  useEffect(() => {
+    setMenuBtn(false);
+  }, [location]);
+
+  useEffect(() => {
+    menuBtn
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "unset");
+  }, [menuBtn]);
   if (role) {
     return (
       <div className="flex flex-col">
-        <Header />
+        <Header windowWidth={windowWidth} />
         <div className="flex pl-[15px] pr-[15px] mt-[40px] gap-[2%] flex-row-reverse">
-          <SideBar />
+          <SideBar
+            windowWidth={windowWidth}
+            menuBtn={menuBtn}
+            setMenuBtn={setMenuBtn}
+          />
           <Outlet />
         </div>
-        <Footer />
+        <div className="mb-[50px] md:mb-[70px]">
+          <Footer />
+        </div>
+        {windowWidth <= 1024 ? (
+          <>
+            {transitions(
+              (style, menuBtn) =>
+                menuBtn && (
+                  <animated.div
+                    style={style}
+                    className="fixed top-0 left-0 right-0 bottom-0 z-[9] bg-overlay"
+                    onClick={() => setMenuBtn(!menuBtn)}
+                  />
+                )
+            )}
+            <div className="fixed flex w-full bottom-0 h-[50px] md:h-[70px] bg-white justify-end items-center z-10 border-t-[1px] border-solid border-bordercl">
+              <div
+                className={`flex-col justify-center items-center h-full w-[20%] flex cursor-pointer border-b-[5px] border-solid ${
+                  menuBtn ? " border-primary" : "border-white"
+                }`}
+                onClick={() => setMenuBtn(!menuBtn)}
+              >
+                <AiOutlineMenu
+                  size={`${windowWidth >= 768 ? "30px" : "22px"}`}
+                />
+                <p className="font-semibold text-[12px] md:text-[18px]">Menu</p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     );
   } else {
