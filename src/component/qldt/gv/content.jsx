@@ -7,7 +7,7 @@ import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 import SubContent from "./subContent";
 
-export default function Index({ data, present ,afterUpdate,setAfterUpdate}) {
+export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
   const [toggle, setToggle] = useState();
   const [ref, { height }] = useMeasure();
 
@@ -23,10 +23,10 @@ export default function Index({ data, present ,afterUpdate,setAfterUpdate}) {
     <div className="flex border-t border-bordercl border-solid justify-between p-[10px] flex-col gap-[20px]">
       <div className="flex  ">
         <h3 className={`w-[30%]`}>{data.class_code}</h3>
-        <h3 className={`w-[35%]`}>{data.class_name}</h3>
+        <h3 className={`w-[30%]`}>{data.class_name}</h3>
         <h3 className={`w-[30%]`}>{data.user.name}</h3>
         {data.qldt_result ? (
-          <h3 className="text-green-600">{data.qldt_result}/10</h3>
+          <h3 className="text-green-600">Điểm: {data.qldt_result}</h3>
         ) : (
           <label
             onClick={() => setToggle(!toggle)}
@@ -53,7 +53,14 @@ export default function Index({ data, present ,afterUpdate,setAfterUpdate}) {
                   className="flex gap-[20px] justify-between flex-col "
                   ref={ref}
                 >
-                  <SubContent dataCourse={data} present={present} afterUpdate={afterUpdate} setAfterUpdate={setAfterUpdate} toggle={toggle} setToggle={setToggle}/>
+                  <SubContent
+                    dataCourse={data}
+                    present={present}
+                    afterUpdate={afterUpdate}
+                    setAfterUpdate={setAfterUpdate}
+                    toggle={toggle}
+                    setToggle={setToggle}
+                  />
                 </div>
               </animated.div>
             )

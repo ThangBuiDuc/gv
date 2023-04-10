@@ -54,7 +54,7 @@ export default function Index() {
   return (
     <div className="wrap">
       <div className="flex justify-center">
-        <h2 className="text-primary">Duyệt kết quả sinh viên</h2>
+        <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
       </div>
       {course === "empty" ? (
         <div className="flex justify-center">

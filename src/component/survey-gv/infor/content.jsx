@@ -27,8 +27,8 @@ export default function Index({ data }) {
         </h3>
         {data.result_evaluate ? (
           <>
-            <h3 className="w-[20%]">{data.result_evaluate}</h3>
-            <h3 className="w-[20%]">{data.xep_loai}</h3>
+            <h3 className="w-[20%]">Điểm: {data.result_evaluate}</h3>
+            <h3 className="w-[20%]">Xếp loại: {data.xep_loai}</h3>
             <h3 className="text-green-500 w-[25%]">Đã hoàn thành</h3>
           </>
         ) : (

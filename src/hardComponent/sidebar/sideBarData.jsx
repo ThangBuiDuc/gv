@@ -23,12 +23,12 @@ export const sideBarData = [
     icon: <RiSurveyFill size={"30px"} />,
     subNav: [
       {
-        title: "Phản hồi",
+        title: "Kết quả của tôi",
         path: "/survey-gv/infor",
         icon: <HiOutlineInformationCircle size={"22px"} />,
       },
       {
-        title: "Đồng nghiệp phản hồi",
+        title: "Góp ý với đồng nghiệp",
         path: "/survey-gv/partner",
         icon: <AiOutlineUsergroupDelete size={"22px"} />,
       },

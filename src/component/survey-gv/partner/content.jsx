@@ -61,7 +61,7 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
                       item.respond_result ? "text-green-600" : "text-red-600"
                     } p-[5px] w-[25%] text-center`}
                   >
-                    {item.respond_result}
+                    Điểm: {item.respond_result}
                   </p>
                 ) : (
                   <div className="w-[25%] flex justify-center">
