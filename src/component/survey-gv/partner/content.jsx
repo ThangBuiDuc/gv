@@ -41,17 +41,19 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
             return (
               <div
                 key={index}
-                className="flex border-[1px] boder-solid border-bordercl rounded-[10px] p-[10px] justify-around items-center"
+                className="flex lg:flex-row flex-col  border-[1px] boder-solid border-bordercl rounded-[10px] p-[10px] justify-around items-center"
               >
                 {/* <div style={{ display: "flex" , justifyContent : 'space-between' }}> */}
-                <p className="p-[5px] w-[25%]">{item.class_name}</p>
-                <p className="p-[5px] w-[25%] text-center">
+                <p className="p-[5px] w-full lg:w-[25%] lg:text-left text-center">
+                  {item.class_name}
+                </p>
+                <p className="p-[5px] w-full lg:w-[25%] text-center">
                   {item.teacher_name}
                 </p>
                 <p
                   className={`font-semibold ${
                     item.respond_result ? "text-green-600" : "text-red-600"
-                  } p-[5px] w-[25%] text-center`}
+                  } p-[5px] w-full lg:w-[25%] text-center`}
                 >
                   {item.respond_result ? "Đã đánh giá!" : "Chưa đánh giá!"}
                 </p>
@@ -59,12 +61,12 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
                   <p
                     className={`font-semibold ${
                       item.respond_result ? "text-green-600" : "text-red-600"
-                    } p-[5px] w-[25%] text-center`}
+                    } p-[5px] w-full lg:w-[25%] text-center`}
                   >
                     Điểm: {item.respond_result}
                   </p>
                 ) : (
-                  <div className="w-[25%] flex justify-center">
+                  <div className="lg:w-[25%] w-full flex justify-center">
                     <button
                       className="btn h-fit"
                       onClick={() => {

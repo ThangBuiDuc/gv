@@ -9,7 +9,7 @@
 
 @layer components {
   .wrap {
-    @apply flex flex-col lg:w-[80%] lg:rounded-[15px] lg:p-[20px] min-h-[700px] md:min-h-[900px] border-solid border-bordercl lg:border-[1px] gap-[50px];
+    @apply flex flex-col w-full lg:w-[80%] lg:rounded-[15px] lg:p-[20px] min-h-[700px] md:min-h-[900px] border-solid border-bordercl lg:border-[1px] gap-[50px];
   }
 
   .btn {

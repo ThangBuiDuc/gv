@@ -6,7 +6,16 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { useAuth } from "@clerk/clerk-react";
 
-export default function Index({ staff, data, question, present ,status,setStatus , toggle,setToggle}) {
+export default function Index({
+  staff,
+  data,
+  question,
+  present,
+  status,
+  setStatus,
+  toggle,
+  setToggle,
+}) {
   const { getToken } = useAuth();
 
   // console.log(present);
@@ -21,7 +30,6 @@ export default function Index({ staff, data, question, present ,status,setStatus
       };
     })
     .filter((item) => item.value !== data.teacher_code);
-
 
   // console.log(select);
   // const select = [
@@ -105,7 +113,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               user_code: selectedOption.value,
               hocky: present.hocky,
               namhoc: present.manamhoc,
-              end_date: data.end_date
+              end_date: data.end_date,
             },
             {
               question_id: curr.question_id,
@@ -114,7 +122,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               user_code: selectedOption1.value,
               hocky: present.hocky,
               namhoc: present.manamhoc,
-              end_date: data.end_date
+              end_date: data.end_date,
             },
             {
               question_id: curr.question_id,
@@ -123,7 +131,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               user_code: selectedOption2.value,
               hocky: present.hocky,
               namhoc: present.manamhoc,
-              end_date: data.end_date
+              end_date: data.end_date,
             },
           ];
           return [...total, ...item];
@@ -147,13 +155,11 @@ export default function Index({ staff, data, question, present ,status,setStatus
           }
         ).then((res) => res.status);
 
-        if (result === 200){
-          setStatus(!status)
-          setToggle(!toggle)
+        if (result === 200) {
+          setStatus(!status);
+          setToggle(!toggle);
           Swal.fire({ title: "Phân công dự giờ thành công!", icon: "success" });
-        }
-          
-        else
+        } else
           Swal.fire({
             title: "Phân công dự giờ không thành công",
             icon: "error",
@@ -164,13 +170,13 @@ export default function Index({ staff, data, question, present ,status,setStatus
   // console.log(selectedOption);
   return (
     <>
-      <div className="flex gap-[10px] justify-between">
+      <div className="md:flex-row flex-col flex gap-[10px] justify-between">
         {data.teacher_attend_1 ? (
           <></>
         ) : (
           <Select
             className="min-w-[20%]"
-            placeholder={"Chủ tịch HĐĐG"}
+            placeholder={"Chủ tịch HĐ"}
             noOptionsMessage={() => "Không tìm thấy kết quả"}
             defaultValue={selectedOption}
             onChange={setSelectedOption}
@@ -193,7 +199,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
           <Select
             className="min-w-[20%]"
             noOptionsMessage={() => "Không tìm thấy kết quả"}
-            placeholder={"Thư ký HĐ"}
+            placeholder={"Thư ký"}
             defaultValue={selectedOption1}
             onChange={setSelectedOption1}
             options={
@@ -215,7 +221,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
           <Select
             className="min-w-[20%]"
             noOptionsMessage={() => "Không tìm thấy kết quả"}
-            placeholder={"Giảng viên"}
+            placeholder={"Uỷ viên"}
             defaultValue={selectedOption2}
             onChange={setSelectedOption2}
             options={
@@ -233,29 +239,29 @@ export default function Index({ staff, data, question, present ,status,setStatus
         )}
       </div>
       {selectedOption ? (
-        <div className="flex gap-[5%] justify-between">
-          <p className="w-[35%]">
+        <div className="lg1:flex-row flex-col flex gap-[5%] justify-between">
+          <p className="lg:w-[35%] w-full">
             Chủ tịch hội đồng:{" "}
             <span className="font-semibold">{selectedOption.label}</span>
           </p>
-          <p className="w-[25%]">
+          <p className="lg:w-[25%] w-full">
             Học vị:{" "}
             <span className="font-semibold">{selectedOption.ten_hoc_vi}</span>
           </p>
-          <p className="w-[25%] text-left">
+          <p className="lg:w-[25%] w-full text-left">
             Khoa:{" "}
             <span className="font-semibold">{selectedOption.khoa_gv}</span>
           </p>
         </div>
       ) : data.teacher_attend_1 ? (
-        <div className="flex gap-[5%] justify-between">
-          <p className="w-[35%]">
-          Chủ tịch hội đồng:{" "}
+        <div className="lg1:flex-row flex-col flex gap-[5%] justify-between">
+          <p className="lg:w-[35%] w-full">
+            Chủ tịch hội đồng:{" "}
             <span className="font-semibold">
               {staff.find((item) => item.code === data.teacher_attend_1).name}
             </span>
           </p>
-          <p className="w-[25%]">
+          <p className="lg:w-[25%] w-full">
             Học vị:{" "}
             <span className="font-semibold">
               {
@@ -264,7 +270,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               }
             </span>
           </p>
-          <p className="w-[25%] text-left">
+          <p className="lg:w-[25%] w-full text-left">
             Khoa:{" "}
             <span className="font-semibold">
               {
@@ -278,29 +284,29 @@ export default function Index({ staff, data, question, present ,status,setStatus
         <></>
       )}
       {selectedOption1 ? (
-        <div className="flex gap-[5%] justify-between">
-          <p className="w-[35%]">
-            Thư ký hội đồng:{" "}
+        <div className="lg1:flex-row flex-col flex gap-[5%] justify-between">
+          <p className="lg:w-[35%] w-full">
+            Thư ký:{" "}
             <span className="font-semibold">{selectedOption1.label}</span>
           </p>
-          <p className="w-[25%]">
+          <p className="lg:w-[25%] w-full">
             Học vị:{" "}
             <span className="font-semibold">{selectedOption1.ten_hoc_vi}</span>
           </p>
-          <p className="w-[25%] text-left">
+          <p className="lg:w-[25%] w-full text-left">
             Khoa:{" "}
             <span className="font-semibold">{selectedOption1.khoa_gv}</span>
           </p>
         </div>
       ) : data.teacher_attend_2 ? (
-        <div className="flex gap-[5%] justify-between">
-          <p className="w-[35%]">
-            Thư ký hội đồng:{" "}
+        <div className="lg1:flex-row flex-col flex gap-[5%] justify-between">
+          <p className="lg:w-[35%] w-full">
+            Thư ký:{" "}
             <span className="font-semibold">
               {staff.find((item) => item.code === data.teacher_attend_2).name}
             </span>
           </p>
-          <p className="w-[25%]">
+          <p className="lg:w-[25%] w-full">
             Học vị:{" "}
             <span className="font-semibold">
               {
@@ -309,7 +315,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               }
             </span>
           </p>
-          <p className="w-[25%] text-left">
+          <p className="lg:w-[25%] w-full text-left">
             Khoa:{" "}
             <span className="font-semibold">
               {
@@ -323,29 +329,29 @@ export default function Index({ staff, data, question, present ,status,setStatus
         <></>
       )}
       {selectedOption2 ? (
-        <div className="flex gap-[5%] justify-between">
-          <p className="w-[35%]">
-            Giảng viên:{" "}
+        <div className="lg1:flex-row flex-col flex gap-[5%] justify-between">
+          <p className="lg:w-[35%] w-full">
+            Uỷ viên:{" "}
             <span className="font-semibold">{selectedOption2.label}</span>
           </p>
-          <p className="w-[25%]">
+          <p className="lg:w-[25%] w-full">
             Học vị:{" "}
             <span className="font-semibold">{selectedOption2.ten_hoc_vi}</span>
           </p>
-          <p className="w-[25%] text-left">
+          <p className="lg:w-[25%] w-full text-left">
             Khoa:{" "}
             <span className="font-semibold">{selectedOption2.khoa_gv}</span>
           </p>
         </div>
       ) : data.teacher_attend_3 ? (
-        <div className="flex gap-[5%] justify-between">
-          <p className="w-[35%]">
-          Giảng viên:{" "}
+        <div className="lg1:flex-row flex-col flex gap-[5%] justify-between">
+          <p className="lg:w-[35%] w-full">
+            Uỷ viên:{" "}
             <span className="font-semibold">
               {staff.find((item) => item.code === data.teacher_attend_3).name}
             </span>
           </p>
-          <p className="w-[25%]">
+          <p className="lg:w-[25%] w-full">
             Học vị:{" "}
             <span className="font-semibold">
               {
@@ -354,7 +360,7 @@ export default function Index({ staff, data, question, present ,status,setStatus
               }
             </span>
           </p>
-          <p className="w-[25%] text-left">
+          <p className="lg:w-[25%] w-full text-left">
             Khoa:{" "}
             <span className="font-semibold">
               {

@@ -4,6 +4,7 @@ import "../../../App.css";
 import { AiOutlineRight } from "react-icons/ai";
 import useMeasure from "react-use-measure";
 import { useSpring, animated } from "react-spring";
+import { IconContext } from "react-icons";
 
 export default function Index({ data }) {
   const [toggle, setToggle] = useState(false);
@@ -21,7 +22,7 @@ export default function Index({ data }) {
       className="flex border-t border-bordercl border-solid justify-between p-[10px] cursor-pointer flex-col gap-[20px]"
       onClick={() => setToggle(!toggle)}
     >
-      <div className="flex justify-between ">
+      <div className="lg:flex-row flex-col [&>h3]:w-full flex justify-between ">
         <h3 className={`${data.result_evaluate ? "w-[45%]" : "w-[30%]"}`}>
           {data.class_name}
         </h3>
@@ -34,17 +35,21 @@ export default function Index({ data }) {
         ) : (
           <h3 className="w-[45%]">Đang tiến hành</h3>
         )}
-        <label
-          className={`${
-            toggle ? "rotate-90" : ""
-          } transition-transform duration-200 cursor-pointer`}
-        >
-          <AiOutlineRight size={"20px"} />
+        <label className="flex justify-center">
+          <IconContext.Provider
+            value={{
+              className: `${
+                toggle ? "-rotate-90 lg:rotate-90" : "rotate-90 lg:rotate-0"
+              } transition-transform duration-200 cursor-pointer`,
+            }}
+          >
+            <AiOutlineRight size={"20px"} />
+          </IconContext.Provider>
         </label>
       </div>
       <animated.div style={spring} className={"overflow-hidden"}>
-        <div ref={ref} className="flex flex-col">
-          <div className="flex justify-between p-[10px]">
+        <div ref={ref} className="flex flex-col gap-[5px] lg:gap-0">
+          <div className="lg:flex-row flex flex-col justify-between lg:p-[10px] gap-[5px]">
             <p>
               <span className="font-semibold">Mã lớp: </span>
               {data.class_code}
@@ -58,7 +63,7 @@ export default function Index({ data }) {
               {data.end_date.split("-").reverse().join("-")}
             </p>
           </div>
-          <div className="flex justify-between p-[10px]">
+          <div className="lg:flex-row flex flex-col justify-between lg:p-[10px] gap-[5px]">
             <p>
               <span className="font-semibold ">Điểm sinh viên: </span>
               {data.student_result ? data.student_result : "Chờ tổng hợp..."}

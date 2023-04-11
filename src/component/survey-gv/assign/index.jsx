@@ -1,13 +1,13 @@
 import "../../../App.css";
 import { RoleContext } from "../../../App";
 import { useContext, useState, Fragment } from "react";
-import { useLayoutEffect,useEffect } from "react";
+import { useLayoutEffect, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
 
-function compare( a, b ) {
-  return a.class_name.localeCompare(b.class_name)
+function compare(a, b) {
+  return a.class_name.localeCompare(b.class_name);
 }
 
 export default function Index() {
@@ -16,8 +16,8 @@ export default function Index() {
   const [staff, setStaff] = useState();
   const { getToken } = useAuth();
   const { role } = useContext(RoleContext);
-  const [status,setStatus] = useState();
-  const [question,setQuestion] = useState(null)
+  const [status, setStatus] = useState();
+  const [question, setQuestion] = useState(null);
   // console.log(role);
 
   useLayoutEffect(() => {
@@ -47,30 +47,36 @@ export default function Index() {
           if (res.result.length > 0) setStaff(res.result);
           else setStaff("empty");
         });
-
-      
     };
 
     if (present && role.is_truong_khoa) callApi();
   }, [present]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const callApi = async () => {
-      fetch(`${import.meta.env.VITE_GV_BATCH_QUESTION_API}${present.hocky}/${present.manamhoc}`,{
-        method:'GET',
-        headers:{
-          authorization : `Bearer ${await getToken({template: import.meta.env.VITE_TEMPLATE_GV_TRUONG_KHOA})}`
+      fetch(
+        `${import.meta.env.VITE_GV_BATCH_QUESTION_API}${present.hocky}/${
+          present.manamhoc
+        }`,
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${await getToken({
+              template: import.meta.env.VITE_TEMPLATE_GV_TRUONG_KHOA,
+            })}`,
+          },
         }
-      }).then(res => res.json())
-      .then(res => {
-        if(res.result.length > 0) setQuestion(res.result)
-      })
-    }
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.result.length > 0) setQuestion(res.result);
+        });
+    };
 
-    if(present) callApi()
-  },[present]) 
+    if (present) callApi();
+  }, [present]);
 
-  useLayoutEffect(()=> {
+  useLayoutEffect(() => {
     let callApi = async () => {
       await fetch(
         `${import.meta.env.VITE_GET_ASSIGN_OBJECT_API}${role.khoa_gv}/${
@@ -91,10 +97,9 @@ export default function Index() {
           if (res.result.length > 0) setData(res.result.sort(compare));
           else setData("empty");
         });
-    }
+    };
     if (present && role.is_truong_khoa) callApi();
-  },[status,present])
-
+  }, [status, present]);
 
   return (
     <div className="wrap">
@@ -104,12 +109,14 @@ export default function Index() {
       {role.is_truong_khoa ? (
         data === "empty" ? (
           <div className="flex justify-center">
-            <h3>Hiện tại chưa có lớp môn học nào được duyệt khảo sát trong kỳ</h3>
+            <h3>
+              Hiện tại chưa có lớp môn học nào được duyệt khảo sát trong kỳ
+            </h3>
           </div>
         ) : data ? (
           <>
             <div className="flex flex-col gap-[20px]">
-              <h3 className="self-center text-primary">
+              <h3 className="self-center text-primary text-center">
                 Những lớp môn học chưa phân công dự giờ
               </h3>
               {data
@@ -117,7 +124,14 @@ export default function Index() {
                 .map((item, index) => {
                   return (
                     <Fragment key={index}>
-                      <Content data={item} staff={staff} present={present} status={status} setStatus={setStatus} question={question}/>
+                      <Content
+                        data={item}
+                        staff={staff}
+                        present={present}
+                        status={status}
+                        setStatus={setStatus}
+                        question={question}
+                      />
                     </Fragment>
                   );
                 })}

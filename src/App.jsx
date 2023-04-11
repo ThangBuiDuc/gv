@@ -608,7 +608,7 @@ function Hard({ role }) {
           />
           <Outlet />
         </div>
-        <div className="mb-[50px] md:mb-[70px]">
+        <div className="mb-[50px] md:mb-[70px] lg:mb-0">
           <Footer />
         </div>
         {windowWidth <= 1024 ? (

@@ -114,10 +114,9 @@ export default function Index({
   });
 
   const handleOnClick = () => {
-
     // if (
     //   new Date().setHours(0, 0, 0, 0) <
-    //   new Date(dataCourse.end_date).setHours(0, 0, 0, 0)  
+    //   new Date(dataCourse.end_date).setHours(0, 0, 0, 0)
     // ) {
     //   Swal.fire({
     //     title: "Môn học chưa kết thúc",
@@ -125,85 +124,82 @@ export default function Index({
     //     icon: "warning",
     //   });
     // } else {
-      Swal.fire({
-        title: `${
-          dataCourse.class_code +
-          " - " +
-          dataCourse.class_name +
-          " - " +
-          dataCourse.user.name
-        }`,
-        text: "Bạn có chắc chắn muốn cho điểm của giáo viên môn học này không?",
-        showCancelButton: true,
-        showConfirmButton: true,
-        cancelButtonText: "Huỷ",
-        confirmButtonText: "Xác nhận",
-        allowOutsideClick: () => !Swal.isLoading(),
-        showLoaderOnConfirm: true,
-        preConfirm: async () => {
-          let _set = {
-            qldt_result: point,
-            updated_at: new Date(),
-          };
+    Swal.fire({
+      title: `${
+        dataCourse.class_code +
+        " - " +
+        dataCourse.class_name +
+        " - " +
+        dataCourse.user.name
+      }`,
+      text: "Bạn có chắc chắn muốn cho điểm của giáo viên môn học này không?",
+      showCancelButton: true,
+      showConfirmButton: true,
+      cancelButtonText: "Huỷ",
+      confirmButtonText: "Xác nhận",
+      allowOutsideClick: () => !Swal.isLoading(),
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        let _set = {
+          qldt_result: point,
+          updated_at: new Date(),
+        };
 
-          let where = {
-            subject_code: {
-              _eq: dataCourse.subject_code,
-            },
-            class_code: {
-              _eq: dataCourse.class_code,
-            },
-            hocky: {
-              _eq: present.hocky,
-            },
-            namhoc: {
-              _eq: present.manamhoc,
-            },
-          };
+        let where = {
+          subject_code: {
+            _eq: dataCourse.subject_code,
+          },
+          class_code: {
+            _eq: dataCourse.class_code,
+          },
+          hocky: {
+            _eq: present.hocky,
+          },
+          namhoc: {
+            _eq: present.manamhoc,
+          },
+        };
 
-          let result = await fetch(
-            `${import.meta.env.VITE_QLDT_UPDATE_COURSE}`,
-            {
-              method: "PUT",
-              headers: {
-                authorization: `Bearer ${await getToken({
-                  template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
-                })}`,
-              },
-              body: JSON.stringify({ _set, where }),
-            }
-          ).then((res) => res.status);
+        let result = await fetch(`${import.meta.env.VITE_QLDT_UPDATE_COURSE}`, {
+          method: "PUT",
+          headers: {
+            authorization: `Bearer ${await getToken({
+              template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
+            })}`,
+          },
+          body: JSON.stringify({ _set, where }),
+        }).then((res) => res.status);
 
-          // let result1;
+        // let result1;
 
-          // if (result === 200) {
-          //   result1 = await fetch(`/api/gv-final-result`, {
-          //     method: "POST",
-          //     body: JSON.stringify({
-          //       class_code: data.class_code,
-          //       subject_code: data.subject_code,
-          //       present,
-          //       token: await getToken({
-          //         template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
-          //       }),
-          //     }),
-          //   }).then((res) => res.status);
-          // }
+        // if (result === 200) {
+        //   result1 = await fetch(`/api/gv-final-result`, {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //       class_code: data.class_code,
+        //       subject_code: data.subject_code,
+        //       present,
+        //       token: await getToken({
+        //         template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
+        //       }),
+        //     }),
+        //   }).then((res) => res.status);
+        // }
 
-          if (result === 200) {
-            setToggle(!toggle);
-            setAfterUpdate(!afterUpdate);
-            Swal.fire({
-              title: "Cho điểm điểm giáo viên thành công!",
-              icon: "success",
-            });
-          } else
-            Swal.fire({
-              title: "Cho điểm điểm giáo viên không thành công",
-              icon: "error",
-            });
-        },
-      });
+        if (result === 200) {
+          setToggle(!toggle);
+          setAfterUpdate(!afterUpdate);
+          Swal.fire({
+            title: "Cho điểm điểm giáo viên thành công!",
+            icon: "success",
+          });
+        } else
+          Swal.fire({
+            title: "Cho điểm điểm giáo viên không thành công",
+            icon: "error",
+          });
+      },
+    });
     // }
   };
   //   console.log(sv)

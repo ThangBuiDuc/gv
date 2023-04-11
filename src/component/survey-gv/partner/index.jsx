@@ -3,8 +3,8 @@ import "../../../App.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
-function compare( a, b ) {
-  return a.class_name.localeCompare(b.class_name)
+function compare(a, b) {
+  return a.class_name.localeCompare(b.class_name);
 }
 
 export default function Index() {
@@ -12,7 +12,7 @@ export default function Index() {
   const { user } = useUser();
   const [present, setPresent] = useState(null);
   const [data, setData] = useState(null);
-  const [afterUpdate,setAfterUpdate] = useState(false)
+  const [afterUpdate, setAfterUpdate] = useState(false);
   useLayoutEffect(() => {
     let callApi = async () => {
       await fetch(`${import.meta.env.VITE_PRESENT_API}`)
@@ -71,7 +71,7 @@ export default function Index() {
     };
 
     if (present) callApi();
-  }, [present,afterUpdate]);
+  }, [present, afterUpdate]);
 
   return (
     <div className="wrap">
@@ -81,12 +81,17 @@ export default function Index() {
       {data === "empty" ? (
         <div className="flex justify-center">
           <h3>
-            Hiện tại giảng viên chưa có môn học được phân công dự giờ kỳ hiện
-            tại
+            Hiện tại giảng viên chưa có lớp môn học được phân công dự giờ kỳ
+            hiện tại
           </h3>
         </div>
       ) : data ? (
-        <Content present={present} data={data} afterUpdate={afterUpdate} setAfterUpdate={setAfterUpdate}/>
+        <Content
+          present={present}
+          data={data}
+          afterUpdate={afterUpdate}
+          setAfterUpdate={setAfterUpdate}
+        />
       ) : (
         <ReactLoading
           type="spin"

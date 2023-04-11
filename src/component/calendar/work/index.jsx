@@ -32,8 +32,10 @@ function Index() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${await getToken({ template: import.meta.env.VITE_TEMPLATE_QLGD_GV })}`
-        }
+          Authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_QLGD_GV,
+          })}`,
+        },
       })
         .then((res) => res.json())
         .then((res) => {
@@ -68,8 +70,8 @@ function Index() {
       {/* <h2 className={style.title}>
           Tính năng đang trong quá trình phát triển ...
         </h2> */}
-      <div  className="flex justify-center">
-        <h2  className="text-primary">Thời khoá biểu</h2>
+      <div className="flex justify-center">
+        <h2 className="text-primary">Lịch giảng dạy</h2>
       </div>
       {data ? (
         data.length > 0 ? (

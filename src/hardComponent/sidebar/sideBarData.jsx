@@ -63,7 +63,7 @@ export const sideBarData = [
         icon: <MdAppRegistration size={"22px"} />,
       },
       {
-        title: "Đánh giá giảng viên",
+        title: "Đánh giá CTGD",
         path: "/qldt/gv",
         icon: <MdAppRegistration size={"22px"} />,
       },

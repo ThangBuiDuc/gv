@@ -39,7 +39,7 @@ export default function Index({
         .then((res) => res.json())
         .then((res) => {
           // console.log(res.result)
-          setPreData(res.result);
+          setPreData(res.result.reverse());
           //   setPoint(new Array(preData.length))
         });
     };
@@ -69,7 +69,7 @@ export default function Index({
             let data = {
               _set: {
                 question_point: curr,
-                comment : comment[i],
+                comment: comment[i],
                 updated_at: new Date(),
               },
               where: {
@@ -159,7 +159,7 @@ export default function Index({
               <textarea
                 className="resize-none p-[10px] rounded-[10px] border-[1px] border-solid border-bordercl "
                 rows="5"
-                value={comment?comment[index]:''}
+                value={comment ? comment[index] : ""}
                 onChange={(e) =>
                   setComment(
                     comment.map((item, i) => {

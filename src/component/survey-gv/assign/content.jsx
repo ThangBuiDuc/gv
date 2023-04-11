@@ -5,22 +5,28 @@ import { AiOutlineRight } from "react-icons/ai";
 import SubSelectContent from "./subSelectContent";
 import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
+import { IconContext } from "react-icons";
 
-export default function Index({ data, staff ,present ,status,setStatus,question}) {
+export default function Index({
+  data,
+  staff,
+  present,
+  status,
+  setStatus,
+  question,
+}) {
   const [toggle, setToggle] = useState(false);
 
   const [ref, { height }] = useMeasure();
 
-
   const transitions = useTransition(toggle, {
-    from: { opacity: 0, heigth: 0 , overflow:'hidden'},
+    from: { opacity: 0, heigth: 0, overflow: "hidden" },
     // to:{opacity: 1, height: 100 },
-    enter: { opacity: 1, height ,overflow:'visible'},
-    leave: { opacity: 0, height: 0 , overflow:'hidden'},
+    enter: { opacity: 1, height, overflow: "visible" },
+    leave: { opacity: 0, height: 0, overflow: "hidden" },
     update: { height },
   });
 
- 
   //   console.log(data);
   // console.log(staff);
   //   console.log(
@@ -33,17 +39,23 @@ export default function Index({ data, staff ,present ,status,setStatus,question}
       className="flex border-t border-bordercl border-solid justify-between p-[10px] flex-col gap-[20px]"
       //   onClick={() => setToggle(!toggle)}
     >
-      <div className="flex justify-between ">
-        <h3 className="w-[20%]">{data.class_code}</h3>
-        <h3 className="w-[35%]">{data.class_name}</h3>
-        <h3 className="w-[35%]">{data.user.name}</h3>
+      <div className="flex lg:flex-row flex-col justify-between ">
+        <h3 className="lg:w-[20%] w-full">{data.class_code}</h3>
+        <h3 className="lg:w-[35%] w-full">{data.class_name}</h3>
+        <h3 className="lg:w-[35%] w-full">{data.user.name}</h3>
         <label
+          className="flex justify-center"
           onClick={() => setToggle(!toggle)}
-          className={`${
-            toggle ? "rotate-90" : ""
-          } transition-transform duration-200 cursor-pointer`}
         >
-          <AiOutlineRight size={"20px"} />
+          <IconContext.Provider
+            value={{
+              className: `${
+                toggle ? "-rotate-90 lg:rotate-90" : "rotate-90 lg:rotate-0"
+              } transition-transform duration-200 cursor-pointer`,
+            }}
+          >
+            <AiOutlineRight size={"20px"} />
+          </IconContext.Provider>
         </label>
       </div>
       <div>
@@ -51,8 +63,20 @@ export default function Index({ data, staff ,present ,status,setStatus,question}
           (style, toggle) =>
             toggle && (
               <animated.div style={style}>
-                <div className="flex gap-[20px] justify-between flex-col " ref={ref}>
-                  <SubSelectContent toggle={toggle} setToggle={setToggle} data={data} staff={staff} question={question} present={present} status={status} setStatus={setStatus}/>
+                <div
+                  className="flex gap-[20px] justify-between flex-col "
+                  ref={ref}
+                >
+                  <SubSelectContent
+                    toggle={toggle}
+                    setToggle={setToggle}
+                    data={data}
+                    staff={staff}
+                    question={question}
+                    present={present}
+                    status={status}
+                    setStatus={setStatus}
+                  />
                 </div>
               </animated.div>
             )
