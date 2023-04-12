@@ -88,7 +88,7 @@ export default function Index({ data }) {
             </p>
           </div>
 
-          {data.student_comment.length > 0 ? (
+          {data.student_comment.length > 0 && data.student_result ? (
             <div className="flex flex-col lg:p-[10px] gap-[5px]">
               <p className="font-semibold">Ý kiến riêng sinh viên:</p>
               <ul className="list-disc ml-[30px]">
@@ -100,7 +100,7 @@ export default function Index({ data }) {
           ) : (
             <></>
           )}
-          {data.teacher_comment.length > 0 ? (
+          {data.teacher_comment.length > 0 && data.teacher_result ? (
             <div className="flex flex-col lg:p-[10px] gap-[5px]">
               <p className="font-semibold">Ý kiến riêng giảng viên:</p>
               <ul className="list-disc ml-[30px]">
