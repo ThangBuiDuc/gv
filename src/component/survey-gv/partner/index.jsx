@@ -76,7 +76,7 @@ export default function Index() {
   return (
     <div className="wrap">
       <div className="flex justify-center">
-        <h2 className="text-primary">Đồng nghiệp phản hồi</h2>
+        <h2 className="text-primary">Góp ý với đồng nghiệp</h2>
       </div>
       {data === "empty" ? (
         <div className="flex justify-center">
