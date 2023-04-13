@@ -16,6 +16,7 @@ export default function Index({
   question,
 }) {
   const [toggle, setToggle] = useState(false);
+  console.log(data);
 
   const [ref, { height }] = useMeasure();
 
