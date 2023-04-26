@@ -5,16 +5,15 @@ import ReactLoading from "react-loading";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
-function compare( a, b ) {
-  if ( a.tinhhinh < b.tinhhinh ){
+function compare(a, b) {
+  if (a.tinhhinh < b.tinhhinh) {
     return -1;
   }
-  if ( a.tinhhinh > b.tinhhinh ){
+  if (a.tinhhinh > b.tinhhinh) {
     return 1;
   }
   return 0;
 }
-
 
 export default function Index({
   data,
@@ -45,40 +44,40 @@ export default function Index({
         .then((res) => res.json())
         .then((res) => res.result);
 
-        let result1 = await fetch(
-          `${import.meta.env.VITE_GV_QLDT_SV}`,
-          {
-            method: "POST",
-            headers: {
-              authorization: `Bearer ${await getToken({
-                template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
-              })}`,
-              
-            },
-            body: JSON.stringify({
-              subject_code:data.subject_code,
-              class_code: data.class_code,
-              hocky:present.hocky,
-              namhoc:present.manamhoc
-            })
-          }
-        )
-          .then((res) => res.json())
-          .then((res) => res.result);
+      let result1 = await fetch(`${import.meta.env.VITE_GV_QLDT_SV}`, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
+          })}`,
+        },
+        body: JSON.stringify({
+          subject_code: data.subject_code,
+          class_code: data.class_code,
+          hocky: present.hocky,
+          namhoc: present.manamhoc,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => res.result);
 
-          let merged = [];
+      let merged = [];
 
-          for(let i=0; i<result.length; i++) {
-            merged.push({
-             ...result[i], 
-             ...result1[i]
-            });
-          }
+      for (let i = 0; i < result.length; i++) {
+        merged.push({
+          ...result[i],
+          ...result1[i],
+        });
+      }
 
-          setSv(merged.map(item => {
-            item.tinhhinh = item.tinhhinh?item.tinhhinh:0
-            return item
-          }).sort(compare))
+      setSv(
+        merged
+          .map((item) => {
+            item.tinhhinh = item.tinhhinh ? item.tinhhinh : 0;
+            return item;
+          })
+          .sort(compare)
+      );
     };
 
     callApi();
@@ -95,76 +94,76 @@ export default function Index({
     //     icon: "warning",
     //   });
     // } else {
-      Swal.fire({
-        title: `${data.class_code} - ${data.class_name}`,
-        text: `Bạn có chắc chắn muốn xét điều kiện của tất cả sinh viên cho môn học này?`,
-        showCancelButton: true,
-        showConfirmButton: true,
-        confirmButtonText: "Xác nhận",
-        cancelButtonText: "Huỷ",
-        allowOutsideClick: () => !Swal.isLoading(),
-        showLoaderOnConfirm: true,
-        preConfirm: async () => {
-          let updates = sv.reduce((total, curr) => {
-            let data1 = {
-              _set: {
-                status: curr.status,
-                updated_at: new Date(),
-              },
-              where: {
-                class_code: { _eq: data.class_code },
-                subject_code: { _eq: data.subject_code },
-                hocky: { _eq: present.hocky },
-                namhoc: { _eq: present.manamhoc },
-                user_code: { _eq: curr.ma_sv },
-              },
-            };
+    Swal.fire({
+      title: `${data.class_code} - ${data.class_name}`,
+      text: `Bạn có chắc chắn muốn xét điều kiện của tất cả sinh viên cho môn học này?`,
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Huỷ",
+      allowOutsideClick: () => !Swal.isLoading(),
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        let updates = sv.reduce((total, curr) => {
+          let data1 = {
+            _set: {
+              status: curr.status,
+              updated_at: new Date(),
+            },
+            where: {
+              class_code: { _eq: data.class_code },
+              subject_code: { _eq: data.subject_code },
+              hocky: { _eq: present.hocky },
+              namhoc: { _eq: present.manamhoc },
+              user_code: { _eq: curr.ma_sv },
+            },
+          };
 
-            return [...total, data1];
-          }, []);
+          return [...total, data1];
+        }, []);
 
-          let result = await fetch(
-            `${import.meta.env.VITE_QLDT_COURSE_RESPOND}`,
-            {
-              method: "PUT",
-              headers: {
-                authorization: `Bearer ${await getToken({
-                  template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
-                })}`,
-              },
-              body: JSON.stringify({ updates }),
-            }
-          ).then((res) => res.status);
+        let result = await fetch(
+          `${import.meta.env.VITE_QLDT_COURSE_RESPOND}`,
+          {
+            method: "PUT",
+            headers: {
+              authorization: `Bearer ${await getToken({
+                template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
+              })}`,
+            },
+            body: JSON.stringify({ updates }),
+          }
+        ).then((res) => res.status);
 
-          // let result1;
-          // if (result === 200) {
-          //   result1 = await fetch(`/api/sv-final-result`, {
-          //     method: "POST",
-          //     body: JSON.stringify({
-          //       class_code: data.class_code,
-          //       subject_code: data.subject_code,
-          //       present,
-          //       token: await getToken({
-          //         template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
-          //       }),
-          //     }),
-          //   }).then((res) => res.status);
-          // }
+        // let result1;
+        // if (result === 200) {
+        //   result1 = await fetch(`/api/sv-final-result`, {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //       class_code: data.class_code,
+        //       subject_code: data.subject_code,
+        //       present,
+        //       token: await getToken({
+        //         template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
+        //       }),
+        //     }),
+        //   }).then((res) => res.status);
+        // }
 
-          if (result === 200) {
-            setToggle(!toggle);
-            setAfterUpdate(!afterUpdate);
-            Swal.fire({
-              title: "Duyệt tư cách sinh viên cho môn học thành công!",
-              icon: "success",
-            });
-          } else
-            Swal.fire({
-              title: "Duyệt tư cách sinh viên cho môn học không thành công",
-              icon: "error",
-            });
-        },
-      });
+        if (result === 200) {
+          setToggle(!toggle);
+          setAfterUpdate(!afterUpdate);
+          Swal.fire({
+            title: "Duyệt tư cách sinh viên cho môn học thành công!",
+            icon: "success",
+          });
+        } else
+          Swal.fire({
+            title: "Duyệt tư cách sinh viên cho môn học không thành công",
+            icon: "error",
+          });
+      },
+    });
     // }
   };
 

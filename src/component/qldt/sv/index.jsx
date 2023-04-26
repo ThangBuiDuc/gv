@@ -44,34 +44,34 @@ export default function Index() {
 
         if (data.length > 0) {
           updates = data.reduce((total, curr) => {
-            if (curr.tinhhinh > 20) {
-              let item = {
-                _set: {
-                  status: false,
-                  updated_at: new Date(),
+            let item = {
+              _set: {
+                status: curr.tinhhinh
+                  ? curr.tinhhinh > 20
+                    ? false
+                    : true
+                  : true,
+                updated_at: new Date(),
+              },
+              where: {
+                class_code: {
+                  _eq: curr.ma_lop,
                 },
-                where: {
-                  class_code: {
-                    _eq: curr.ma_lop,
-                  },
-                  subject_code: {
-                    _eq: curr.ma_mon_hoc,
-                  },
-                  user_code: {
-                    _eq: curr.ma_sv,
-                  },
-                  hocky: {
-                    _eq: present.hocky,
-                  },
-                  namhoc: {
-                    _eq: present.manamhoc,
-                  },
+                subject_code: {
+                  _eq: curr.ma_mon_hoc,
                 },
-              };
-              return [...total, item];
-            } else {
-              return total;
-            }
+                user_code: {
+                  _eq: curr.ma_sv,
+                },
+                hocky: {
+                  _eq: present.hocky,
+                },
+                namhoc: {
+                  _eq: present.manamhoc,
+                },
+              },
+            };
+            return [...total, item];
           }, []);
 
           let result = await fetch(

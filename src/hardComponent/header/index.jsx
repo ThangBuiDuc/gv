@@ -33,7 +33,8 @@ export default function Index({ windowWidth }) {
           <img
             src={logo}
             alt=""
-            className="w-[100px] md:w-[150px] h-[90px] object-scale-down"
+            className="w-[100px] md:w-[150px] h-[90px] object-scale-down cursor-pointer"
+            onClick={() => navigate("/home")}
           />
           <div className="flex flex-col justify-center">
             <p className="text-[8px] md:text-[16px] text-white uppercase font-normal">
