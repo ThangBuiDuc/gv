@@ -5,7 +5,65 @@ import { useAuth } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
 import { CSVLink } from "react-csv";
-import Swal from "sweetalert2";
+
+const headersCSV = [
+  {
+    label: "STT",
+    key: "stt",
+  },
+  {
+    label: "Mã môn học",
+    key: "subject_code",
+  },
+  {
+    label: "Mã lớp môn học",
+    key: "class_code",
+  },
+  {
+    label: "Môn học",
+    key: "class_name",
+  },
+  {
+    label: "Giảng viên",
+    key: "name",
+  },
+  {
+    label: "Điểm trung bình sinh viên",
+    key: "student_result",
+  },
+  {
+    label: "Số lượng sinh viên đã phản hồi",
+    key: "count_sv_resonded",
+  },
+  {
+    label: "Tổng số lượng sinh viên của lớp học",
+    key: "total_student",
+  },
+  {
+    label: "Điểm trung bình sinh viên dự giờ",
+    key: "teacher_result",
+  },
+  {
+    label: "Số lượng giảng viên đã phản hồi",
+    key: "count_gv_resonded",
+  },
+  {
+    label: "Tổng số giảng viên được phân công dự giờ",
+    key: "total_teacher",
+  },
+  {
+    label: "Điểm quản lý đào tạo",
+    key: "qldt_result",
+  },
+  {
+    label: "Tổng điểm",
+    key: "result_evaluate",
+  },
+  {
+    label: "Xếp loại",
+    key: "xep_loai",
+  },
+];
 
 function compare(a, b) {
   // if ( a.class_name < b.class_name ){
@@ -57,26 +115,34 @@ export default function Index() {
           if (res.result.length > 0) setCourse(res.result.sort(compare));
           else setCourse("empty");
         });
+
+      await fetch(
+        `${import.meta.env.VITE_OVERALL_SURVEY}${present.manamhoc}/${
+          present.hocky
+        }`,
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${await getToken({
+              template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+            })}`,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.result.length > 0) {
+            setCsv(
+              res.result.map((item, index) => {
+                item.stt = index + 1;
+                return item;
+              })
+            );
+          }
+        });
     };
     if (present) callApi();
   }, [present, afterUpdate]);
-
-  var csvData = [
-    [
-      "Mã môn học",
-      "Tên môn học",
-      "Mã lớp",
-      "Mã giáo viên",
-      "Tên giáo viên",
-      "Học kỳ",
-      "Năm học",
-      "Điểm SV",
-      "Điểm GV",
-      "Điểm QLDT",
-      "Điểm tổng kết",
-      "Xếp loại",
-    ],
-  ];
 
   return (
     <div className="wrap">
@@ -91,43 +157,24 @@ export default function Index() {
       ) : course ? (
         <>
           <div className="flex justify-end">
-            <CSVLink
-              asyncOnClick={true}
-              data={csv}
-              className="btn"
-              filename={`${new Date().toDateString()}-TongKetKhaoSat.csv`}
-              onClick={() => {
-                let data = course.filter((item) => item.result_evaluate);
-                if (data.length > 0) {
-                  data.forEach((element) => {
-                    csvData.push([
-                      element.subject_code,
-                      element.class_name,
-                      element.class_code,
-                      element.teacher_code,
-                      element.user.name,
-                      element.hocky,
-                      element.namhoc,
-                      element.student_result,
-                      element.teacher_result,
-                      element.qldt_result,
-                      element.result_evaluate,
-                      element.xep_loai,
-                    ]);
-                  });
-                  setCsv(csvData);
-                } else {
-                  Swal.fire({
-                    title: "Hiện tại chưa có môn học nào có kết quả tổng kết",
-                    icon: "info",
-                    timer: 2000,
-                  });
-                  return false;
-                }
-              }}
-            >
-              Xuất CSV
-            </CSVLink>
+            {csv.length > 0 ? (
+              <CSVLink
+                data={csv}
+                headers={headersCSV}
+                className="btn"
+                filename={`${new Date().toDateString()}-TongKetKhaoSat.csv`}
+              >
+                Xuất CSV
+              </CSVLink>
+            ) : (
+              <ReactLoading
+                type="spin"
+                color="#0083C2"
+                width={"20px"}
+                height={"20px"}
+                className="self-center"
+              />
+            )}
           </div>
           {course.map((item, index) => {
             return (

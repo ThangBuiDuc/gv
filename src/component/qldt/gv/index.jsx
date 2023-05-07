@@ -4,6 +4,26 @@ import "../../../App.css";
 import { useAuth } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
+import { CSVLink } from "react-csv";
+
+const headersCSV = [
+  {
+    label: "STT",
+    key: "stt",
+  },
+  {
+    label: "Lớp môn học",
+    key: "class_name",
+  },
+  {
+    label: "Tên giảng viên phụ trách",
+    key: "name",
+  },
+  {
+    label: "Điểm trung bình",
+    key: "qldt_result",
+  },
+];
 
 function compare(a, b) {
   return a.class_name.localeCompare(b.class_name);
@@ -61,18 +81,37 @@ export default function Index() {
           <h3>Hiện tại chưa có môn học trong kỳ được duyệt đánh giá</h3>
         </div>
       ) : course ? (
-        course.map((item, index) => {
-          return (
-            <div className="flex flex-col" key={index}>
-              <Content
-                data={item}
-                present={present}
-                afterUpdate={afterUpdate}
-                setAfterUpdate={setAfterUpdate}
-              />
-            </div>
-          );
-        })
+        <>
+          <div className="flex justify-end">
+            <CSVLink
+              data={course.map((item, index) => {
+                return {
+                  stt: index + 1,
+                  class_name: item.class_name,
+                  name: item.user.name,
+                  qldt_result: item.qldt_result,
+                };
+              })}
+              headers={headersCSV}
+              className="btn"
+              filename={`${new Date().toDateString()}-qldtGV.csv`}
+            >
+              Xuất CSV
+            </CSVLink>
+          </div>
+          {course.map((item, index) => {
+            return (
+              <div className="flex flex-col" key={index}>
+                <Content
+                  data={item}
+                  present={present}
+                  afterUpdate={afterUpdate}
+                  setAfterUpdate={setAfterUpdate}
+                />
+              </div>
+            );
+          })}
+        </>
       ) : (
         <ReactLoading
           type="spin"

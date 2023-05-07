@@ -5,6 +5,17 @@ import ReactLoading from "react-loading";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
+function leftJoin(objArr1, objArr2) {
+  return objArr1.map((anObj1) => ({
+    ...objArr2.find(
+      (anObj2) =>
+        anObj1.ma_sv === anObj2.masinhvien &&
+        anObj1.subject_code === anObj2.mamonhoc
+    ),
+    ...anObj1,
+  }));
+}
+
 function compare(a, b) {
   if (a.tinhhinh < b.tinhhinh) {
     return -1;
@@ -61,6 +72,20 @@ export default function Index({
         .then((res) => res.json())
         .then((res) => res.result);
 
+      let result2 = await fetch(
+        `${import.meta.env.VITE_EDU_BAN}${present.manamhoc}/${present.hocky}`,
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${await getToken({
+              template: import.meta.env.VITE_TEMPLATE_EDU_QLDT,
+            })}`,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((res) => res.result);
+
       let merged = [];
 
       for (let i = 0; i < result.length; i++) {
@@ -70,13 +95,18 @@ export default function Index({
         });
       }
 
+      // console.log(leftJoin(merged, result2, "ma_sv", "masinhvien"));
+
       setSv(
-        merged
-          .map((item) => {
-            item.tinhhinh = item.tinhhinh ? item.tinhhinh : 0;
-            return item;
-          })
-          .sort(compare)
+        leftJoin(
+          merged
+            .map((item) => {
+              item.tinhhinh = item.tinhhinh ? item.tinhhinh : 0;
+              return item;
+            })
+            .sort(compare),
+          result2
+        )
       );
     };
 
@@ -176,7 +206,20 @@ export default function Index({
             className="flex justify-between p-[10px] hover:bg-bordercl rounded-[5px]"
             key={index}
           >
-            <p className="w-[40%]">{item.name}</p>
+            <p className="w-[40%]">
+              {item.name}
+              {item.camthiphaihoclai ? (
+                <span>
+                  {" "}
+                  -{" "}
+                  <span className="font-semibold">
+                    Cấm thi {`(${item.malydo})`}
+                  </span>
+                </span>
+              ) : (
+                ``
+              )}
+            </p>
             <p className="w-[30%] text-left">
               Tỉ lệ vắng: {item.tinhhinh ? item.tinhhinh : 0}%
             </p>
