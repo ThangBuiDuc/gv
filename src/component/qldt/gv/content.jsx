@@ -22,9 +22,12 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
   return (
     <div className="flex border-t border-bordercl border-solid justify-between p-[10px] flex-col gap-[20px]">
       <div className="flex  ">
-        <h3 className={`w-[30%]`}>{data.class_code}</h3>
-        <h3 className={`w-[30%]`}>{data.class_name}</h3>
+        <h3 className={`w-[15%]`}>{data.class_code}</h3>
+        <h3 className={`w-[35%]`}>{data.class_name}</h3>
         <h3 className={`w-[30%]`}>{data.user.name}</h3>
+        <h3 className={`w-[15%]`}>
+          {data.end_date.split("-").reverse().join("-")}
+        </h3>
         {data.qldt_result ? (
           <h3 className="text-green-600">Điểm: {data.qldt_result}</h3>
         ) : (
