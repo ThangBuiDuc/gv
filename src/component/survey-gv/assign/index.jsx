@@ -5,6 +5,58 @@ import { useLayoutEffect, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
+import { CSVLink } from "react-csv";
+
+const headersCSV = [
+  {
+    label: "STT",
+    key: "stt",
+  },
+  {
+    label: "Mã lớp môn học",
+    key: "class_code",
+  },
+  {
+    label: "Lớp môn học",
+    key: "class_name",
+  },
+  {
+    label: "Phòng học",
+    key: "",
+  },
+  {
+    label: "Thời gian dự giờ",
+    key: "",
+  },
+  {
+    label: "Số tiết dự giờ",
+    key: "",
+  },
+  {
+    label: "Tên giảng viên phụ trách",
+    key: "name",
+  },
+  {
+    label: "Chủ tịch hội đồng",
+    key: "teacher_attend_1",
+  },
+  {
+    label: "Thư ký",
+    key: "teacher_attend_2",
+  },
+  {
+    label: "Uỷ viên",
+    key: "teacher_attend_3",
+  },
+  {
+    label: "Điểm trung bình",
+    key: "teacher_result",
+  },
+  {
+    label: "Ý kiến riêng",
+    key: "",
+  },
+];
 
 function compare(a, b) {
   return a.class_name.localeCompare(b.class_name);
@@ -115,6 +167,27 @@ export default function Index() {
           </div>
         ) : data ? (
           <>
+            <div className="flex justify-end">
+              <CSVLink
+                data={data.map((item, index) => {
+                  return {
+                    stt: index + 1,
+                    class_name: item.class_name,
+                    teacher_attend_1: item.teacher_attend_1,
+                    teacher_attend_2: item.teacher_attend_2,
+                    teacher_attend_3: item.teacher_attend_3,
+                    teacher_result: item.teacher_result,
+                    name: item.user.name,
+                    class_code: item.class_code,
+                  };
+                })}
+                headers={headersCSV}
+                className="btn"
+                filename={`${new Date().toDateString()}-qldtGV.csv`}
+              >
+                Xuất CSV
+              </CSVLink>
+            </div>
             <div className="flex flex-col gap-[20px]">
               <h3 className="self-center text-primary text-center">
                 Những lớp môn học chưa phân công dự giờ

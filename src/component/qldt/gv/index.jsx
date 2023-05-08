@@ -23,6 +23,10 @@ const headersCSV = [
     label: "Điểm trung bình",
     key: "qldt_result",
   },
+  {
+    label: "Ý kiến riêng",
+    key: "",
+  },
 ];
 
 function compare(a, b) {
