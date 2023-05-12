@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/clerk-react";
-import "../../../App.css";
+import "../../../../App.css";
 import { useEffect, useState, useReducer } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import ReactLoading from "react-loading";
@@ -8,8 +8,8 @@ import NavBtn from "./navBtn";
 import { animated, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
 
-function compare( a, b ) {
-  return a.class_name.localeCompare(b.class_name)
+function compare(a, b) {
+  return a.class_name.localeCompare(b.class_name);
 }
 
 const ACTION = {

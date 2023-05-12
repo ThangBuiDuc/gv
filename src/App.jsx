@@ -16,9 +16,6 @@ import {
   // useNavigate,
 } from "react-router-dom";
 import ReactLoading from "react-loading";
-import Header from "./hardComponent/header";
-import Footer from "./hardComponent/footer";
-import SideBar from "./hardComponent/sidebar/index";
 import {
   ClerkProvider,
   SignedIn,
@@ -27,34 +24,52 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import LoadingBar from "react-top-loading-bar";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useTransition, animated } from "react-spring";
+import TopBarProgress from "react-topbar-progress-indicator";
+TopBarProgress.config({
+  barColors: {
+    0: "#0083C2",
+    "1.0": "#0083C2",
+  },
+  shadowBlur: 5,
+  barThickness: 5,
+});
 
-// import Init from "./component/survey/init";
+// ADMIN IMPORT
+import HeaderAdmin from "./admin/hardComponent/header";
+import SideBarAdmin from "./admin/hardComponent/sideBar";
 
+const Init = React.lazy(() => import("./admin/component/survey/init"));
+const Approve = React.lazy(() => import("./admin/component/survey/approve"));
+const Question = React.lazy(() => import("./admin/component/survey/question"));
+const Total = React.lazy(() => import("./admin/component/survey/total"));
+const Role = React.lazy(() => import("./admin/component/survey/role"));
+
+////////////////////////////////////////
+import NotFound from "./hardComponent/notFound";
+import Header from "./hardComponent/header";
+import Footer from "./hardComponent/footer";
+import SideBar from "./hardComponent/sidebar/index";
 import SignIn from "./hardComponent/signIn";
 import SignUp from "./hardComponent/signUp";
 import ResetPass from "./hardComponent/resetPass";
 
 const HomePage = React.lazy(() => import("./component/homePage"));
-const Init = React.lazy(() => import("./component/survey/init"));
-const Approve = React.lazy(() => import("./component/survey/approve"));
-const Question = React.lazy(() => import("./component/survey/question"));
 const Infor = React.lazy(() => import("./component/survey-gv/infor"));
 const Partner = React.lazy(() => import("./component/survey-gv/partner"));
 const Assign = React.lazy(() => import("./component/survey-gv/assign"));
 const QLDTSV = React.lazy(() => import("./component/qldt/sv"));
 const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
-const Total = React.lazy(() => import("./component/survey/total"));
 const Work = React.lazy(() => import("./component/calendar/work"));
 
 export const RoleContext = createContext();
 
 function PreventRole() {
+  const [role, setRole] = useState(null);
+  const location = useLocation();
   const { isSignedIn, getToken } = useAuth();
   const { user } = useUser();
-  const [role, setRole] = useState(null);
   useLayoutEffect(() => {
     const callApi = async () => {
       await fetch(`${import.meta.env.VITE_ROLE_API}`, {
@@ -89,7 +104,7 @@ function PreventRole() {
     ) {
       window.location.href = "https://sv.hpu.edu.vn/home";
     }
-  }, [isSignedIn]);
+  }, [isSignedIn, location.pathname]);
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>
@@ -155,6 +170,9 @@ function PreventRole() {
             </>
           }
         />
+
+        <Route path="*" element={<NotFound />} />
+
         <Route path="/" element={<Hard role={role} />}>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route
@@ -174,129 +192,6 @@ function PreventRole() {
               >
                 <HomePage />
               </Suspense>
-            }
-          />
-
-          <Route
-            path="/survey"
-            element={<Navigate to="/survey/init" replace />}
-          />
-          <Route
-            path="/survey/init"
-            element={
-              <>
-                <SignedIn>
-                  <Suspense
-                    fallback={
-                      <div className="ml-[20px] mt-[20px]">
-                        <ReactLoading
-                          type="spin"
-                          color="#0083C2"
-                          width={"50px"}
-                          height={"50px"}
-                        />
-                      </div>
-                    }
-                  >
-                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
-                      (item) => item === role?.role_id.toString()
-                    ) ? (
-                      <Init />
-                    ) : (
-                      <Navigate to="/home" replace={true} />
-                    )}
-                  </Suspense>
-                </SignedIn>
-
-                <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  <Navigate
-                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
-                      "/survey/init"
-                    )}`}
-                  />
-                </SignedOut>
-              </>
-            }
-          />
-
-          <Route
-            path="/survey/approve"
-            element={
-              <>
-                <SignedIn>
-                  <Suspense
-                    fallback={
-                      <div className="ml-[20px] mt-[20px]">
-                        <ReactLoading
-                          type="spin"
-                          color="#0083C2"
-                          width={"50px"}
-                          height={"50px"}
-                        />
-                      </div>
-                    }
-                  >
-                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
-                      (item) => item === role?.role_id.toString()
-                    ) ? (
-                      <Approve />
-                    ) : (
-                      <Navigate to="/home" replace={true} />
-                    )}
-                  </Suspense>
-                </SignedIn>
-
-                <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  {/* <Navigate to="/sign-in" /> */}
-                  <Navigate
-                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
-                      "/survey/approve"
-                    )}`}
-                  />
-                </SignedOut>
-              </>
-            }
-          />
-
-          <Route
-            path="/survey/question"
-            element={
-              <>
-                <SignedIn>
-                  <Suspense
-                    fallback={
-                      <div className="ml-[20px] mt-[20px]">
-                        <ReactLoading
-                          type="spin"
-                          color="#0083C2"
-                          width={"50px"}
-                          height={"50px"}
-                        />
-                      </div>
-                    }
-                  >
-                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
-                      (item) => item === role?.role_id.toString()
-                    ) ? (
-                      <Question />
-                    ) : (
-                      <Navigate to="/home" replace={true} />
-                    )}
-                  </Suspense>
-                </SignedIn>
-
-                <SignedOut>
-                  {/* <RedirectToSignIn /> */}
-                  {/* <Navigate to="/sign-in" /> */}
-                  <Navigate
-                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
-                      "/survey/question"
-                    )}`}
-                  />
-                </SignedOut>
-              </>
             }
           />
 
@@ -558,13 +453,242 @@ function PreventRole() {
             }
           />
         </Route>
+
+        {/* ADMIN ROUTE */}
+        <Route path="/admin" element={<HardAdmin role={role} />}>
+          <Route path="/admin" element={<Navigate to="dashboard" />} />
+          <Route
+            path="dashboard"
+            element={
+              <>
+                <SignedIn>
+                  {import.meta.env.VITE_ROLE_ADMIN !==
+                  role?.role_id.toString() ? (
+                    <Navigate to="/home" replace />
+                  ) : (
+                    <></>
+                  )}
+                </SignedIn>
+                <SignedOut>
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/admin/dashboard"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+
+          <Route
+            path="survey"
+            element={<Navigate to="survey/init" replace />}
+          />
+          <Route
+            path="survey/init"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
+                      (item) => item === role?.role_id.toString()
+                    ) ? (
+                      <Init />
+                    ) : (
+                      <Navigate to="/home" replace={true} />
+                    )}
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/admin/survey/init"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+
+          <Route
+            path="survey/approve"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
+                      (item) => item === role?.role_id.toString()
+                    ) ? (
+                      <Approve />
+                    ) : (
+                      <Navigate to="/home" replace={true} />
+                    )}
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  {/* <Navigate to="/sign-in" /> */}
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/admin/survey/approve"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+
+          <Route
+            path="survey/question"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    {import.meta.env.VITE_ROLE_ADMIN.split("||").find(
+                      (item) => item === role?.role_id.toString()
+                    ) ? (
+                      <Question />
+                    ) : (
+                      <Navigate to="/home" replace={true} />
+                    )}
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  {/* <Navigate to="/sign-in" /> */}
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/admin/survey/question"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+
+          <Route
+            path="survey/total"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    {import.meta.env.VITE_ROLE_ADMIN ===
+                    role?.role_id.toString() ? (
+                      <Total />
+                    ) : (
+                      <Navigate to="/home" replace={true} />
+                    )}
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  {/* <Navigate to="/sign-in" /> */}
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/admin/survey/total"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+
+          <Route
+            path="survey/role"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    {import.meta.env.VITE_ROLE_ADMIN ===
+                    role?.role_id.toString() ? (
+                      <Role />
+                    ) : (
+                      <Navigate to="/home" replace={true} />
+                    )}
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  {/* <Navigate to="/sign-in" /> */}
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/admin/survey/role"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+        </Route>
       </Routes>
     </RoleContext.Provider>
   );
 }
 
 function Hard({ role }) {
-  let location = useLocation();
+  const location = useLocation();
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [menuBtn, setMenuBtn] = useState(false);
   const transitions = useTransition(menuBtn, {
@@ -643,15 +767,45 @@ function Hard({ role }) {
       </div>
     );
   } else {
-    return (
-      <LoadingBar
-        progress={100}
-        color="#0083C2"
-        height={5}
-        waitingTime={1000000}
-      />
-    );
+    return <TopBarProgress />;
   }
+}
+
+function HardAdmin({ role }) {
+  // console.log(role);
+  // const navigate = useNavigate();
+  // if
+  if (role) {
+    return (
+      <div className="flex flex-col">
+        <HeaderAdmin />
+        <div className="flex">
+          <SideBarAdmin />
+          <Outlet />
+        </div>
+      </div>
+    );
+  } else {
+    return <TopBarProgress />;
+  }
+
+  // if (role?.role_id.toString() === import.meta.env.VITE_ROLE_ADMIN) {
+  //   return (
+  //     <div className="flex flex-col">
+  //       <HeaderAdmin />
+  //       <Outlet />
+  //     </div>
+  //   );
+  // } else if (!role) {
+  //   return (
+  //     <LoadingBar
+  //       progress={100}
+  //       color="#0083C2"
+  //       height={5}
+  //       waitingTime={1000000}
+  //     />
+  //   );
+  // }
 }
 
 function Clerk() {

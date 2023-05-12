@@ -1,4 +1,4 @@
-import "../../../App.css";
+import "../../../../App.css";
 import { AiOutlineRight } from "react-icons/ai";
 import { useState } from "react";
 import { animated, useTransition } from "react-spring";

@@ -1,16 +1,13 @@
 // import React from 'react'
 import { useState } from "react";
-import "../../../App.css";
+import "../../../../App.css";
 import { AiOutlineRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { 
-    useTransition,
-     animated
-     } from "@react-spring/web";
+import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 import SubContent from "./subcontent";
 
-export default function Index({ data,present,afterUpdate,setAfterUpdate}) {
+export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
   const [toggle, setToggle] = useState();
   const [ref, { height }] = useMeasure();
 
@@ -28,17 +25,21 @@ export default function Index({ data,present,afterUpdate,setAfterUpdate}) {
         <h3 className={`w-[30%]`}>{data.class_code}</h3>
         <h3 className={`w-[35%]`}>{data.class_name}</h3>
         <h3 className={`w-[30%]`}>{data.user.name}</h3>
-          <label
-            onClick={() => setToggle(!toggle)}
-            className={`w-[5%] justify-end flex`}
+        <label
+          onClick={() => setToggle(!toggle)}
+          className={`w-[5%] justify-end flex`}
+        >
+          <IconContext.Provider
+            value={{
+              className: `${
+                toggle ? "rotate-90" : ""
+              } transition-transform duration-200 cursor-pointer`,
+            }}
           >
-            <IconContext.Provider
-              value={{className: `${toggle ? "rotate-90" : ""} transition-transform duration-200 cursor-pointer`}}
-            >
-              <AiOutlineRight size={"20px"} />
-            </IconContext.Provider>
-          </label>
-    </div>
+            <AiOutlineRight size={"20px"} />
+          </IconContext.Provider>
+        </label>
+      </div>
       <div>
         {transitions(
           (style, toggle) =>
@@ -48,7 +49,14 @@ export default function Index({ data,present,afterUpdate,setAfterUpdate}) {
                   className="flex gap-[20px] justify-between flex-col "
                   ref={ref}
                 >
-                  <SubContent dataCourse={data} present={present} afterUpdate={afterUpdate} setAfterUpdate={setAfterUpdate} toggle={toggle} setToggle={setToggle}/>
+                  <SubContent
+                    dataCourse={data}
+                    present={present}
+                    afterUpdate={afterUpdate}
+                    setAfterUpdate={setAfterUpdate}
+                    toggle={toggle}
+                    setToggle={setToggle}
+                  />
                 </div>
               </animated.div>
             )

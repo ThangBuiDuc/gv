@@ -1,4 +1,4 @@
-import "../../../App.css";
+import "../../../../App.css";
 import { useState, useLayoutEffect, useEffect } from "react";
 import ReactLoading from "react-loading";
 import Approve from "./approve";
@@ -33,7 +33,7 @@ export default function Index() {
   }, [present]);
 
   return (
-    <div className="wrap">
+    <div className="wrapAdmin">
       <div className="flex justify-center">
         <h2 className="text-primary">Duyệt đánh giá lớp môn học</h2>
       </div>
@@ -46,7 +46,7 @@ export default function Index() {
           className="self-center"
         />
       ) : inited === true ? (
-        <Approve present={present}/>
+        <Approve present={present} />
       ) : (
         <div className="flex justify-center">
           <h3>Chưa khởi tạo đợt đánh giá, vui lòng khởi tạo đợt đánh giá!</h3>
