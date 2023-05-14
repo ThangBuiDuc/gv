@@ -24,4 +24,13 @@ export const navLink = [
       },
     ],
   },
+  {
+    title: "Mail",
+    subNav: [
+      {
+        title: "Gửi Email",
+        path: "mail/mailsend",
+      },
+    ],
+  },
 ];

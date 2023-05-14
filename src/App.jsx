@@ -40,11 +40,15 @@ TopBarProgress.config({
 import HeaderAdmin from "./admin/hardComponent/header";
 import SideBarAdmin from "./admin/hardComponent/sideBar";
 
+// ADMIN SURVEY IMPORT
 const Init = React.lazy(() => import("./admin/component/survey/init"));
 const Approve = React.lazy(() => import("./admin/component/survey/approve"));
 const Question = React.lazy(() => import("./admin/component/survey/question"));
 const Total = React.lazy(() => import("./admin/component/survey/total"));
 const Role = React.lazy(() => import("./admin/component/survey/role"));
+
+// ADMIN MAIL IMPORT
+const MailSend = React.lazy(() => import("./admin/component/mail/sendMail"));
 
 ////////////////////////////////////////
 import NotFound from "./hardComponent/notFound";
@@ -674,6 +678,45 @@ function PreventRole() {
                   <Navigate
                     to={`/sign-in#/?redirect_url=${encodeURIComponent(
                       "/admin/survey/role"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+
+          <Route
+            path="mail/mailsend"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    {import.meta.env.VITE_ROLE_ADMIN ===
+                    role?.role_id.toString() ? (
+                      <MailSend />
+                    ) : (
+                      <Navigate to="/home" replace={true} />
+                    )}
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  {/* <Navigate to="/sign-in" /> */}
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/admin/mail/mailsend"
                     )}`}
                   />
                 </SignedOut>

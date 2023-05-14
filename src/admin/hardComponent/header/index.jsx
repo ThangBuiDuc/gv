@@ -20,7 +20,7 @@ export default function Index() {
         />
         <div className="flex flex-col justify-center">
           <h3 className="text-center self-center">
-            {user.publicMetadata.name}
+            {user?.publicMetadata.name}
           </h3>
           <button className="text-[#636e75]">Đăng xuất</button>
         </div>

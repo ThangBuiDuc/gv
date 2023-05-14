@@ -36,7 +36,7 @@ export default function ResetPass() {
     if (pass === "" || repeatPass === "") setProgress("empty");
     else if (pass !== repeatPass) setProgress("notMatch");
     else {
-      await fetch("api/resetPass", {
+      await fetch("/api/resetPass", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default function ResetPass() {
               onChange={(e) => setPassword(e.target.value)}
               className={style.input}
               placeholder="Mật khẩu mới"
-              readOnly={progress === "successful"?true:false}
+              readOnly={progress === "successful" ? true : false}
             />
           </div>
           <div>
@@ -89,7 +89,7 @@ export default function ResetPass() {
               onChange={(e) => setRepeatPass(e.target.value)}
               className={style.input}
               placeholder="Nhập lại mật khẩu"
-              readOnly={progress === "successful"?true:false}
+              readOnly={progress === "successful" ? true : false}
             />
             {progress === "empty" ? (
               <p style={{ color: "red", fontSize: "14px" }}>
@@ -109,7 +109,7 @@ export default function ResetPass() {
                 Mật khẩu quá dễ đoán, sử dụng mật khẩu mạnh hơn!
               </p>
             ) : progress === "successful" ? (
-                <Count/>
+              <Count />
             ) : (
               <></>
             )}
@@ -123,8 +123,10 @@ export default function ResetPass() {
                 height={"30px"}
                 className={style.loading}
               />
+            ) : progress === "successful" ? (
+              <></>
             ) : (
-              progress === "successful"?<></>:<button className={style.submit}>Xác nhận</button>
+              <button className={style.submit}>Xác nhận</button>
             )}
           </div>
         </form>

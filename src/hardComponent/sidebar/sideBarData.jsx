@@ -1,17 +1,17 @@
 import { RiSurveyFill } from "react-icons/ri";
 import {
-  MdCreateNewFolder,
+  // MdCreateNewFolder,
   MdOutlineAssignment,
   MdOutlineManageAccounts,
   MdAppRegistration,
 } from "react-icons/md";
-import { TiTickOutline } from "react-icons/ti";
+//import { TiTickOutline } from "react-icons/ti";
 import {
-  AiOutlineQuestionCircle,
+  //AiOutlineQuestionCircle,
   AiOutlineUsergroupDelete,
-  AiOutlineCalculator,
+  // AiOutlineCalculator,
 } from "react-icons/ai";
-import { IoCreateOutline } from "react-icons/io5";
+//import { IoCreateOutline } from "react-icons/io5";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { SlCalender } from "react-icons/sl";
 import { BsCalendarCheck } from "react-icons/bs";
@@ -69,32 +69,32 @@ export const sideBarData = [
       },
     ],
   },
-  {
-    title: "Quản lý thăm dò CTGD",
-    icon: <IoCreateOutline size={"30px"} />,
-    path: "/survey",
-    role: import.meta.env.VITE_ROLE_ADMIN.split("||"),
-    subNav: [
-      {
-        title: "Câu hỏi",
-        path: "/survey/question",
-        icon: <AiOutlineQuestionCircle size={"22px"} />,
-      },
-      {
-        title: "Khởi tạo",
-        path: "/survey/init",
-        icon: <MdCreateNewFolder size={"22px"} />,
-      },
-      {
-        title: "Duyệt lớp môn học",
-        path: "/survey/approve",
-        icon: <TiTickOutline size={"22px"} />,
-      },
-      {
-        title: "Tổng kết",
-        path: "/survey/total",
-        icon: <AiOutlineCalculator size={"22px"} />,
-      },
-    ],
-  },
+  // {
+  //   title: "Quản lý thăm dò CTGD",
+  //   icon: <IoCreateOutline size={"30px"} />,
+  //   path: "/survey",
+  //   role: import.meta.env.VITE_ROLE_ADMIN.split("||"),
+  //   subNav: [
+  //     {
+  //       title: "Câu hỏi",
+  //       path: "/survey/question",
+  //       icon: <AiOutlineQuestionCircle size={"22px"} />,
+  //     },
+  //     {
+  //       title: "Khởi tạo",
+  //       path: "/survey/init",
+  //       icon: <MdCreateNewFolder size={"22px"} />,
+  //     },
+  //     {
+  //       title: "Duyệt lớp môn học",
+  //       path: "/survey/approve",
+  //       icon: <TiTickOutline size={"22px"} />,
+  //     },
+  //     {
+  //       title: "Tổng kết",
+  //       path: "/survey/total",
+  //       icon: <AiOutlineCalculator size={"22px"} />,
+  //     },
+  //   ],
+  // },
 ];

@@ -8,6 +8,23 @@ h3 {
   @apply text-[16px] md:text-[18.72px] font-semibold;
 }
 
+h1 {
+  @apply text-4xl;
+  @apply font-bold;
+}
+h4 {
+  @apply text-xl;
+  @apply font-semibold;
+}
+h5 {
+  @apply text-lg;
+  @apply font-semibold;
+}
+h6 {
+  @apply text-sm;
+  @apply font-semibold;
+}
+
 p {
   @apply font-normal;
 }
