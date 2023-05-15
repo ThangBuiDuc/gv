@@ -495,7 +495,7 @@ function PreventRole() {
                 <SignedIn>
                   <Suspense
                     fallback={
-                      <div className="ml-[20px] mt-[20px]">
+                      <div className="mt-[80px] ml-[250px] p-[10px]">
                         <ReactLoading
                           type="spin"
                           color="#0083C2"
@@ -534,7 +534,7 @@ function PreventRole() {
                 <SignedIn>
                   <Suspense
                     fallback={
-                      <div className="ml-[20px] mt-[20px]">
+                      <div className="mt-[80px] ml-[250px] p-[10px]">
                         <ReactLoading
                           type="spin"
                           color="#0083C2"
@@ -574,7 +574,7 @@ function PreventRole() {
                 <SignedIn>
                   <Suspense
                     fallback={
-                      <div className="ml-[20px] mt-[20px]">
+                      <div className="mt-[80px] ml-[250px] p-[10px]">
                         <ReactLoading
                           type="spin"
                           color="#0083C2"
@@ -614,7 +614,7 @@ function PreventRole() {
                 <SignedIn>
                   <Suspense
                     fallback={
-                      <div className="ml-[20px] mt-[20px]">
+                      <div className="mt-[80px] ml-[250px] p-[10px]">
                         <ReactLoading
                           type="spin"
                           color="#0083C2"
@@ -653,7 +653,7 @@ function PreventRole() {
                 <SignedIn>
                   <Suspense
                     fallback={
-                      <div className="ml-[20px] mt-[20px]">
+                      <div className="mt-[80px] ml-[250px] p-[10px]">
                         <ReactLoading
                           type="spin"
                           color="#0083C2"
@@ -692,7 +692,7 @@ function PreventRole() {
                 <SignedIn>
                   <Suspense
                     fallback={
-                      <div className="ml-[20px] mt-[20px]">
+                      <div className="mt-[80px] ml-[250px] p-[10px]">
                         <ReactLoading
                           type="spin"
                           color="#0083C2"
