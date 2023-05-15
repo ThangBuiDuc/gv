@@ -1,4 +1,4 @@
-import "../../../App.css";
+import "../../../../App.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import AddQ from "./addQ";
@@ -6,9 +6,8 @@ import UpdateQ from "./updateQ";
 import DeleteQ from "./deleteQ";
 
 export default function Index() {
-
   return (
-    <div className="wrap">
+    <div className="wrapAdmin">
       <Tabs>
         <TabList>
           <Tab>Thêm câu hỏi</Tab>

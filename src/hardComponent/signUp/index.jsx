@@ -28,7 +28,7 @@ export default function SignUp() {
         .attemptEmailAddressVerification({ code: verifyCode })
         .then(async (result) => {
           if (result.status === "complete") {
-            await fetch("api/signUp", {
+            await fetch("/api/signUp", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -85,93 +85,92 @@ export default function SignUp() {
   async function submit(e) {
     e.preventDefault();
     setProgress("");
-    if ( emailAddress === "" || password === "") {
+    if (emailAddress === "" || password === "") {
       setProgress("empty");
       setLoading(false);
     } else {
       // Check the sign up response to
       // decide what to do next.
       setLoading(true);
-      if(emailAddress.includes('@hpu.edu.vn')){
+      if (emailAddress.includes("@hpu.edu.vn")) {
         await fetch(`${import.meta.env.VITE_APP_API_SIGN_UP}${emailAddress}`)
-        .then((res) => res.json())
-        .then(async (res) => {
-          if (res.result.length !== 0) {
-            setName(res.result[0].name);
-            await signUp
-              .create({
-                emailAddress: emailAddress,
-                password: password,
-                username: res.result[0].magiaovien + "z",
-              })
-              .then(async (result) => {
-                if (result.status === "missing_requirements") {
-                  setProgress(result.status);
-                }
-                await signUp
-                  .prepareEmailAddressVerification()
-              })
-              .catch((err) => {
-                // console.log("error", err.errors[0].message);
-                setProgress(err.errors[0].message);
-              });
-            // setProgress('missing_requirements')
-          }
-          else{
-            setProgress('none')
-            setLoading(false)
-          }
-        })
-      }else{
-        setProgress('invalid')
-        setLoading(false)
+          .then((res) => res.json())
+          .then(async (res) => {
+            if (res.result.length !== 0) {
+              setName(res.result[0].name);
+              await signUp
+                .create({
+                  emailAddress: emailAddress,
+                  password: password,
+                  username: res.result[0].magiaovien + "z",
+                })
+                .then(async (result) => {
+                  if (result.status === "missing_requirements") {
+                    setProgress(result.status);
+                  }
+                  await signUp.prepareEmailAddressVerification();
+                })
+                .catch((err) => {
+                  // console.log("error", err.errors[0].message);
+                  setProgress(err.errors[0].message);
+                });
+              // setProgress('missing_requirements')
+            } else {
+              setProgress("none");
+              setLoading(false);
+            }
+          });
+      } else {
+        setProgress("invalid");
+        setLoading(false);
       }
-    //   await fetch(`${process.env.REACT_APP_API_SIGN_UP}${emailAddress}`)
-    //     .then((res) => res.json())
-    //     .then(async (res) => {
-    //       if (res.verify.length === 0) setProgress("invalidCode");
-    //       else if (res.verify[0].email && res.verify[0].email !== emailAddress){
-    //         setProgress("unduplicated");
-    //         setVerifyEmail(res.verify[0].email);
-    //       }
-            
-    //       else if (!res.verify[0].email) setProgress("emptyEmail");
+      //   await fetch(`${process.env.REACT_APP_API_SIGN_UP}${emailAddress}`)
+      //     .then((res) => res.json())
+      //     .then(async (res) => {
+      //       if (res.verify.length === 0) setProgress("invalidCode");
+      //       else if (res.verify[0].email && res.verify[0].email !== emailAddress){
+      //         setProgress("unduplicated");
+      //         setVerifyEmail(res.verify[0].email);
+      //       }
 
-    //       if (res.verify.length !== 0 && res.verify[0].email === emailAddress) {
-    //         setName(res.verify[0].hoten);
-    //         await signUp
-    //           .create({
-    //             emailAddress: emailAddress,
-    //             password: password,
-    //             username: username + "z",
-    //           })
-    //           .then(async (result) => {
-    //             if (result.status === "missing_requirements") {
-    //               setProgress(result.status);
-    //             }
-    //             await signUp
-    //               .prepareEmailAddressVerification()
-    //               .then((result) => console.log(result))
-    //               .catch((err) => console.log("error", err.errors[0].message));
-    //           })
-    //           .catch((err) => {
-    //             // console.log("error", err.errors[0].message);
-    //             setProgress(err.errors[0].message);
-    //           });
-    //         // setProgress('missing_requirements')
-    //       }
+      //       else if (!res.verify[0].email) setProgress("emptyEmail");
 
-    //       // console.log(res)
-    //     })
-    //     // .catch((e)=>{
-    //     //   setLoading(false);
-    //     //   // console.log("1")
-    //     // })
-    //     .finally(() => {
-    //       setLoading(false);
-    //     });
-    // }
-  }}
+      //       if (res.verify.length !== 0 && res.verify[0].email === emailAddress) {
+      //         setName(res.verify[0].hoten);
+      //         await signUp
+      //           .create({
+      //             emailAddress: emailAddress,
+      //             password: password,
+      //             username: username + "z",
+      //           })
+      //           .then(async (result) => {
+      //             if (result.status === "missing_requirements") {
+      //               setProgress(result.status);
+      //             }
+      //             await signUp
+      //               .prepareEmailAddressVerification()
+      //               .then((result) => console.log(result))
+      //               .catch((err) => console.log("error", err.errors[0].message));
+      //           })
+      //           .catch((err) => {
+      //             // console.log("error", err.errors[0].message);
+      //             setProgress(err.errors[0].message);
+      //           });
+      //         // setProgress('missing_requirements')
+      //       }
+
+      //       // console.log(res)
+      //     })
+      //     // .catch((e)=>{
+      //     //   setLoading(false);
+      //     //   // console.log("1")
+      //     // })
+      //     .finally(() => {
+      //       setLoading(false);
+      //     });
+      // }
+    }
+  }
 
   return progress === "missing_requirements" ? (
     <div
@@ -290,9 +289,11 @@ export default function SignUp() {
               <p style={{ color: "red", fontSize: "12px" }}>
                 Mật khẩu yếu. Nhập mật khẩu mạnh hơn!
               </p>
-            )  :progress === 'none' ?(<p style={{ color: "red", fontSize: "12px" }}>
-            Email không tồn tại trong hệ thống!
-          </p>): (
+            ) : progress === "none" ? (
+              <p style={{ color: "red", fontSize: "12px" }}>
+                Email không tồn tại trong hệ thống!
+              </p>
+            ) : (
               <></>
             )}
           </div>

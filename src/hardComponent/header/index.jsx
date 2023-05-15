@@ -16,6 +16,7 @@ export default function Index({ windowWidth }) {
   const navigate = useNavigate();
 
   const handleLogIn = () => {
+    role.setRole(null);
     navigate("/sign-in");
   };
 

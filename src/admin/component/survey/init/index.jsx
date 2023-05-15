@@ -1,4 +1,4 @@
-import "../../../App.css";
+import "../../../../App.css";
 import { useState, useLayoutEffect, useEffect } from "react";
 import Present from "./present";
 import Question from "./question";
@@ -27,7 +27,9 @@ export default function Index() {
   useEffect(() => {
     const callCheck = async () => {
       await fetch(
-        `${import.meta.env.VITE_CHECK_INITED_API}${present.hocky}/${present.manamhoc}`
+        `${import.meta.env.VITE_CHECK_INITED_API}${present.hocky}/${
+          present.manamhoc
+        }`
       )
         .then((res) => res.json())
         .then((res) => setInited(res.result[0].result));
@@ -36,9 +38,8 @@ export default function Index() {
     if (present) callCheck();
   }, [present]);
 
-
   return (
-    <div className="wrap">
+    <div className="wrapAdmin">
       <div className="flex justify-center">
         <h2 className="text-primary">Khởi tạo đợt đánh giá</h2>
       </div>
@@ -52,7 +53,10 @@ export default function Index() {
         />
       ) : inited === true ? (
         <div className="flex justify-center">
-          <h3>Đã khởi tạo đợt đánh giá cho kỳ hiện tại trước đó. Vui lòng chuyển sang mục duyệt đánh giá cho lớp môn học!</h3>
+          <h3>
+            Đã khởi tạo đợt đánh giá cho kỳ hiện tại trước đó. Vui lòng chuyển
+            sang mục duyệt đánh giá cho lớp môn học!
+          </h3>
         </div>
       ) : (
         <>
@@ -68,7 +72,7 @@ export default function Index() {
             namhoc={present.manamhoc}
             // startDate={startDate}
             // endDate={endDate}
-            setInited = {setInited}
+            setInited={setInited}
           />
         </>
       )}

@@ -1,4 +1,4 @@
-import "../../../App.css";
+import "../../../../App.css";
 import { useState, useLayoutEffect, useEffect } from "react";
 import ReactLoading from "react-loading";
 import Swal from "sweetalert2";
@@ -12,11 +12,13 @@ export default function Index({ hocky, namhoc, setInited }) {
 
   useLayoutEffect(() => {
     const callApi = async () => {
-      await fetch(`${import.meta.env.VITE_PRE_QUESTION_API}`,{
-        method:'GET',
-        headers:{
-          authorization:`Bearer ${await getToken({template:import.meta.env.VITE_TEMPLATE_GV_CREATOR})}`
-        }
+      await fetch(`${import.meta.env.VITE_PRE_QUESTION_API}`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+          })}`,
+        },
       })
         .then((res) => res.json())
         .then((res) => {

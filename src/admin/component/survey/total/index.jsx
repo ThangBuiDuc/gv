@@ -1,6 +1,6 @@
 // import React from 'react'
 import { useEffect, useLayoutEffect, useState } from "react";
-import "../../../App.css";
+import "../../../../App.css";
 import { useAuth } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
@@ -145,7 +145,7 @@ export default function Index() {
   }, [present, afterUpdate]);
 
   return (
-    <div className="wrap">
+    <div className="wrapAdmin">
       <div className="flex justify-center">
         <h2 className="text-primary">Tổng kết điểm môn học</h2>
       </div>

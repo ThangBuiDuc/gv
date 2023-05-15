@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/clerk-react";
-import "../../../App.css";
+import "../../../../App.css";
 import { useEffect, useRef } from "react";
 
 import Swal from "sweetalert2";
@@ -103,7 +103,7 @@ export default function Index({
           const objects = coures_respond.map((item) => {
             let data = Object.assign({}, item);
             delete data.class_name;
-            data.end_date = data.end_date.split('T')[0]
+            data.end_date = data.end_date.split("T")[0];
             data.hocky = present.hocky;
             data.namhoc = present.manamhoc;
             return data;
@@ -114,7 +114,7 @@ export default function Index({
               ...total,
               objects.map((i) => {
                 let data = Object.assign({}, i);
-                data.end_date
+                data.end_date;
                 data.question_id = current.question_id;
                 return data;
               }),

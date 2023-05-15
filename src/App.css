@@ -12,6 +12,10 @@
     @apply flex flex-col w-full lg:w-[80%] lg:rounded-[15px] lg:p-[20px] min-h-[700px] md:min-h-[900px] border-solid border-bordercl lg:border-[1px] gap-[50px];
   }
 
+  .wrapAdmin {
+    @apply flex flex-col w-[calc(100%_-_250px)] mt-[80px] ml-[250px] gap-[50px] p-[20px];
+  }
+
   .btn {
     @apply border-[1px] border-bordercl rounded-[5px] p-[5px] hover:bg-primary hover:text-white md:hover:scale-[1.2] md:transition-all whitespace-nowrap text-center;
   }

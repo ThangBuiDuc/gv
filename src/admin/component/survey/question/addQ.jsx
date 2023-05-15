@@ -1,6 +1,6 @@
 // import React from 'react'
 import { useState } from "react";
-import "../../../App.css";
+import "../../../../App.css";
 import { useAuth } from "@clerk/clerk-react";
 import Swal from "sweetalert2";
 
@@ -57,46 +57,50 @@ export default function AddQ() {
         confirmButtonText: "Thêm mới",
         showLoaderOnConfirm: true,
         preConfirm: async () => {
-          let description = gvDis.map((item) => {
-            let dis = [item.point, item.content].join("||");
-            return dis;
-          }).join('//')
+          let description = gvDis
+            .map((item) => {
+              let dis = [item.point, item.content].join("||");
+              return dis;
+            })
+            .join("//");
 
-        //   console.log(description);
+          //   console.log(description);
 
-            let result = await fetch(
-              `${import.meta.env.VITE_REST_QUESTION_API}`,
-              {
-                method: "POST",
-                headers: {
-                  authorization: `Bearer ${await getToken({
-                    template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
-                  })}`,
-                },
-                body: JSON.stringify({
-                  objects: [
-                    {
-                      level_point_id: 2,
-                      content: gv,
-                      description,
-                    },
-                  ],
-                }),
-              }
-            ).then((res) => res.status);
+          let result = await fetch(
+            `${import.meta.env.VITE_REST_QUESTION_API}`,
+            {
+              method: "POST",
+              headers: {
+                authorization: `Bearer ${await getToken({
+                  template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+                })}`,
+              },
+              body: JSON.stringify({
+                objects: [
+                  {
+                    level_point_id: 2,
+                    content: gv,
+                    description,
+                  },
+                ],
+              }),
+            }
+          ).then((res) => res.status);
 
-            if (result === 200) {
-              setGv("");
-              setGvDis(gvDis.map(item => {
-                item.content = ''
-                return item
-              }))
-              Swal.fire({
-                title: "Thêm mới câu hỏi thành công!",
-                icon: "success",
-              });
-            } else
-              Swal.fire({ title: "Thêm mới câu hỏi thất bại", icon: "error" });
+          if (result === 200) {
+            setGv("");
+            setGvDis(
+              gvDis.map((item) => {
+                item.content = "";
+                return item;
+              })
+            );
+            Swal.fire({
+              title: "Thêm mới câu hỏi thành công!",
+              icon: "success",
+            });
+          } else
+            Swal.fire({ title: "Thêm mới câu hỏi thất bại", icon: "error" });
         },
         allowOutsideClick: () => !Swal.isLoading(),
       });
