@@ -31,6 +31,7 @@ export default function Index({
         },
         body: JSON.stringify({
           code: user.publicMetadata.magv,
+          clss_code: class_code,
           sbj_code: subject_code,
           hk: present.hocky,
           namhoc: present.manamhoc,
