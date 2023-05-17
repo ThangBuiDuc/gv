@@ -26,14 +26,7 @@ function compare(a, b) {
   return 0;
 }
 
-export default function Index({
-  data,
-  present,
-  afterUpdate,
-  setAfterUpdate,
-  toggle,
-  setToggle,
-}) {
+export default function Index({ data, present, setCourse, setAfterUpdate }) {
   // console.log(data)
   const { getToken } = useAuth();
   const [sv, setSv] = useState();
@@ -181,8 +174,8 @@ export default function Index({
         // }
 
         if (result === 200) {
-          setToggle(!toggle);
-          setAfterUpdate(!afterUpdate);
+          setCourse(null);
+          setAfterUpdate((pre) => !pre);
           Swal.fire({
             title: "Duyệt tư cách sinh viên cho môn học thành công!",
             icon: "success",
