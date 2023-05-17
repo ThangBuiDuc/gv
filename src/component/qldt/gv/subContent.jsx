@@ -92,10 +92,8 @@ const columns = [
 export default function Index({
   dataCourse,
   present,
-  afterUpdate,
   setAfterUpdate,
-  toggle,
-  setToggle,
+  setCourse,
 }) {
   const [point, setPoint] = useState();
   const [ref, { width }] = useMeasure();
@@ -187,8 +185,8 @@ export default function Index({
         // }
 
         if (result === 200) {
-          setToggle(!toggle);
-          setAfterUpdate(!afterUpdate);
+          setCourse(null);
+          setAfterUpdate((pre) => !pre);
           Swal.fire({
             title: "Cho điểm điểm giáo viên thành công!",
             icon: "success",

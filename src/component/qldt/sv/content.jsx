@@ -7,7 +7,7 @@ import useMeasure from "react-use-measure";
 import { IconContext } from "react-icons";
 import SubContent from "./subContent";
 
-export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
+export default function Index({ data, present, setCourse, setAfterUpdate }) {
   const [toggle, setToggle] = useState();
   const [ref, { height }] = useMeasure();
 
@@ -56,10 +56,8 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
                   <SubContent
                     data={data}
                     present={present}
-                    afterUpdate={afterUpdate}
                     setAfterUpdate={setAfterUpdate}
-                    toggle={toggle}
-                    setToggle={setToggle}
+                    setCourse={setCourse}
                   />
                 </div>
               </animated.div>

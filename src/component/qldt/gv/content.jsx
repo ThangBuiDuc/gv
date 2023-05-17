@@ -7,7 +7,7 @@ import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 import SubContent from "./subContent";
 
-export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
+export default function Index({ data, present, setCourse, setAfterUpdate }) {
   const [toggle, setToggle] = useState();
   const [ref, { height }] = useMeasure();
 
@@ -59,10 +59,8 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
                   <SubContent
                     dataCourse={data}
                     present={present}
-                    afterUpdate={afterUpdate}
+                    setCourse={setCourse}
                     setAfterUpdate={setAfterUpdate}
-                    toggle={toggle}
-                    setToggle={setToggle}
                   />
                 </div>
               </animated.div>

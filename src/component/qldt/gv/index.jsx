@@ -108,8 +108,8 @@ export default function Index() {
               <div className="flex flex-col" key={index}>
                 <Content
                   data={item}
+                  setCourse={setCourse}
                   present={present}
-                  afterUpdate={afterUpdate}
                   setAfterUpdate={setAfterUpdate}
                 />
               </div>

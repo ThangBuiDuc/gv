@@ -173,7 +173,7 @@ export default function Index() {
                 <Content
                   data={item}
                   present={present}
-                  afterUpdate={afterUpdate}
+                  setCourse={setCourse}
                   setAfterUpdate={setAfterUpdate}
                 />
               </div>
