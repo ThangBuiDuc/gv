@@ -21,7 +21,14 @@ export default function Index() {
       })
         .then((res) => res.json())
         .then((res) => {
-          res.result.length > 0 ? setData(res.result) : setData("empty");
+          res.result.length > 0
+            ? setData(
+                res.result.map((item) => {
+                  item.checked = false;
+                  return item;
+                })
+              )
+            : setData("empty");
         });
     };
     callApi();

@@ -89,7 +89,7 @@ export default function Index() {
         <Content
           present={present}
           data={data}
-          afterUpdate={afterUpdate}
+          setData={setData}
           setAfterUpdate={setAfterUpdate}
         />
       ) : (

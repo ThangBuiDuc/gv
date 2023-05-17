@@ -11,9 +11,9 @@ export default function Index({
   data,
   staff,
   present,
-  status,
   setStatus,
   question,
+  setData,
 }) {
   const [toggle, setToggle] = useState(false);
 
@@ -68,14 +68,12 @@ export default function Index({
                   ref={ref}
                 >
                   <SubSelectContent
-                    toggle={toggle}
-                    setToggle={setToggle}
                     data={data}
                     staff={staff}
                     question={question}
                     present={present}
-                    status={status}
                     setStatus={setStatus}
+                    setData={setData}
                   />
                 </div>
               </animated.div>

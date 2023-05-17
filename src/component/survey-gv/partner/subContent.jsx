@@ -9,7 +9,7 @@ export default function Index({
   toggle,
   setToggle,
   dataSent,
-  afterUpdate,
+  setData,
   setAfterUpdate,
 }) {
   const { subject_code, class_code, present, class_name, teacher_name } =
@@ -109,8 +109,8 @@ export default function Index({
           }).then((res) => res.status);
 
           if (result === 200) {
-            setAfterUpdate(!afterUpdate);
-            setToggle(!toggle);
+            setData(null);
+            setAfterUpdate((pre) => !pre);
             Swal.fire({
               title: "Đánh giá dự giờ thành công!",
               icon: "success",
@@ -160,6 +160,7 @@ export default function Index({
               <textarea
                 className="resize-none p-[10px] rounded-[10px] border-[1px] border-solid border-bordercl "
                 rows="5"
+                placeholder="Thầy/Cô vui lòng để trống nếu không có nhận xét!"
                 value={comment ? comment[index] : ""}
                 onChange={(e) =>
                   setComment(
