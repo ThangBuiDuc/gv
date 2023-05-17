@@ -11,10 +11,8 @@ export default function Index({
   data,
   question,
   present,
-  status,
   setStatus,
-  toggle,
-  setToggle,
+  setData,
 }) {
   const { getToken } = useAuth();
 
@@ -156,8 +154,8 @@ export default function Index({
         ).then((res) => res.status);
 
         if (result === 200) {
-          setStatus(!status);
-          setToggle(!toggle);
+          setData(null);
+          setStatus((pre) => !pre);
           Swal.fire({ title: "Phân công dự giờ thành công!", icon: "success" });
         } else
           Swal.fire({

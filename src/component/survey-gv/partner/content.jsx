@@ -13,7 +13,7 @@ function compare(a, b) {
   return 0;
 }
 
-export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
+export default function Index({ data, present, setData, setAfterUpdate }) {
   const [toggle, setToggle] = useState(false);
   const [dataSent, setDataSent] = useState();
 
@@ -38,7 +38,7 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
         <SubContent
           toggle={toggle}
           setToggle={setToggle}
-          afterUpdate={afterUpdate}
+          setData={setData}
           setAfterUpdate={setAfterUpdate}
           dataSent={dataSent}
         />

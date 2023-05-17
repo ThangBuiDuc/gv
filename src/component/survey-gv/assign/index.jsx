@@ -187,6 +187,15 @@ export default function Index() {
               >
                 Xuất CSV
               </CSVLink>
+              {/* <button
+                className="btn w-[fit]"
+                onClick={() => {
+                  setData(null);
+                  setStatus((pre) => !pre);
+                }}
+              >
+                Click Me!
+              </button> */}
             </div>
             <div className="flex flex-col gap-[20px]">
               <h3 className="self-center text-primary text-center">
@@ -201,9 +210,9 @@ export default function Index() {
                         data={item}
                         staff={staff}
                         present={present}
-                        status={status}
                         setStatus={setStatus}
                         question={question}
+                        setData={setData}
                       />
                     </Fragment>
                   );
