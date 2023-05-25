@@ -28,6 +28,10 @@ const headersCSV = [
     key: "name",
   },
   {
+    label: "Khoa",
+    key: "khoa",
+  },
+  {
     label: "Điểm trung bình sinh viên",
     key: "student_result",
   },
