@@ -11,7 +11,7 @@ export default function Index() {
     fetch("/api/article")
       .then((res) => res.json())
       .then((res) => {
-        const reverse = res.data1.article.reverse();
+        const reverse = res.data1.articles.reverse();
         setBlog(reverse);
       });
   }, []);
