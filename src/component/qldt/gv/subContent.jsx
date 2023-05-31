@@ -139,7 +139,7 @@ export default function Index({
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         let _set = {
-          qldt_result: point,
+          qldt_result: parseFloat(point).toFixed(2),
           updated_at: new Date(),
         };
 
