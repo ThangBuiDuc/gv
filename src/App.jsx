@@ -65,6 +65,7 @@ const Partner = React.lazy(() => import("./component/survey-gv/partner"));
 const Assign = React.lazy(() => import("./component/survey-gv/assign"));
 const QLDTSV = React.lazy(() => import("./component/qldt/sv"));
 const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
+const DSL = React.lazy(() => import("./component/classlist"));
 const Work = React.lazy(() => import("./component/calendar/work"));
 
 export const RoleContext = createContext();
@@ -338,6 +339,40 @@ function PreventRole() {
           />
 
           <Route
+            path="/drl/dsl"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    <DSL />
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  {/* <Navigate to="/sign-in" /> */}
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/drl/dsl"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+
+          <Route
             path="/qldt/sv"
             element={
               <>
@@ -467,7 +502,7 @@ function PreventRole() {
               <>
                 <SignedIn>
                   {import.meta.env.VITE_ROLE_ADMIN !==
-                  role?.role_id.toString() ? (
+                    role?.role_id.toString() ? (
                     <Navigate to="/home" replace />
                   ) : (
                     <></>
@@ -625,7 +660,7 @@ function PreventRole() {
                     }
                   >
                     {import.meta.env.VITE_ROLE_ADMIN ===
-                    role?.role_id.toString() ? (
+                      role?.role_id.toString() ? (
                       <Total />
                     ) : (
                       <Navigate to="/home" replace={true} />
@@ -664,7 +699,7 @@ function PreventRole() {
                     }
                   >
                     {import.meta.env.VITE_ROLE_ADMIN ===
-                    role?.role_id.toString() ? (
+                      role?.role_id.toString() ? (
                       <Role />
                     ) : (
                       <Navigate to="/home" replace={true} />
@@ -703,7 +738,7 @@ function PreventRole() {
                     }
                   >
                     {import.meta.env.VITE_ROLE_ADMIN ===
-                    role?.role_id.toString() ? (
+                      role?.role_id.toString() ? (
                       <MailSend />
                     ) : (
                       <Navigate to="/home" replace={true} />
@@ -792,9 +827,8 @@ function Hard({ role }) {
             )}
             <div className="fixed flex w-full bottom-0 h-[50px] md:h-[70px] bg-white justify-end items-center z-10 border-t-[1px] border-solid border-bordercl">
               <div
-                className={`flex-col justify-center items-center h-full w-[20%] flex cursor-pointer border-b-[5px] border-solid ${
-                  menuBtn ? " border-primary" : "border-white"
-                }`}
+                className={`flex-col justify-center items-center h-full w-[20%] flex cursor-pointer border-b-[5px] border-solid ${menuBtn ? " border-primary" : "border-white"
+                  }`}
                 onClick={() => setMenuBtn(!menuBtn)}
               >
                 <AiOutlineMenu

@@ -4,7 +4,11 @@ import {
   MdOutlineAssignment,
   MdOutlineManageAccounts,
   MdAppRegistration,
+  MdOutlineClass,
 } from "react-icons/md";
+
+import {BsJournalMedical} from "react-icons/bs"
+
 //import { TiTickOutline } from "react-icons/ti";
 import {
   //AiOutlineQuestionCircle,
@@ -67,6 +71,20 @@ export const sideBarData = [
         path: "/qldt/gv",
         icon: <MdAppRegistration size={"22px"} />,
       },
+    ],
+  },
+  {
+    title: "Điểm rèn luyện",
+    path: "/drl",
+    icon: <BsJournalMedical size={"30px"} />,
+    role: import.meta.env.VITE_ROLE_QLDT.split("||"),
+    subNav: [
+      {
+        title: "Danh sách lớp",
+        path: "/drl/dsl",
+        icon: <MdOutlineClass size={"22px"} />,
+      },
+      
     ],
   },
   // {
