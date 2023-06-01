@@ -67,6 +67,7 @@ const QLDTSV = React.lazy(() => import("./component/qldt/sv"));
 const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
 const DSL = React.lazy(() => import("./component/classlist"));
 const Work = React.lazy(() => import("./component/calendar/work"));
+const StudenLish = React.lazy(() => import("./component/studenLish"))
 
 export const RoleContext = createContext();
 
@@ -365,6 +366,40 @@ function PreventRole() {
                   <Navigate
                     to={`/sign-in#/?redirect_url=${encodeURIComponent(
                       "/drl/dsl"
+                    )}`}
+                  />
+                </SignedOut>
+              </>
+            }
+          />
+
+          <Route
+            path="/drl/studentlish"
+            element={
+              <>
+                <SignedIn>
+                  <Suspense
+                    fallback={
+                      <div className="ml-[20px] mt-[20px]">
+                        <ReactLoading
+                          type="spin"
+                          color="#0083C2"
+                          width={"50px"}
+                          height={"50px"}
+                        />
+                      </div>
+                    }
+                  >
+                    <StudenLish />
+                  </Suspense>
+                </SignedIn>
+
+                <SignedOut>
+                  {/* <RedirectToSignIn /> */}
+                  {/* <Navigate to="/sign-in" /> */}
+                  <Navigate
+                    to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                      "/drl/studentlish"
                     )}`}
                   />
                 </SignedOut>
