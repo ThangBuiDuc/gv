@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 export default function Index() {
     const [dataclass, setDataclass] = useState()
     const [batch, setBatch] = useState()
+    const [khoahoc, setKhoahoc] = useState()
+    // const [classlist, setClasslist]= useState()
+    const [selectedOption, setSelectedOption] = useState('');
 
     useEffect(() => {
         console.log("gọi lại api")
@@ -21,18 +24,41 @@ export default function Index() {
             })
                 .then(response => response.json())
                 .then(data => {
-                    setBatch(data.batchs[0].id)
+                    setBatch(data.result[0].id)
 
                 });
         }
         callApi();
     }, []);
-    console.log(batch)
+
     useEffect(() => {
         console.log("gọi lại api")
         const callApi = async () => {
 
-            await fetch(`https://renluyen.hasura.app/api/rest/manager-major/2151024042/${batch}`, {
+            await fetch(`https://renluyen.hasura.app/api/rest/manager_get_class_list/2151024042/${batch}/${selectedOption}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-hasura-admin-secret': `WtRdFly5j5RuA149pEo8GetysucBflfen3RiQ77CmbY7tl0YVfi6J79d7MS7sFBd`,
+                },
+                // body:JSON.stringify({masv:'1912101003'})
+
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setDataclass(data.class_managerments)
+
+                });
+        }
+        callApi();
+    }, [selectedOption]);
+
+    // console.log(classlist)
+    useEffect(() => {
+        console.log("gọi lại api")
+        const callApi = async () => {
+
+            await fetch(`https://renluyen.hasura.app/api/rest/manager-major/2151024042/1`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,56 +69,62 @@ export default function Index() {
             })
                 .then(response => response.json())
                 .then(dataclass => {
-                    setDataclass(dataclass.class_managerments)
-
+                    setDataclass(dataclass.result)
+                    setKhoahoc(dataclass.result.reduce((total, item) => {
+                        if (total.some(el => el === item.ma_khoa_hoc)) {
+                            return [...total]
+                        } else {
+                            return [...total, item.ma_khoa_hoc]
+                        }
+                    }, []))
                 });
         }
         callApi();
     }, [batch]);
-    // if(Array.isArray(dataclass)===true){
-    //     const khoahoc=dataclass.reduce((total,item) => {
-    //         if(total.some(el => el===item.ma_khoa_hoc)){
-    //             return [...total]
-    //         }else{
-    //             return [...total,item.ma_khoa_hoc]
-    //         }
-    //     },[]);
-    //     console.log(khoahoc)
-    // }
-    
+    // console.log(dataclass.reduce((total,item) => {
+    //     if(total.some(el => el===item.ma_khoa_hoc)){
+    //         return [...total]
+    //     }else{
+    //         return [...total,item.ma_khoa_hoc]
+    //     }
+    // },[]));
+    console.log(dataclass);
+    console.log(khoahoc);
 
-    
-      
-        // const [selectedOption, setSelectedOption] = useState('');
-      
-        // const handleOptionChange = (event) => {
-        //   setSelectedOption(event.target.value);
-        //   console.log('Selected Option:', event.target.value);
-        //   // Xử lý logic tại đây với giá trị được chọn
-        // };  
+
+
+
+
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+
+        console.log('Selected Option:', event.target.value);
+        // Xử lý logic tại đây với giá trị được chọn
+    };
 
 
     return (
         <div className="wrap">
             <h3 className="text-[30px] text-center">Danh sách lớp</h3>
 
-                
 
 
-            {/* <div className="relative inline-block text-left">
+
+            <div className="relative inline-block text-left">
                 <select
                     className="appearance-none border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     defaultValue={selectedOption}
                     onChange={handleOptionChange}
                 >
                     <option value="" disabled>--Chọn khóa học--</option>
-                    {khoahoc && khoahoc.map((iteam, index) => (
-                        <option key={index} value={iteam[index]}> {iteam[index]}</option>
+                    {khoahoc && khoahoc.map((khoahoc) => (
+                        <option key={khoahoc} value={khoahoc}>{khoahoc}
+                        </option>
                     ))}
                 </select>
-                
-            </div> */}
-            
+
+            </div>
+
 
 
             <div className="container mx-auto">
@@ -117,7 +149,14 @@ export default function Index() {
                                     <td className="py-2 px-4 border-b border-gray-300">ĐÃ HOÀN THÀNH</td>
                                     <td className="py-2 px-4 border-b border-gray-300">CHƯA ĐÁNH GIÁ</td>
                                     <td className="py-2 px-4 border-b border-gray-300 text-center">0</td>
-                                    <td className="py-2 border-b border-gray-300"><button className="border border-gray-300 px-[10px] rounded-lg bg-[#C9F7F5] text-[#1BC5BD] font-semibold">Đánh giá</button></td>
+                                    <td className="py-2 border-b border-gray-300">
+                                        <button className="border border-gray-300 px-[10px] rounded-lg bg-[#C9F7F5] text-[#1BC5BD] font-semibold"
+                                                onClick={()=>{
+                                                    console.log(`mã lớp ${classs.class_code} `);
+                                                }}>
+                                            Đánh giá
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
