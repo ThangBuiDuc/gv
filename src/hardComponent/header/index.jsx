@@ -1,27 +1,22 @@
 // import { Link } from "react-router-dom";
 // import { useLocation , useNavigate} from "react-router-dom";
 // import { useState } from "react";
+// import { useQueryClient } from "@tanstack/react-query";
 import logo from "../../assets/logo.png";
 import "../../App.css";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import { RoleContext } from "../../App";
-import { useContext } from "react";
 
 export default function Index({ windowWidth }) {
-  const role = useContext(RoleContext);
-
   const { isSignedIn, user } = useUser();
   const { signOut } = useClerk();
   const navigate = useNavigate();
 
   const handleLogIn = () => {
-    role.setRole(null);
     navigate("/sign-in");
   };
 
   const handleLogOut = () => {
-    role.setRole(null);
     signOut();
     navigate("/home");
   };

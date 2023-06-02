@@ -7,14 +7,7 @@ import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 import { IconContext } from "react-icons";
 
-export default function Index({
-  data,
-  staff,
-  present,
-  setStatus,
-  question,
-  setData,
-}) {
+export default function Index({ data, staff, present, question }) {
   const [toggle, setToggle] = useState(false);
 
   const [ref, { height }] = useMeasure();
@@ -72,8 +65,6 @@ export default function Index({
                     staff={staff}
                     question={question}
                     present={present}
-                    setStatus={setStatus}
-                    setData={setData}
                   />
                 </div>
               </animated.div>

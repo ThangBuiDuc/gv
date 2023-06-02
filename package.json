@@ -16,6 +16,7 @@
     "@fullcalendar/moment": "^6.1.5",
     "@fullcalendar/react": "^6.1.5",
     "@fullcalendar/timegrid": "^6.1.5",
+    "@tanstack/react-query": "^4.29.12",
     "@tanstack/react-table": "^8.8.4",
     "dotenv": "^16.0.3",
     "draftjs-to-html": "^0.9.1",

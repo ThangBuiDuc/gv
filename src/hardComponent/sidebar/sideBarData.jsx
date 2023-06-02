@@ -55,7 +55,6 @@ export const sideBarData = [
     title: "Quản lý đào tạo",
     path: "/qldt",
     icon: <MdOutlineManageAccounts size={"30px"} />,
-    role: import.meta.env.VITE_ROLE_QLDT.split("||"),
     subNav: [
       {
         title: "Duyệt tư cách sinh viên",
@@ -65,6 +64,17 @@ export const sideBarData = [
       {
         title: "Đánh giá CTGD",
         path: "/qldt/gv",
+        icon: <MdAppRegistration size={"22px"} />,
+      },
+    ],
+  },
+  {
+    title: "Sinh viên rèn luyện",
+    icon: <MdOutlineManageAccounts size={"30px"} />,
+    subNav: [
+      {
+        title: "Đánh giá sinh viên",
+        path: "/trainscore/sv",
         icon: <MdAppRegistration size={"22px"} />,
       },
     ],

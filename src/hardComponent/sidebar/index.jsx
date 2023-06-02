@@ -1,8 +1,7 @@
 import "../../App.css";
 import { sideBarData } from "./sideBarData";
 import SubMenu from "./subMenu";
-import { useContext, Fragment } from "react";
-import { RoleContext } from "../../App";
+import { Fragment } from "react";
 import { useClerk, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { IconContext } from "react-icons";
@@ -10,7 +9,6 @@ import { FaTimes } from "react-icons/fa";
 import { useTransition, animated } from "react-spring";
 
 export default function Index({ windowWidth, menuBtn, setMenuBtn }) {
-  const role = useContext(RoleContext);
   const { isSignedIn, user } = useUser();
   const { signOut } = useClerk();
   const navigate = useNavigate();
@@ -30,7 +28,6 @@ export default function Index({ windowWidth, menuBtn, setMenuBtn }) {
   };
 
   const handleLogOut = () => {
-    role.setRole(null);
     signOut();
     navigate("/home");
   };
@@ -39,21 +36,11 @@ export default function Index({ windowWidth, menuBtn, setMenuBtn }) {
       {windowWidth > 1024 ? (
         <div className="w-[18%] min-h-[700px] flex flex-col gap-[20px]">
           {sideBarData.map((item, index) => {
-            if (item.role) {
-              if (
-                item.role.find((item) => item === role.role?.role_id.toString())
-              )
-                return (
-                  <Fragment key={index}>
-                    <SubMenu item={item} index={index} />
-                  </Fragment>
-                );
-            } else
-              return (
-                <Fragment key={index}>
-                  <SubMenu item={item} index={index} />
-                </Fragment>
-              );
+            return (
+              <Fragment key={index}>
+                <SubMenu item={item} index={index} />
+              </Fragment>
+            );
           })}
         </div>
       ) : (
@@ -96,23 +83,11 @@ export default function Index({ windowWidth, menuBtn, setMenuBtn }) {
                   </button>
                 )}
                 {sideBarData.map((item, index) => {
-                  if (item.role) {
-                    if (
-                      item.role.find(
-                        (item) => item === role.role?.role_id.toString()
-                      )
-                    )
-                      return (
-                        <Fragment key={index}>
-                          <SubMenu item={item} index={index} />
-                        </Fragment>
-                      );
-                  } else
-                    return (
-                      <Fragment key={index}>
-                        <SubMenu item={item} index={index} />
-                      </Fragment>
-                    );
+                  return (
+                    <Fragment key={index}>
+                      <SubMenu item={item} index={index} />
+                    </Fragment>
+                  );
                 })}
               </animated.div>
             )

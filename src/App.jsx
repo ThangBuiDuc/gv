@@ -52,6 +52,9 @@ const QLDTSV = React.lazy(() => import("./component/qldt/sv"));
 const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
 const Work = React.lazy(() => import("./component/calendar/work"));
 
+// TrainScore
+const SV = React.lazy(() => import("./component/trainScore/sv"));
+
 function MainRoute() {
   const location = useLocation();
   const { isSignedIn } = useAuth();
@@ -145,7 +148,7 @@ function MainRoute() {
 
       <Route path="*" element={<NotFound />} />
 
-      <Route path="/" element={<Hard role={role} />}>
+      <Route path="/" element={<Hard />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
 
@@ -277,6 +280,27 @@ function MainRoute() {
           }
         />
 
+        <Route
+          path="/trainscore/sv"
+          element={
+            <>
+              <SignedIn>
+                <SV />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/trainscore/sv"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
         {/* <Route
             path="/survey/total"
             element={
@@ -317,7 +341,7 @@ function MainRoute() {
       </Route>
 
       {/* ADMIN ROUTE */}
-      <Route path="/admin" element={<HardAdmin role={role} />}>
+      <Route path="/admin" element={<HardAdmin />}>
         <Route path="/admin" element={<Navigate to="dashboard" />} />
         <Route
           path="dashboard"

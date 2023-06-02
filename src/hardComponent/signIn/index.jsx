@@ -8,19 +8,13 @@ import { useSignIn } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import { BiArrowBack } from "react-icons/bi";
 
-import { RoleContext } from "../../App";
-import { useContext } from "react";
-
 export default function SignIn() {
   // const navigate = useNavigate();
-  const role = useContext(RoleContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [progress, setProgress] = useState("");
   const [loading, setLoading] = useState(false);
   const [forGotPass, setForGotPass] = useState(false);
-
-  role.setRole(null);
 
   // console.log(location.hash.substring(16, location.hash.length));
   // console.log(

@@ -5,17 +5,11 @@ import { useState } from "react";
 // import { useAuth } from "@clerk/clerk-react";
 import Swal from "sweetalert2";
 import { useAuth } from "@clerk/clerk-react";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function Index({
-  staff,
-  data,
-  question,
-  present,
-  setStatus,
-  setData,
-}) {
+export default function Index({ staff, data, question, present }) {
   const { getToken } = useAuth();
-
+  const queryClient = useQueryClient();
   // console.log(present);
   // const select =
   const select = staff
@@ -154,8 +148,7 @@ export default function Index({
         ).then((res) => res.status);
 
         if (result === 200) {
-          setData(null);
-          setStatus((pre) => !pre);
+          queryClient.invalidateQueries({ queryKey: ["getData_assign_CTGD"] });
           Swal.fire({ title: "Phân công dự giờ thành công!", icon: "success" });
         } else
           Swal.fire({
