@@ -17,8 +17,6 @@ export default function Index({ data }) {
     },
   });
 
-  console.log(data.student_comment);
-
   return (
     <div className="flex border-t border-bordercl border-solid justify-between p-[10px] flex-col gap-[20px]">
       <div className="lg:flex-row flex-col flex justify-between ">
