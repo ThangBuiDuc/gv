@@ -374,7 +374,7 @@ function PreventRole() {
           />
 
           <Route
-            path="/drl/studentlish"
+            path="/drl/studentlist"
             element={
               <>
                 <SignedIn>

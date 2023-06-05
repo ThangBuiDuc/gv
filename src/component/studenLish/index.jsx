@@ -9,7 +9,7 @@ export default function index() {
 
   useEffect(() => {
     const getStudentLish = () => {
-      fetch("https://renluyen.hasura.app/api/rest/get-studen-lish/1/CT2401C", {
+      fetch("https://renluyen.hasura.app/api/rest/get-studen-lish/1/CT2301M", {
         headers: {
           'Content-type': 'application/json',
           'x-hasura-admin-secret': 'WtRdFly5j5RuA149pEo8GetysucBflfen3RiQ77CmbY7tl0YVfi6J79d7MS7sFBd'
@@ -59,9 +59,9 @@ export default function index() {
               {data && data.map((item, index) => (
                 <tr key={index}>
                   <td className="py-2 px-4 border-b border-gray-300">{item.user.first_name} {item.user.last_name}</td>
-                  <td className="py-2 px-4 border-b border-gray-300">ĐÃ HOÀN THÀNH</td>
-                  <td className="py-2 px-4 border-b border-gray-300">ĐÃ HOÀN THÀNH</td>
-                  <td className="py-2 px-4 border-b border-gray-300">CHƯA ĐÁNH GIÁ</td>
+                  <td className="py-2 px-4 border-b border-gray-300 text-center">{item.student_total_point === null ? <>Chưa đánh giá</> : item.student_total_point}</td>
+                  <td className="py-2 px-4 border-b border-gray-300 text-center">{item.monitor_total_point === null ? "Chưa đánh giá" : item.monitor_total_point}</td>
+                  <td className="py-2 px-4 border-b border-gray-300 text-center">{item.manager_total_point === null ? "Chưa đánh giá" : item.manager_total_point}</td>
                   <td className="py-2 px-4 border-b border-gray-300 text-center">0</td>
                   <td className="py-2 border-b border-gray-300"><button className="border border-gray-300 px-[10px] rounded-lg bg-[#C9F7F5] text-[#1BC5BD] font-semibold">Đánh giá</button></td>
                 </tr>
