@@ -1,20 +1,18 @@
-// import React from 'react'
-import { useEffect, useLayoutEffect, useState } from "react";
+// // import React from 'react'
+// import { useState } from "react";
 import "../../../App.css";
 import { useAuth } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
+import { useQuery } from "@tanstack/react-query";
 // import Swal from "sweetalert2";
 
-function compare(a, b) {
-  return a.class_name.localeCompare(b.class_name);
-}
+// function compare(a, b) {
+//   return a.class_name.localeCompare(b.class_name);
+// }
 
 export default function Index() {
   const { getToken } = useAuth();
-  const [present, setPresent] = useState(null);
-  const [course, setCourse] = useState(null);
-  const [afterUpdate, setAfterUpdate] = useState(false);
 
   // const handleOnClick = () => {
   //   Swal.fire({
@@ -114,23 +112,42 @@ export default function Index() {
   //   });
   // };
 
-  useLayoutEffect(() => {
-    let callApi = async () => {
-      await fetch(`${import.meta.env.VITE_PRESENT_API}`)
+  const role = useQuery({
+    queryKey: ["getRole_CTGD"],
+    queryFn: async () => {
+      return await fetch(`${import.meta.env.VITE_ROLE_API}`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_ROLE,
+          })}`,
+        },
+      })
         .then((res) => res.json())
-        .then((res) => {
-          if (res.hientai) setPresent(res.hientai[0]);
-        });
-    };
+        .then((res) => res.result[0]);
+    },
+  });
 
-    callApi();
-  }, []);
+  const present = useQuery({
+    queryKey: ["getPresent_CTGD"],
+    queryFn: async () => {
+      return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
+        .then((res) => res.json())
+        .then((res) => res.hientai[0]);
+    },
+  });
 
-  useEffect(() => {
-    let callApi = async () => {
-      fetch(
-        `${import.meta.env.VITE_QLDT_COURSE}${present.manamhoc}/${
-          present.hocky
+  // var condition =
+  //   typeof present?.data === "object" &&
+  //   role.data?.role_id == import.meta.env.VITE_ROLE_QLDT;
+
+  const data = useQuery({
+    queryKey: ["getCourse_qldt_sv"],
+    queryFn: async () => {
+      console.log(present.data?.manamhoc);
+      return await fetch(
+        `${import.meta.env.VITE_QLDT_COURSE}${present.data?.manamhoc}/${
+          present.data?.hocky
         }`,
         {
           method: "GET",
@@ -142,45 +159,55 @@ export default function Index() {
         }
       )
         .then((res) => res.json())
-        .then((res) => {
-          if (res.result.length > 0) setCourse(res.result.sort(compare));
-          else setCourse("empty");
-        });
-    };
-    if (present) callApi();
-  }, [present, afterUpdate]);
+        .then((res) => res.result);
+    },
+    enabled:
+      present.data && role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
+  });
 
-  return (
-    <div className="wrap">
-      <div className="flex justify-center">
-        <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
-      </div>
-      {course === "empty" ? (
+  // console.log(condition);
+
+  // useLayoutEffect(() => {
+  //   let callApi = async () => {
+  //     await fetch(`${import.meta.env.VITE_PRESENT_API}`)
+  //       .then((res) => res.json())
+  //       .then((res) => {
+  //         if (res.hientai) setPresent(res.hientai[0]);
+  //       });
+  //   };
+
+  //   callApi();
+  // }, []);
+
+  // useEffect(() => {
+  //   let callApi = async () => {
+  //     fetch(
+  //       `${import.meta.env.VITE_QLDT_COURSE}${present.manamhoc}/${
+  //         present.hocky
+  //       }`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           authorization: `Bearer ${await getToken({
+  //             template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
+  //           })}`,
+  //         },
+  //       }
+  //     )
+  //       .then((res) => res.json())
+  //       .then((res) => {
+  //         if (res.result.length > 0) setCourse(res.result.sort(compare));
+  //         else setCourse("empty");
+  //       });
+  //   };
+  //   if (present) callApi();
+  // }, [present, afterUpdate]);
+  if (role.isLoading || role.isFetching) {
+    return (
+      <div className="wrap">
         <div className="flex justify-center">
-          <h3>Hiện tại chưa có môn học trong kỳ được duyệt đánh giá</h3>
+          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
         </div>
-      ) : course ? (
-        <>
-          {/* <button
-            className="btn w-fit self-end"
-            onClick={() => handleOnClick()}
-          >
-            Duyệt tất cả
-          </button> */}
-          {course.map((item, index) => {
-            return (
-              <div className="flex flex-col" key={index}>
-                <Content
-                  data={item}
-                  present={present}
-                  setCourse={setCourse}
-                  setAfterUpdate={setAfterUpdate}
-                />
-              </div>
-            );
-          })}
-        </>
-      ) : (
         <ReactLoading
           type="spin"
           color="#0083C2"
@@ -188,7 +215,65 @@ export default function Index() {
           height={"50px"}
           className="self-center"
         />
-      )}
+      </div>
+    );
+  }
+
+  if (role.data.role_id != import.meta.env.VITE_ROLE_QLDT) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+        </div>
+        <div className="flex justify-center">
+          <h3>Tài khoản hiện tại không có quyền thực hiện chức năng này!</h3>
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    present.isLoading ||
+    present.isFetching ||
+    data.isLoading ||
+    data.isFetching
+  ) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+        </div>
+        <ReactLoading
+          type="spin"
+          color="#0083C2"
+          width={"50px"}
+          height={"50px"}
+          className="self-center"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="wrap">
+      <div className="flex justify-center">
+        <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+      </div>
+      <>
+        {/* <button
+            className="btn w-fit self-end"
+            onClick={() => handleOnClick()}
+          >
+            Duyệt tất cả
+          </button> */}
+        {data.data.map((item, index) => {
+          return (
+            <div className="flex flex-col" key={index}>
+              <Content data={item} />
+            </div>
+          );
+        })}
+      </>
     </div>
   );
 }

@@ -65,7 +65,7 @@ export default function Index() {
   const { getToken } = useAuth();
 
   const role = useQuery({
-    queryKey: ["getRole_assign_CTGD"],
+    queryKey: ["getRole_CTGD"],
     queryFn: async () => {
       return await fetch(`${import.meta.env.VITE_ROLE_API}`, {
         method: "GET",
@@ -79,7 +79,7 @@ export default function Index() {
   });
 
   const present = useQuery({
-    queryKey: ["getPresent_assign_CTGD"],
+    queryKey: ["getPresent_CTGD"],
     queryFn: async () => {
       return await fetch(`${import.meta.env.VITE_PRESENT_API}`).then((res) =>
         res.json()
@@ -168,7 +168,7 @@ export default function Index() {
   if (!role.data.result[0].is_truong_khoa) {
     return (
       <div className="wrap">
-        <div className="flex justify-center">
+        <div className="flex justify-center ">
           <h2 className="text-primary">Phân công dự giờ</h2>
         </div>
         <div className="flex justify-center">
@@ -263,14 +263,15 @@ export default function Index() {
             Xuất CSV
           </CSVLink>
           {/* <button
-                className="btn w-[fit]"
-                onClick={() => {
-                  setData(null);
-                  setStatus((pre) => !pre);
-                }}
-              >
-                Click Me!
-              </button> */}
+            className="btn w-[fit]"
+            onClick={() => {
+              queryClient.invalidateQueries({
+                queryKey: ["getData_assign_CTGD"],
+              });
+            }}
+          >
+            Click Me!
+          </button> */}
         </div>
         <div className="flex flex-col gap-[20px]">
           <h3 className="self-center text-primary text-center">

@@ -7,7 +7,7 @@ import useMeasure from "react-use-measure";
 import { IconContext } from "react-icons";
 import SubContent from "./subContent";
 
-export default function Index({ data, present, setCourse, setAfterUpdate }) {
+export default function Index({ data }) {
   const [toggle, setToggle] = useState();
   const [ref, { height }] = useMeasure();
 
@@ -53,12 +53,7 @@ export default function Index({ data, present, setCourse, setAfterUpdate }) {
                   className="flex gap-[20px] justify-between flex-col "
                   ref={ref}
                 >
-                  <SubContent
-                    data={data}
-                    present={present}
-                    setAfterUpdate={setAfterUpdate}
-                    setCourse={setCourse}
-                  />
+                  <SubContent data={data} />
                 </div>
               </animated.div>
             )

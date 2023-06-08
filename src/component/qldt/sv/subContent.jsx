@@ -4,6 +4,7 @@ import { useLayoutEffect } from "react";
 import ReactLoading from "react-loading";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 
 function leftJoin(objArr1, objArr2) {
   return objArr1.map((anObj1) => ({
@@ -26,13 +27,17 @@ function compare(a, b) {
   return 0;
 }
 
-export default function Index({ data, present, setCourse, setAfterUpdate }) {
+export default function Index({ data }) {
   // console.log(data)
+  const queryClient = useQueryClient();
+  const present = queryClient.getQueryData(["getPresent_CTGD"]);
   const { getToken } = useAuth();
   const [sv, setSv] = useState();
-  useLayoutEffect(() => {
-    let callApi = async () => {
-      let result = await fetch(
+
+  const result = useQuery({
+    queryKey: ["QLGD_QLDT_SV"],
+    queryFn: async () => {
+      return await fetch(
         `${import.meta.env.VITE_QLGD_QLDT_SV}${data.class_code}/${
           data.subject_code
         }`,
@@ -47,8 +52,13 @@ export default function Index({ data, present, setCourse, setAfterUpdate }) {
       )
         .then((res) => res.json())
         .then((res) => res.result);
+    },
+  });
 
-      let result1 = await fetch(`${import.meta.env.VITE_GV_QLDT_SV}`, {
+  const result1 = useQuery({
+    queryKey: ["GV_QLDT_SV"],
+    queryFn: async () => {
+      return await fetch(`${import.meta.env.VITE_GV_QLDT_SV}`, {
         method: "POST",
         headers: {
           authorization: `Bearer ${await getToken({
@@ -58,15 +68,22 @@ export default function Index({ data, present, setCourse, setAfterUpdate }) {
         body: JSON.stringify({
           subject_code: data.subject_code,
           class_code: data.class_code,
-          hocky: present.hocky,
-          namhoc: present.manamhoc,
+          hocky: present.data?.hocky,
+          namhoc: present.data?.manamhoc,
         }),
       })
         .then((res) => res.json())
         .then((res) => res.result);
+    },
+  });
 
-      let result2 = await fetch(
-        `${import.meta.env.VITE_EDU_BAN}${present.manamhoc}/${present.hocky}`,
+  const result2 = useQuery({
+    queryKey: ["EDU_BAN"],
+    queryFn: async () => {
+      return await fetch(
+        `${import.meta.env.VITE_EDU_BAN}${present.data?.manamhoc}/${
+          present.data?.hocky
+        }`,
         {
           method: "GET",
           headers: {
@@ -78,13 +95,16 @@ export default function Index({ data, present, setCourse, setAfterUpdate }) {
       )
         .then((res) => res.json())
         .then((res) => res.result);
-
+    },
+  });
+  useEffect(() => {
+    if (result.data && result1.data && result2.data) {
       let merged = [];
 
       for (let i = 0; i < result.length; i++) {
         merged.push({
-          ...result[i],
-          ...result1[i],
+          ...result.data[i],
+          ...result1.data[i],
         });
       }
 
@@ -98,13 +118,11 @@ export default function Index({ data, present, setCourse, setAfterUpdate }) {
               return item;
             })
             .sort(compare),
-          result2
+          result2.data
         )
       );
-    };
-
-    callApi();
-  }, []);
+    }
+  }, [result, result1, result2]);
 
   const handleOnClick = async () => {
     // if (
