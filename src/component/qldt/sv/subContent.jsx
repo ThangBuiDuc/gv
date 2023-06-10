@@ -1,8 +1,8 @@
 import { useAuth } from "@clerk/clerk-react";
 import "../../../App.css";
-import { useLayoutEffect } from "react";
+// import { useLayoutEffect } from "react";
 import ReactLoading from "react-loading";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 
@@ -68,8 +68,8 @@ export default function Index({ data }) {
         body: JSON.stringify({
           subject_code: data.subject_code,
           class_code: data.class_code,
-          hocky: present.data?.hocky,
-          namhoc: present.data?.manamhoc,
+          hocky: present[0]?.hocky,
+          namhoc: present[0]?.manamhoc,
         }),
       })
         .then((res) => res.json())
@@ -81,8 +81,8 @@ export default function Index({ data }) {
     queryKey: ["EDU_BAN"],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_EDU_BAN}${present.data?.manamhoc}/${
-          present.data?.hocky
+        `${import.meta.env.VITE_EDU_BAN}${present[0]?.manamhoc}/${
+          present[0]?.hocky
         }`,
         {
           method: "GET",
@@ -99,9 +99,11 @@ export default function Index({ data }) {
   });
   useEffect(() => {
     if (result.data && result1.data && result2.data) {
+      // console.log(result.data);
+      // console.log(result1.data);
       let merged = [];
 
-      for (let i = 0; i < result.length; i++) {
+      for (let i = 0; i < result.data.length; i++) {
         merged.push({
           ...result.data[i],
           ...result1.data[i],
@@ -122,7 +124,7 @@ export default function Index({ data }) {
         )
       );
     }
-  }, [result, result1, result2]);
+  }, [result.data, result1.data, result2.data]);
 
   const handleOnClick = async () => {
     // if (
@@ -192,8 +194,7 @@ export default function Index({ data }) {
         // }
 
         if (result === 200) {
-          setCourse(null);
-          setAfterUpdate((pre) => !pre);
+          queryClient.invalidateQueries(["getCourse_qldt_sv"]);
           Swal.fire({
             title: "Duyệt tư cách sinh viên cho môn học thành công!",
             icon: "success",

@@ -133,7 +133,7 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
         .then((res) => res.json())
-        .then((res) => res.hientai[0]);
+        .then((res) => res.hientai);
     },
   });
 
@@ -144,10 +144,9 @@ export default function Index() {
   const data = useQuery({
     queryKey: ["getCourse_qldt_sv"],
     queryFn: async () => {
-      console.log(present.data?.manamhoc);
       return await fetch(
-        `${import.meta.env.VITE_QLDT_COURSE}${present.data?.manamhoc}/${
-          present.data?.hocky
+        `${import.meta.env.VITE_QLDT_COURSE}${present.data[0]?.manamhoc}/${
+          present.data[0]?.hocky
         }`,
         {
           method: "GET",
@@ -162,10 +161,11 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      present.data && role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
+      present.data?.length > 0 &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
   });
 
-  // console.log(condition);
+  // console.log(present.data);
 
   // useLayoutEffect(() => {
   //   let callApi = async () => {
