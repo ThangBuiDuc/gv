@@ -30,14 +30,24 @@ const headersCSV = [
 ];
 
 function compare(a, b) {
-  return a.class_name.localeCompare(b.class_name);
+  return a.user.name.localeCompare(b.user.name);
 }
 
 export default function Index() {
   const { getToken } = useAuth();
   const [present, setPresent] = useState(null);
   const [course, setCourse] = useState(null);
+  const [search, setSearch] = useState(null);
+  const [query, setQuery] = useState("");
   const [afterUpdate, setAfterUpdate] = useState(false);
+
+  useEffect(() => {
+    if (query === "") {
+      setSearch(course);
+    } else {
+      setSearch(course.filter((item) => item.user.name.includes(query)));
+    }
+  }, [query, course]);
 
   useLayoutEffect(() => {
     let callApi = async () => {
@@ -103,18 +113,33 @@ export default function Index() {
               Xuất CSV
             </CSVLink>
           </div>
-          {course.map((item, index) => {
-            return (
-              <div className="flex flex-col" key={index}>
-                <Content
-                  data={item}
-                  setCourse={setCourse}
-                  present={present}
-                  setAfterUpdate={setAfterUpdate}
-                />
-              </div>
-            );
-          })}
+          <div className="flex justify-end">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Tìm kiếm giảng viên"
+              className="w-[250px] border-[1px] border-solid border-bordercl overflow-hidden p-[5px] rounded-[5px]"
+            />
+          </div>
+          {search?.length > 0 ? (
+            search.map((item, index) => {
+              return (
+                <div className="flex flex-col" key={index}>
+                  <Content
+                    data={item}
+                    setCourse={setCourse}
+                    present={present}
+                    setAfterUpdate={setAfterUpdate}
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <div className="flex justify-center">
+              <h3>Không tìm thấy dữ liệu</h3>
+            </div>
+          )}
         </>
       ) : (
         <ReactLoading
