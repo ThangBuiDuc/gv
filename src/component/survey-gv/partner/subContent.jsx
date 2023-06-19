@@ -69,7 +69,7 @@ export default function Index({
           let updates = point.reduce((total, curr, i) => {
             let data = {
               _set: {
-                question_point: curr,
+                question_point: parseFloat(curr).toFixed(2),
                 comment: comment[i],
                 updated_at: new Date(),
               },
@@ -182,7 +182,8 @@ export default function Index({
                 className="max-w-[10%] border-[1px] border-solid border-bordercl overflow-hidden p-[5px] rounded-[5px]"
                 value={point ? point[index] : ""}
                 maxLength={5}
-                pattern="[0-9]{4}"
+                onWheel={(e) => e.target.blur()}
+                // pattern="[0-9]{4}"
                 onChange={(e) =>
                   setPoint(
                     point.map((curr, i) => {

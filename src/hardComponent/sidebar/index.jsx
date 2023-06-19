@@ -77,7 +77,7 @@ export default function Index({ windowWidth, menuBtn, setMenuBtn }) {
                 ) : (
                   <button
                     onClick={handleLogIn}
-                    className="cursor-pointer text-white font-semibold mr-[20px]"
+                    className="cursor-pointer text-black font-semibold mr-[20px]"
                   >
                     Đăng nhập
                   </button>

@@ -52,9 +52,9 @@ export default async function Handler(req, res) {
           },
         }),
       }
-    ).then(res=>res.status);
+    ).then((res) => res.status);
 
-    if(result === 200) res.status(200).json({ result: "success" });
+    if (result === 200) res.status(200).json({ result: "success" });
   } else {
     res.status(400).json({ result: "failed" });
   }

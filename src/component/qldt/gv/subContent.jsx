@@ -139,7 +139,7 @@ export default function Index({
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         let _set = {
-          qldt_result: point,
+          qldt_result: parseFloat(point).toFixed(2),
           updated_at: new Date(),
         };
 
@@ -256,6 +256,7 @@ export default function Index({
           className="max-w-[10%] border-[1px] border-solid border-bordercl overflow-hidden p-[5px] rounded-[5px]"
           value={point ? point : ""}
           maxLength={5}
+          onWheel={(e) => e.target.blur()}
           // pattern="[0-9]{4}"
           onChange={(e) =>
             setPoint(

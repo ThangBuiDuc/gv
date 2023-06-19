@@ -113,6 +113,7 @@ export default function SignUp() {
                 .catch((err) => {
                   // console.log("error", err.errors[0].message);
                   setProgress(err.errors[0].message);
+                  setLoading(false);
                 });
               // setProgress('missing_requirements')
             } else {
