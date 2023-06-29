@@ -5,6 +5,7 @@ import "../../../App.css";
 // import ReactLoading from "react-loading";
 // import { useState } from "react";
 // import Swal from "sweetalert2";
+import { useQueryClient } from "@tanstack/react-query";
 import useMeasure from "react-use-measure";
 import { useTransition, animated } from "@react-spring/web";
 
@@ -89,15 +90,12 @@ const columns = [
   },
 ];
 
-export default function Index({
-  dataCourse,
-  present,
-  setAfterUpdate,
-  setCourse,
-}) {
+export default function Index({ dataCourse }) {
   const [point, setPoint] = useState();
   const [ref, { width }] = useMeasure();
   const { getToken } = useAuth();
+  const queryClient = useQueryClient();
+  const present = queryClient.getQueryData(["getPresent_CTGD"]);
   const transitions = useTransition(point, {
     from: { opacity: 0, width: 0, overflow: "hidden" },
     // to:{opacity: 1, height: 100 },
@@ -151,10 +149,10 @@ export default function Index({
             _eq: dataCourse.class_code,
           },
           hocky: {
-            _eq: present.hocky,
+            _eq: present[0]?.hocky,
           },
           namhoc: {
-            _eq: present.manamhoc,
+            _eq: present[0]?.manamhoc,
           },
         };
 
@@ -185,8 +183,7 @@ export default function Index({
         // }
 
         if (result === 200) {
-          setCourse(null);
-          setAfterUpdate((pre) => !pre);
+          queryClient.invalidateQueries(["getCourse_qldt_gv"]);
           Swal.fire({
             title: "Cho điểm điểm giáo viên thành công!",
             icon: "success",
@@ -270,7 +267,7 @@ export default function Index({
               <animated.div style={style} className={"ml-[10px]"}>
                 <button
                   ref={ref}
-                  className="btn text-center whitespace-nowrap"
+                  className="selfBtn text-center whitespace-nowrap"
                   onClick={() => handleOnClick()}
                 >
                   Hoàn Thành

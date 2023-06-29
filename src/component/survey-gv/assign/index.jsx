@@ -85,7 +85,7 @@ export default function Index() {
         res.json()
       );
     },
-    enabled: role.data?.result[0].is_truong_khoa,
+    enabled: role.data?.result[0].is_truong_khoa === true,
   });
 
   const staff = useQuery({
@@ -100,7 +100,7 @@ export default function Index() {
         },
       }).then((res) => res.json());
     },
-    enabled: role.data?.result[0].is_truong_khoa,
+    enabled: role.data?.result[0].is_truong_khoa === true,
   });
 
   const question = useQuery({
@@ -257,7 +257,7 @@ export default function Index() {
               };
             })}
             headers={headersCSV}
-            className="btn"
+            className="selfBtn"
             filename={`${new Date().toDateString()}-qldtGV.csv`}
           >
             Xuất CSV

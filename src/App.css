@@ -16,8 +16,12 @@
     @apply flex flex-col w-[calc(100%_-_250px)] mt-[80px] ml-[250px] gap-[50px] p-[20px];
   }
 
-  .btn {
-    @apply border-[1px] border-bordercl rounded-[5px] p-[5px] hover:bg-primary hover:text-white md:hover:scale-[1.2] md:transition-all whitespace-nowrap text-center;
+  .selfBtn {
+    @apply border-[1px] border-bordercl rounded-[5px] p-[5px] hover:bg-primary hover:text-white md:hover:scale-[1.2] md:transition-all whitespace-nowrap text-center cursor-pointer;
+  }
+
+  .disableBtn {
+    @apply border-[1px] border-bordercl rounded-[5px] p-[5px] whitespace-nowrap text-center bg-bordercl cursor-not-allowed !important;
   }
 }
 

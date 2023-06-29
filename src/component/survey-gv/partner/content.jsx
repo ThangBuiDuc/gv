@@ -82,7 +82,7 @@ export default function Index({ data, present, setData, setAfterUpdate }) {
                 ) : (
                   <div className="lg:w-[20%] w-full flex justify-center">
                     <button
-                      className="btn h-fit"
+                      className="selfBtn h-fit"
                       onClick={() => {
                         handleOnclick(
                           item.subject_code,

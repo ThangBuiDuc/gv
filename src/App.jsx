@@ -53,7 +53,8 @@ const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
 const Work = React.lazy(() => import("./component/calendar/work"));
 
 // TrainScore
-const SV = React.lazy(() => import("./component/trainScore/sv"));
+const Classes = React.lazy(() => import("./component/trainScore/classes"));
+const Event = React.lazy(() => import("./component/trainScore/event"));
 
 function MainRoute() {
   const location = useLocation();
@@ -281,11 +282,11 @@ function MainRoute() {
         />
 
         <Route
-          path="/trainscore/sv"
+          path="/trainscore/classes"
           element={
             <>
               <SignedIn>
-                <SV />
+                <Classes />
               </SignedIn>
 
               <SignedOut>
@@ -293,7 +294,28 @@ function MainRoute() {
                 {/* <Navigate to="/sign-in" /> */}
                 <Navigate
                   to={`/sign-in#/?redirect_url=${encodeURIComponent(
-                    "/trainscore/sv"
+                    "/trainscore/classes"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
+        <Route
+          path="/trainscore/event"
+          element={
+            <>
+              <SignedIn>
+                <Event />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/trainscore/event"
                   )}`}
                 />
               </SignedOut>

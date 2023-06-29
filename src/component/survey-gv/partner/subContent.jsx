@@ -203,7 +203,7 @@ export default function Index({
         );
       })}
       <button
-        className="btn w-fit self-center"
+        className="selfBtn w-fit self-center"
         onClick={() => {
           handleOnClick();
         }}

@@ -1,10 +1,11 @@
 // import React from 'react'
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../../App.css";
 import { useAuth } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
 import { CSVLink } from "react-csv";
+import { useQuery } from "@tanstack/react-query";
 
 const headersCSV = [
   {
@@ -35,37 +36,41 @@ function compare(a, b) {
 
 export default function Index() {
   const { getToken } = useAuth();
-  const [present, setPresent] = useState(null);
-  const [course, setCourse] = useState(null);
   const [search, setSearch] = useState(null);
   const [query, setQuery] = useState("");
-  const [afterUpdate, setAfterUpdate] = useState(false);
 
-  useEffect(() => {
-    if (query === "") {
-      setSearch(course);
-    } else {
-      setSearch(course.filter((item) => item.user.name.includes(query)));
-    }
-  }, [query, course]);
-
-  useLayoutEffect(() => {
-    let callApi = async () => {
-      await fetch(`${import.meta.env.VITE_PRESENT_API}`)
+  const role = useQuery({
+    queryKey: ["getRole_CTGD"],
+    queryFn: async () => {
+      return await fetch(`${import.meta.env.VITE_ROLE_API}`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_ROLE,
+          })}`,
+        },
+      })
         .then((res) => res.json())
-        .then((res) => {
-          if (res.hientai) setPresent(res.hientai[0]);
-        });
-    };
+        .then((res) => res.result[0]);
+    },
+  });
 
-    callApi();
-  }, []);
+  const present = useQuery({
+    queryKey: ["getPresent_CTGD"],
+    queryFn: async () => {
+      return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
+        .then((res) => res.json())
+        .then((res) => res.hientai);
+    },
+    enabled: role.data?.role_id.toString() === import.meta.env.VITE_ROLE_QLDT,
+  });
 
-  useEffect(() => {
-    let callApi = async () => {
-      fetch(
-        `${import.meta.env.VITE_QLDT_COURSE}${present.manamhoc}/${
-          present.hocky
+  const data = useQuery({
+    queryKey: ["getCourse_qldt_gv"],
+    queryFn: async () => {
+      return await fetch(
+        `${import.meta.env.VITE_QLDT_COURSE}${present.data[0]?.manamhoc}/${
+          present.data[0]?.hocky
         }`,
         {
           method: "GET",
@@ -77,28 +82,87 @@ export default function Index() {
         }
       )
         .then((res) => res.json())
-        .then((res) => {
-          if (res.result.length > 0) setCourse(res.result.sort(compare));
-          else setCourse("empty");
-        });
-    };
-    if (present) callApi();
-  }, [present, afterUpdate]);
+        .then((res) => res.result.sort(compare));
+    },
+    enabled:
+      present.data?.length > 0 &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
+  });
+
+  useEffect(() => {
+    if (query === "") {
+      setSearch(data.data);
+    } else {
+      setSearch(data.data.filter((item) => item.user.name.includes(query)));
+    }
+  }, [query, data.data]);
+
+  if (role.isLoading || role.isFetching) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+        </div>
+        <ReactLoading
+          type="spin"
+          color="#0083C2"
+          width={"50px"}
+          height={"50px"}
+          className="self-center"
+        />
+      </div>
+    );
+  }
+
+  if (role.data.role_id != import.meta.env.VITE_ROLE_QLDT) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+        </div>
+        <div className="flex justify-center">
+          <h3>Tài khoản hiện tại không có quyền thực hiện chức năng này!</h3>
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    present.isLoading ||
+    present.isFetching ||
+    data.isLoading ||
+    data.isFetching
+  ) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+        </div>
+        <ReactLoading
+          type="spin"
+          color="#0083C2"
+          width={"50px"}
+          height={"50px"}
+          className="self-center"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="wrap">
       <div className="flex justify-center">
         <h2 className="text-primary">Thực hiện quy định, quy chế đào tạo</h2>
       </div>
-      {course === "empty" ? (
+      {data.data.length <= 0 ? (
         <div className="flex justify-center">
           <h3>Hiện tại chưa có môn học trong kỳ được duyệt đánh giá</h3>
         </div>
-      ) : course ? (
+      ) : (
         <>
           <div className="flex justify-end">
             <CSVLink
-              data={course.map((item, index) => {
+              data={data.data.map((item, index) => {
                 return {
                   stt: index + 1,
                   class_name: item.class_name,
@@ -107,7 +171,7 @@ export default function Index() {
                 };
               })}
               headers={headersCSV}
-              className="btn"
+              className="selfBtn"
               filename={`${new Date().toDateString()}-qldtGV.csv`}
             >
               Xuất CSV
@@ -126,12 +190,7 @@ export default function Index() {
             search.map((item, index) => {
               return (
                 <div className="flex flex-col" key={index}>
-                  <Content
-                    data={item}
-                    setCourse={setCourse}
-                    present={present}
-                    setAfterUpdate={setAfterUpdate}
-                  />
+                  <Content data={item} />
                 </div>
               );
             })
@@ -141,14 +200,6 @@ export default function Index() {
             </div>
           )}
         </>
-      ) : (
-        <ReactLoading
-          type="spin"
-          color="#0083C2"
-          width={"50px"}
-          height={"50px"}
-          className="self-center"
-        />
       )}
     </div>
   );

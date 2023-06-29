@@ -370,7 +370,7 @@ export default function Index({ staff, data, question, present }) {
         <></>
       ) : selectedOption && selectedOption1 && selectedOption2 ? (
         <button
-          className="btn w-fit self-center"
+          className="selfBtn w-fit self-center"
           onClick={() => handleOnClick()}
         >
           Mời dự giờ

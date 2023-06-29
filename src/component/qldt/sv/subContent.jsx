@@ -254,7 +254,7 @@ export default function Index({ data }) {
         );
       })}
       <button
-        className="btn w-fit self-center mt-[20px]"
+        className="selfBtn w-fit self-center mt-[20px]"
         onClick={() => {
           handleOnClick();
         }}

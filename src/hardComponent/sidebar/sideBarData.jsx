@@ -14,7 +14,7 @@ import {
 //import { IoCreateOutline } from "react-icons/io5";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { SlCalender } from "react-icons/sl";
-import { BsCalendarCheck } from "react-icons/bs";
+import { BsCalendarCheck, BsCalendarEvent } from "react-icons/bs";
 
 export const sideBarData = [
   {
@@ -74,8 +74,13 @@ export const sideBarData = [
     subNav: [
       {
         title: "Đánh giá sinh viên",
-        path: "/trainscore/sv",
+        path: "/trainscore/classes",
         icon: <MdAppRegistration size={"22px"} />,
+      },
+      {
+        title: "Sự kiện",
+        path: "/trainscore/event",
+        icon: <BsCalendarEvent size={"22px"} />,
       },
     ],
   },

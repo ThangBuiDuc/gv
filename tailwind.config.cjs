@@ -42,5 +42,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-aria-attributes")],
+  plugins: [require("tailwindcss-aria-attributes"), require("daisyui")],
 };

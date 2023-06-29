@@ -6,8 +6,10 @@ import logo from "../../assets/logo.png";
 import "../../App.css";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Index({ windowWidth }) {
+  const queryClient = useQueryClient();
   const { isSignedIn, user } = useUser();
   const { signOut } = useClerk();
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ export default function Index({ windowWidth }) {
   };
 
   const handleLogOut = () => {
+    queryClient.clear();
     signOut();
     navigate("/home");
   };

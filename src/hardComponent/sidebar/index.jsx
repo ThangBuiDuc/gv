@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { FaTimes } from "react-icons/fa";
 import { useTransition, animated } from "react-spring";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Index({ windowWidth, menuBtn, setMenuBtn }) {
   const { isSignedIn, user } = useUser();
+  const queryClient = useQueryClient();
   const { signOut } = useClerk();
   const navigate = useNavigate();
 
@@ -28,6 +30,7 @@ export default function Index({ windowWidth, menuBtn, setMenuBtn }) {
   };
 
   const handleLogOut = () => {
+    queryClient.clear();
     signOut();
     navigate("/home");
   };
