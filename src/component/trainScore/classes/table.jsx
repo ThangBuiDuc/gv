@@ -1,4 +1,5 @@
 import "../../../App.css";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { BiArrowBack } from "react-icons/bi";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth, useUser } from "@clerk/clerk-react";
@@ -20,15 +21,16 @@ const columnHelper = createColumnHelper();
 
 function TableRender({ table }) {
   return (
-    <div className="p-2">
-      <table>
+    <div className="border border-solid rounded-[5px] border-[#0083c2]">
+      <table className="w-full border-separate">
         <thead className="bg-[#c6e0c4]">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="border-solid border border-[#0083c2]"
+                  colSpan={header.colSpan}
+                  className=""
                 >
                   {header.isPlaceholder
                     ? null
@@ -41,13 +43,13 @@ function TableRender({ table }) {
             </tr>
           ))}
         </thead>
-        <tbody>
+        <tbody >
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} style={{ backgroundColor: "#D9E1F2" }}>
+            <tr key={row.id} style={{ backgroundColor: " rgb(0, 131, 194, 0.03)", paddingLeft:"5px" , lineHeight:"40px"}}>
               {row.getVisibleCells().map((cell, index) => (
                 <td
                   key={cell.id}
-                  className={`border border-solid border-[#0083c2] ${
+                  className={`pl-[5px] ${
                     index !== 0 && "text-center"
                   }`}
                 >
@@ -175,7 +177,7 @@ export default function Index({ dataPass, setDataPass }) {
                 // we can use the row.depth property
                 // and paddingLeft to visually indicate the depth
                 // of the row
-                paddingLeft: `${row.depth * 2}rem`,
+                paddingLeft: `${row.depth * 3}rem`,
               }}
               className={`${row.depth === 0 ? "font-semibold" : ""}`}
             >
@@ -184,13 +186,17 @@ export default function Index({ dataPass, setDataPass }) {
                   className="mr-[10px] ml-[10px]"
                   onClick={row.getToggleExpandedHandler()}
                 >
-                  {row.getIsExpanded() ? "-" : "+"}
+                  {row.getIsExpanded() ? <IoMdArrowDropup/> : <IoMdArrowDropdown/> }
                 </button>
               )}
               {getValue()}
             </div>
           );
         },
+      }),
+      columnHelper.accessor("max_point", {
+        header: "Điểm tối đa",
+        cell: ({ getValue }) => <p>{getValue()}</p>,
       }),
       columnHelper.accessor("self_point", {
         header: "Tự đánh giá",
