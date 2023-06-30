@@ -12,7 +12,6 @@ import { GrUserManager } from "react-icons/gr";
 import ReactLoading from "react-loading";
 
 export default function Index({ data, rootIndex, isRefetch }) {
-  console.log(isRefetch);
   const queryClient = useQueryClient();
   const { getToken } = useAuth();
   // console.log(setRootChecked);
