@@ -60,6 +60,7 @@ export default function Index() {
   //           )
   //         );
   // }, [root]);
+  console.log(data)
 
   return (
     <div className="flex border-t border-bordercl w-full">
@@ -103,7 +104,7 @@ export default function Index() {
               className="checkbox checkbox-success"
             />
             <div className="flex flex-col gap-[10px] max-h-[300px] h-[300px] overflow-y-scroll">
-              {data.listSV
+              {data && data.listSV
                 .filter((item) => !item.isSelect)
                 .map((item, index) => (
                   <div className="flex items-center gap-[10px]" key={index}>
@@ -170,7 +171,7 @@ export default function Index() {
           <div className="flex flex-col gap-[10px]">
             <h3 className="self-center">Danh sách sinh viên đã chọn</h3>
             <div className="flex flex-col gap-[10px] max-h-[340px] h-[340px] overflow-y-scroll">
-              {data.listSV
+              {data && data.listSV
                 .filter((item) => item.isSelect)
                 .map((item, index) => (
                   <div className="flex items-center gap-[10px]" key={index}>

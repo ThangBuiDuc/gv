@@ -73,8 +73,8 @@ export default function Index() {
   });
 
   console.log(batch.data);
-  console.log(listSV.data);
-  console.log(listEvent.data);
+  // console.log(listSV.data);
+  // console.log(listEvent.data);
 
   if (role.isFetching || role.isLoading) {
     return (

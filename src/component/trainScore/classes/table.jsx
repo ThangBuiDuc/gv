@@ -139,6 +139,13 @@ export default function Index({ dataPass, setDataPass }) {
     const onBlur = () => {
       table.options.meta?.updateData(row.index, value);
     };
+    const min = 0;
+    const max = row.original.max_point;
+
+    const handleChange = (e) => {
+      const value = Math.max(min, Math.min(max, Number(e.target.value)));
+      setValue(value);
+    };
     return row.depth === 0 && column.id === "staff_point" ? (
       // <div className="flex justify-center h-full w-full">
       <input
@@ -146,7 +153,8 @@ export default function Index({ dataPass, setDataPass }) {
         type="number"
         value={value}
         onWheel={(e) => e.target.blur()}
-        onChange={(e) => setValue(e.target.value)}
+        // onChange={(e) => setValue(e.target.value)}
+        onChange={handleChange}
         onBlur={onBlur}
       />
     ) : (
