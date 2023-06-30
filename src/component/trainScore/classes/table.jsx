@@ -63,6 +63,7 @@ function TableRender({ table }) {
 }
 
 export default function Index({ dataPass, setDataPass }) {
+  console.log(dataPass.data);
   const [data, setData] = useState(null);
   const queryClient = useQueryClient();
   const { getToken } = useAuth();
@@ -115,10 +116,9 @@ export default function Index({ dataPass, setDataPass }) {
               .sort((a, b) => a.position - b.position);
 
             return {
-              self_point: question.reduce(
-                (total, curr) => total + curr.self_point,
-                0
-              ),
+              self_point: question.every((item) => item.point)
+                ? question.reduce((total, curr) => total + curr.self_point, 0)
+                : null,
               ...object,
               ...item.group_question,
               question,
@@ -201,7 +201,7 @@ export default function Index({ dataPass, setDataPass }) {
         ),
       }),
       columnHelper.accessor("monitor_point", {
-        header: "Điểm cán bộ",
+        header: "Điểm cán bộ lớp",
         cell: ({ row, getValue }) => (
           <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
             {getValue()}
@@ -395,7 +395,41 @@ export default function Index({ dataPass, setDataPass }) {
         className="cursor-pointer"
         onClick={() => setDataPass((pre) => ({ ...pre, toggle: !pre.toggle }))}
       />
-
+      <h4 className="text-center">
+        Đánh giá sinh viên: <span>{dataPass.data.sv.fullname}</span>
+      </h4>
+      <p>
+        Điểm sinh viên tự đánh giá:{" "}
+        <span className="font-semibold">
+          {dataPass.data.total_self_point
+            ? dataPass.data.total_self_point
+            : "..."}
+        </span>
+      </p>
+      <p>
+        Điểm cán bộ lớp đánh giá:{" "}
+        <span className="font-semibold">
+          {dataPass.data.total_staff_point
+            ? dataPass.data.total_staff_point
+            : "..."}
+        </span>
+      </p>
+      <p>
+        Điểm trừ:{" "}
+        <span className="font-semibold">
+          {dataPass.data.total_sub_point
+            ? dataPass.data.total_sub_point
+            : "..."}
+        </span>
+      </p>
+      <p>
+        Điểm cộng:{" "}
+        <span className="font-semibold">
+          {dataPass.data.total_add_point
+            ? dataPass.data.total_add_point
+            : "..."}
+        </span>
+      </p>
       {data && (
         <>
           <div className="flex justify-end gap-[30px] p-2">
