@@ -6,8 +6,9 @@ import { IconContext } from "react-icons";
 import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 import SubContent from "./subContent";
+import ReactLoading from "react-loading";
 
-export default function Index({ data }) {
+export default function Index({ data, isRefetch }) {
   const [toggle, setToggle] = useState();
   const [ref, { height }] = useMeasure();
 
@@ -35,15 +36,25 @@ export default function Index({ data }) {
             onClick={() => setToggle(!toggle)}
             className={`w-[10%] justify-end flex`}
           >
-            <IconContext.Provider
-              value={{
-                className: `${
-                  toggle ? "rotate-90" : ""
-                } transition-transform duration-200 cursor-pointer`,
-              }}
-            >
-              <AiOutlineRight size={"20px"} />
-            </IconContext.Provider>
+            {isRefetch ? (
+              <ReactLoading
+                type="spin"
+                color="#0083C2"
+                width={"22px"}
+                height={"22px"}
+                className="self-center"
+              />
+            ) : (
+              <IconContext.Provider
+                value={{
+                  className: `${
+                    toggle ? "rotate-90" : ""
+                  } transition-transform duration-200 cursor-pointer`,
+                }}
+              >
+                <AiOutlineRight size={"20px"} />
+              </IconContext.Provider>
+            )}
           </label>
         )}
       </div>
@@ -56,7 +67,7 @@ export default function Index({ data }) {
                   className="flex gap-[20px] justify-between flex-col "
                   ref={ref}
                 >
-                  <SubContent dataCourse={data} />
+                  <SubContent dataCourse={data} setToggle={setToggle} />
                 </div>
               </animated.div>
             )

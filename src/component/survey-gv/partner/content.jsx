@@ -2,6 +2,7 @@
 import { useState } from "react";
 import "../../../App.css";
 import SubContent from "./subContent";
+import ReactLoading from "react-loading";
 
 function compare(a, b) {
   if (!a.respond_result && b.respond_result) {
@@ -13,7 +14,7 @@ function compare(a, b) {
   return 0;
 }
 
-export default function Index({ data, present, setData, setAfterUpdate }) {
+export default function Index({ data, present, isRefetch }) {
   const [toggle, setToggle] = useState(false);
   const [dataSent, setDataSent] = useState();
 
@@ -30,18 +31,12 @@ export default function Index({ data, present, setData, setAfterUpdate }) {
       class_name,
       teacher_name,
     });
-    setToggle(!toggle);
+    setToggle((pre) => !pre);
   };
   return (
     <div className="gap-[20px] flex flex-col">
       {toggle ? (
-        <SubContent
-          toggle={toggle}
-          setToggle={setToggle}
-          setData={setData}
-          setAfterUpdate={setAfterUpdate}
-          dataSent={dataSent}
-        />
+        <SubContent setToggle={setToggle} dataSent={dataSent} />
       ) : (
         <>
           <h3 style={{ textAlign: "center", margin: 0, padding: 0 }}>
@@ -81,19 +76,29 @@ export default function Index({ data, present, setData, setAfterUpdate }) {
                   </p>
                 ) : (
                   <div className="lg:w-[20%] w-full flex justify-center">
-                    <button
-                      className="selfBtn h-fit"
-                      onClick={() => {
-                        handleOnclick(
-                          item.subject_code,
-                          item.class_code,
-                          item.class_name,
-                          item.teacher_name
-                        );
-                      }}
-                    >
-                      Đánh giá
-                    </button>
+                    {isRefetch ? (
+                      <ReactLoading
+                        type="spin"
+                        color="#0083C2"
+                        width={"22px"}
+                        height={"22px"}
+                        className="self-center"
+                      />
+                    ) : (
+                      <button
+                        className="selfBtn h-fit"
+                        onClick={() => {
+                          handleOnclick(
+                            item.subject_code,
+                            item.class_code,
+                            item.class_name,
+                            item.teacher_name
+                          );
+                        }}
+                      >
+                        Đánh giá
+                      </button>
+                    )}
                   </div>
                 )}
               </div>

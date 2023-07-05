@@ -90,7 +90,7 @@ const columns = [
   },
 ];
 
-export default function Index({ dataCourse }) {
+export default function Index({ dataCourse, setToggle }) {
   const [point, setPoint] = useState();
   const [ref, { width }] = useMeasure();
   const { getToken } = useAuth();
@@ -183,6 +183,7 @@ export default function Index({ dataCourse }) {
         // }
 
         if (result === 200) {
+          setToggle((pre) => !pre);
           queryClient.invalidateQueries(["getCourse_qldt_gv"]);
           Swal.fire({
             title: "Cho điểm điểm giáo viên thành công!",

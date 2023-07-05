@@ -78,7 +78,7 @@ export default function Index({ dataPass, setDataPass }) {
     queryFn: async () => {
       return await fetch(
         `${import.meta.env.VITE_RL_STUDENT_DETAIL}${user.publicMetadata.magv}/${
-          batch[0]?.id
+          batch?.id
         }/${dataPass.data.student_code}`,
         {
           method: "GET",
@@ -258,7 +258,7 @@ export default function Index({ dataPass, setDataPass }) {
                   _eq: dataPass.data.student_code,
                 },
                 batch_id: {
-                  _eq: batch[0]?.id,
+                  _eq: batch?.id,
                 },
                 group_id: {
                   _eq: item.id,
@@ -382,7 +382,7 @@ export default function Index({ dataPass, setDataPass }) {
 
   // console.log(data);
 
-  if (detailSV.isLoading || detailSV.isFetching) {
+  if (detailSV.isLoading && detailSV.isFetching) {
     return (
       <div className="flex flex-col">
         <BiArrowBack

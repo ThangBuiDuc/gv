@@ -4,14 +4,10 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { useState, useEffect } from "react";
 import ReactLoading from "react-loading";
 import Swal from "sweetalert2";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function Index({
-  toggle,
-  setToggle,
-  dataSent,
-  setData,
-  setAfterUpdate,
-}) {
+export default function Index({ setToggle, dataSent }) {
+  const queryClient = useQueryClient();
   const { subject_code, class_code, present, class_name, teacher_name } =
     dataSent;
   const [preData, setPreData] = useState();
@@ -109,8 +105,8 @@ export default function Index({
           }).then((res) => res.status);
 
           if (result === 200) {
-            setData(null);
-            setAfterUpdate((pre) => !pre);
+            setToggle((pre) => !pre);
+            queryClient.invalidateQueries(["getData_partner_CTGD"]);
             Swal.fire({
               title: "Đánh giá dự giờ thành công!",
               icon: "success",
@@ -133,7 +129,7 @@ export default function Index({
   return preData ? (
     <div className="flex flex-col pl-[20px] gap-[20px] ">
       <label
-        onClick={() => setToggle(!toggle)}
+        onClick={() => setToggle((pre) => !pre)}
         className="w-fit cursor-pointer"
       >
         <BiArrowBack size={"40"} />

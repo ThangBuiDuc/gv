@@ -6,8 +6,9 @@ import SubSelectContent from "./subSelectContent";
 import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 import { IconContext } from "react-icons";
+import ReactLoading from "react-loading";
 
-export default function Index({ data, staff, present, question }) {
+export default function Index({ data, staff, present, question, isRefetch }) {
   const [toggle, setToggle] = useState(false);
 
   const [ref, { height }] = useMeasure();
@@ -40,15 +41,25 @@ export default function Index({ data, staff, present, question }) {
           className="flex justify-center"
           onClick={() => setToggle(!toggle)}
         >
-          <IconContext.Provider
-            value={{
-              className: `${
-                toggle ? "-rotate-90 lg:rotate-90" : "rotate-90 lg:rotate-0"
-              } transition-transform duration-200 cursor-pointer`,
-            }}
-          >
-            <AiOutlineRight size={"20px"} />
-          </IconContext.Provider>
+          {isRefetch ? (
+            <ReactLoading
+              type="spin"
+              color="#0083C2"
+              width={"22px"}
+              height={"22px"}
+              className="self-center"
+            />
+          ) : (
+            <IconContext.Provider
+              value={{
+                className: `${
+                  toggle ? "-rotate-90 lg:rotate-90" : "rotate-90 lg:rotate-0"
+                } transition-transform duration-200 cursor-pointer`,
+              }}
+            >
+              <AiOutlineRight size={"20px"} />
+            </IconContext.Provider>
+          )}
         </label>
       </div>
       <div>
@@ -65,6 +76,7 @@ export default function Index({ data, staff, present, question }) {
                     staff={staff}
                     question={question}
                     present={present}
+                    setToggle={setToggle}
                   />
                 </div>
               </animated.div>

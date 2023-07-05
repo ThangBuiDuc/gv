@@ -49,7 +49,9 @@ export default function Index() {
             template: import.meta.env.VITE_TEMPLATE_ROLE,
           })}`,
         },
-      }).then((res) => res.json());
+      })
+        .then((res) => res.json())
+        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
     },
   });
 
@@ -58,19 +60,21 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
         .then((res) => res.json())
-        .then((res) => res.hientai);
+        .then((res) => (res?.hientai.length > 0 ? res?.hientai[0] : null));
     },
     enabled:
-      role.data?.result[0].role_id.toString() ===
-      import.meta.env.VITE_ROLE_QLDT,
+      role.data !== null &&
+      role.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
   });
 
   const data = useQuery({
     queryKey: ["getCourse_qldt_gv"],
     queryFn: async () => {
+      console.log(present.data);
       return await fetch(
-        `${import.meta.env.VITE_QLDT_COURSE}${present.data[0]?.manamhoc}/${
-          present.data[0]?.hocky
+        `${import.meta.env.VITE_QLDT_COURSE}${present.data?.manamhoc}/${
+          present.data?.hocky
         }`,
         {
           method: "GET",
@@ -85,8 +89,9 @@ export default function Index() {
         .then((res) => res.result.sort(compare));
     },
     enabled:
-      present.data?.length > 0 &&
-      role.data?.result[0].role_id == import.meta.env.VITE_ROLE_QLDT,
+      present.data !== null &&
+      present.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
   });
 
   useEffect(() => {
@@ -97,7 +102,7 @@ export default function Index() {
     }
   }, [query, data.data]);
 
-  if (role.isLoading || role.isFetching) {
+  if (role.isLoading && role.isFetching) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -114,7 +119,7 @@ export default function Index() {
     );
   }
 
-  if (role.data?.result[0].role_id != import.meta.env.VITE_ROLE_QLDT) {
+  if (role.data?.role_id != import.meta.env.VITE_ROLE_QLDT) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -128,10 +133,8 @@ export default function Index() {
   }
 
   if (
-    present.isLoading ||
-    present.isFetching ||
-    data.isLoading ||
-    data.isFetching
+    (present.isLoading && present.isFetching) ||
+    (data.isLoading && data.isFetching)
   ) {
     return (
       <div className="wrap">
@@ -190,7 +193,7 @@ export default function Index() {
             search.map((item, index) => {
               return (
                 <div className="flex flex-col" key={index}>
-                  <Content data={item} />
+                  <Content data={item} isRefetch={data.isRefetching} />
                 </div>
               );
             })

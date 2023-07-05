@@ -39,7 +39,7 @@ export default function Index({ data, rootIndex, isRefetch }) {
               where: {
                 group_id: { _eq: item.group_id },
                 student_code: { _eq: item.student_code },
-                batch_id: { _eq: batch[0]?.id },
+                batch_id: { _eq: batch?.id },
               },
             })),
           ],

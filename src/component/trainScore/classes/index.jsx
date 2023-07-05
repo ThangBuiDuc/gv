@@ -25,7 +25,7 @@ export default function Index() {
         },
       })
         .then((res) => res.json())
-        .then((res) => res.result[0]);
+        .then((res) => (res.result[0] ? res.result[0] : null));
     },
   });
 
@@ -34,11 +34,12 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(import.meta.env.VITE_RL_BATCH)
         .then((res) => res.json())
-        .then((res) => res.result);
+        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
     },
     enabled:
-      role.data?.role_id.toString() ===
-      import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      role.data !== null &&
+      role.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
   });
 
   const preData = useQuery({
@@ -46,7 +47,7 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(
         `${import.meta.env.VITE_RL_CLASSES}${user.publicMetadata.magv}/${
-          batch.data[0].id
+          batch.data?.id
         }`,
         {
           method: "GET",
@@ -69,14 +70,17 @@ export default function Index() {
           }))
         );
     },
-    enabled: batch?.data?.length > 0,
+    enabled:
+      batch.data !== null &&
+      batch.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
   });
 
   useEffect(() => {
     if (preData.data) setData(preData.data);
   }, [preData.data]);
 
-  if (role.isFetching || role.isLoading) {
+  if (role.isFetching && role.isLoading) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -94,7 +98,8 @@ export default function Index() {
   }
 
   if (
-    role.data?.role_id.toString() !== import.meta.env.VITE_ROLE_RL_MANAGERMENT
+    role.data === null ||
+    role.data?.role_id != import.meta.env.VITE_ROLE_RL_MANAGERMENT
   ) {
     return (
       <div className="wrap">
@@ -108,7 +113,7 @@ export default function Index() {
     );
   }
 
-  if (batch.isFetching || batch.isLoading) {
+  if (batch.isFetching && batch.isLoading) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -142,22 +147,22 @@ export default function Index() {
     );
   }
 
-  if (
-    role.data?.role_id === undefined ||
-    batch.data?.length <= 0 ||
-    preData?.length <= 0
-  ) {
-    return (
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
-        </div>
-        <div className="flex justify-center">
-          <h3>Đã có lỗi xảy ra, vui lòng tải lại trang!</h3>
-        </div>
-      </div>
-    );
-  }
+  // if (
+  //   role.data?.role_id === undefined ||
+  //   batch.data?.length <= 0 ||
+  //   preData?.length <= 0
+  // ) {
+  //   return (
+  //     <div className="wrap">
+  //       <div className="flex justify-center">
+  //         <h2 className="text-primary">Đánh giá sinh viên</h2>
+  //       </div>
+  //       <div className="flex justify-center">
+  //         <h3>Đã có lỗi xảy ra, vui lòng tải lại trang!</h3>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // console.log(data);
   // console.log(preData.isRefetching);

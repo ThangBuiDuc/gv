@@ -1,8 +1,8 @@
-import { useEffect, useLayoutEffect, useState } from "react";
 import "../../../App.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
+import { useQuery } from "@tanstack/react-query";
 function compare(a, b) {
   return a.class_name.localeCompare(b.class_name);
 }
@@ -10,20 +10,16 @@ function compare(a, b) {
 export default function Index() {
   const { getToken } = useAuth();
   const { user } = useUser();
-  const [present, setPresent] = useState(null);
-  const [data, setData] = useState(null);
-  const [afterUpdate, setAfterUpdate] = useState(false);
-  useLayoutEffect(() => {
-    let callApi = async () => {
-      await fetch(`${import.meta.env.VITE_PRESENT_API}`)
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.hientai) setPresent(res.hientai[0]);
-        });
-    };
 
-    callApi();
-  }, []);
+  const present = useQuery({
+    queryKey: ["getPresent_CTGD"],
+    queryFn: async () => {
+      return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
+        .then((res) => res.json())
+        .then((res) => (res?.hientai.length > 0 ? res?.hientai[0] : null));
+    },
+  });
+
   // useEffect(() => {
   //   let callApi = async () => {
   //     fetch(`${import.meta.env.VITE_IS_ASSIGNED_API}`, {
@@ -47,13 +43,13 @@ export default function Index() {
   //   };
   //   if (present) callApi();
   // }, [present]);
-
-  useEffect(() => {
-    const callApi = async () => {
-      await fetch(
+  const data = useQuery({
+    queryKey: ["getData_partner_CTGD"],
+    queryFn: async () => {
+      return await fetch(
         `${import.meta.env.VITE_GV_STATUS_SURVEY_API}${
           user.publicMetadata.magv
-        }/${present.hocky}/${present.manamhoc}`,
+        }/${present.data?.hocky}/${present.data?.manamhoc}`,
         {
           method: "GET",
           headers: {
@@ -64,35 +60,22 @@ export default function Index() {
         }
       )
         .then((res) => res.json())
-        .then((res) => {
-          if (res.result.length > 0) setData(res.result.sort(compare));
-          else setData("empty");
-        });
-    };
+        .then((res) =>
+          res.result.length > 0 ? res.result.sort(compare) : null
+        );
+    },
+    enabled: present.data !== null && present.data !== undefined,
+  });
 
-    if (present) callApi();
-  }, [present, afterUpdate]);
-
-  return (
-    <div className="wrap">
-      <div className="flex justify-center">
-        <h2 className="text-primary">Góp ý với đồng nghiệp</h2>
-      </div>
-      {data === "empty" ? (
+  if (
+    (present.isLoading && present.isFetching) ||
+    (data.isLoading && data.isFetching)
+  ) {
+    return (
+      <div className="wrap">
         <div className="flex justify-center">
-          <h3>
-            Hiện tại giảng viên chưa có lớp môn học được phân công dự giờ kỳ
-            hiện tại
-          </h3>
+          <h2 className="text-primary">Phản hồi công tác giảng dạy</h2>
         </div>
-      ) : data ? (
-        <Content
-          present={present}
-          data={data}
-          setData={setData}
-          setAfterUpdate={setAfterUpdate}
-        />
-      ) : (
         <ReactLoading
           type="spin"
           color="#0083C2"
@@ -100,7 +83,34 @@ export default function Index() {
           height={"50px"}
           className="self-center"
         />
-      )}
+      </div>
+    );
+  }
+
+  if (data.data === null) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Phản hồi công tác giảng dạy</h2>
+        </div>
+        <h3 className="text-center">
+          Hiện tại giảng viên chưa có lớp môn học được phân công dự giờ kỳ hiện
+          tại
+        </h3>
+      </div>
+    );
+  }
+
+  return (
+    <div className="wrap">
+      <div className="flex justify-center">
+        <h2 className="text-primary">Góp ý với đồng nghiệp</h2>
+      </div>
+      <Content
+        present={present.data}
+        data={data.data}
+        isRefetch={data.isRefetching}
+      />
     </div>
   );
 }

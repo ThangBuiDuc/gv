@@ -35,7 +35,12 @@ export default function Index({ data }) {
   const [sv, setSv] = useState();
 
   const result = useQuery({
-    queryKey: ["QLGD_QLDT_SV"],
+    queryKey: [
+      "QLGD_QLDT_SV",
+      {
+        type: { class_code: data.class_code, subject_code: data.subject_code },
+      },
+    ],
     queryFn: async () => {
       return await fetch(
         `${import.meta.env.VITE_QLGD_QLDT_SV}${data.class_code}/${
@@ -56,7 +61,12 @@ export default function Index({ data }) {
   });
 
   const result1 = useQuery({
-    queryKey: ["GV_QLDT_SV"],
+    queryKey: [
+      "GV_QLDT_SV",
+      {
+        type: { class_code: data.class_code, subject_code: data.subject_code },
+      },
+    ],
     queryFn: async () => {
       return await fetch(`${import.meta.env.VITE_GV_QLDT_SV}`, {
         method: "POST",
@@ -68,8 +78,8 @@ export default function Index({ data }) {
         body: JSON.stringify({
           subject_code: data.subject_code,
           class_code: data.class_code,
-          hocky: present[0]?.hocky,
-          namhoc: present[0]?.manamhoc,
+          hocky: present?.hocky,
+          namhoc: present?.manamhoc,
         }),
       })
         .then((res) => res.json())
@@ -78,12 +88,15 @@ export default function Index({ data }) {
   });
 
   const result2 = useQuery({
-    queryKey: ["EDU_BAN"],
+    queryKey: [
+      "EDU_BAN",
+      {
+        type: { class_code: data.class_code, subject_code: data.subject_code },
+      },
+    ],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_EDU_BAN}${present[0]?.manamhoc}/${
-          present[0]?.hocky
-        }`,
+        `${import.meta.env.VITE_EDU_BAN}${present?.manamhoc}/${present?.hocky}`,
         {
           method: "GET",
           headers: {
@@ -194,7 +207,33 @@ export default function Index({ data }) {
         // }
 
         if (result === 200) {
-          queryClient.invalidateQueries(["getCourse_qldt_sv"]);
+          queryClient.invalidateQueries([
+            "QLGD_QLDT_SV",
+            {
+              type: {
+                class_code: data.class_code,
+                subject_code: data.subject_code,
+              },
+            },
+          ]);
+          queryClient.invalidateQueries([
+            "GV_QLDT_SV",
+            {
+              type: {
+                class_code: data.class_code,
+                subject_code: data.subject_code,
+              },
+            },
+          ]);
+          queryClient.invalidateQueries([
+            "EDU_BAN",
+            {
+              type: {
+                class_code: data.class_code,
+                subject_code: data.subject_code,
+              },
+            },
+          ]);
           Swal.fire({
             title: "Duyệt tư cách sinh viên cho môn học thành công!",
             icon: "success",
@@ -253,14 +292,24 @@ export default function Index({ data }) {
           </div>
         );
       })}
-      <button
-        className="selfBtn w-fit self-center mt-[20px]"
-        onClick={() => {
-          handleOnClick();
-        }}
-      >
-        Hoàn thành
-      </button>
+      {result.isRefetching || result1.isRefetching || result2.isRefetching ? (
+        <ReactLoading
+          type="spin"
+          color="#0083C2"
+          width={"22px"}
+          height={"22px"}
+          className="self-center"
+        />
+      ) : (
+        <button
+          className="selfBtn w-fit self-center mt-[20px]"
+          onClick={() => {
+            handleOnClick();
+          }}
+        >
+          Hoàn thành
+        </button>
+      )}
     </div>
   ) : (
     <ReactLoading

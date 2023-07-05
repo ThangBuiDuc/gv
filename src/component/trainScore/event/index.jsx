@@ -18,7 +18,7 @@ export default function Index() {
         },
       })
         .then((res) => res.json())
-        .then((res) => res.result[0]);
+        .then((res) => (res.result[0] ? res.result[0] : null));
     },
   });
 
@@ -27,11 +27,12 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(import.meta.env.VITE_RL_BATCH)
         .then((res) => res.json())
-        .then((res) => res.result);
+        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
     },
     enabled:
-      role.data?.role_id.toString() ===
-      import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      role.data !== null &&
+      role.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
   });
 
   const listSV = useQuery({
@@ -49,8 +50,9 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      role.data?.role_id.toString() ===
-      import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      batch.data !== null &&
+      batch.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
   });
 
   const listEvent = useQuery({
@@ -68,15 +70,16 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      role.data?.role_id.toString() ===
-      import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      role.data !== null &&
+      role.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
   });
 
-  console.log(batch.data);
-  console.log(listSV.data);
-  console.log(listEvent.data);
+  // console.log(batch.data);
+  // console.log(listSV.data);
+  // console.log(listEvent.data);
 
-  if (role.isFetching || role.isLoading) {
+  if (role.isFetching && role.isLoading) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -94,7 +97,8 @@ export default function Index() {
   }
 
   if (
-    role.data?.role_id.toString() !== import.meta.env.VITE_ROLE_RL_MANAGERMENT
+    role.data === null ||
+    role.data?.role_id != import.meta.env.VITE_ROLE_RL_MANAGERMENT
   ) {
     return (
       <div className="wrap">
@@ -109,12 +113,9 @@ export default function Index() {
   }
 
   if (
-    batch.isFetching ||
-    batch.isLoading ||
-    listEvent.isFetching ||
-    listEvent.isLoading ||
-    listSV.isFetching ||
-    listSV.isLoading
+    (batch.isFetching && batch.isLoading) ||
+    (listEvent.isFetching && listEvent.isLoading) ||
+    (listSV.isFetching && listSV.isLoading)
   ) {
     return (
       <div className="wrap">

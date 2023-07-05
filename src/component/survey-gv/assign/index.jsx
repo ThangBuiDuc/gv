@@ -74,18 +74,23 @@ export default function Index() {
             template: import.meta.env.VITE_TEMPLATE_ROLE,
           })}`,
         },
-      }).then((res) => res.json());
+      })
+        .then((res) => res.json())
+        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
     },
   });
 
   const present = useQuery({
     queryKey: ["getPresent_CTGD"],
     queryFn: async () => {
-      return await fetch(`${import.meta.env.VITE_PRESENT_API}`).then((res) =>
-        res.json()
-      );
+      return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
+        .then((res) => res.json())
+        .then((res) => (res?.hientai.length > 0 ? res?.hientai[0] : null));
     },
-    enabled: role.data?.result[0].is_truong_khoa === true,
+    enabled:
+      role.data !== null &&
+      role.data !== undefined &&
+      role.data?.is_truong_khoa === true,
   });
 
   const staff = useQuery({
@@ -100,36 +105,19 @@ export default function Index() {
         },
       }).then((res) => res.json());
     },
-    enabled: role.data?.result[0].is_truong_khoa === true,
+    enabled:
+      present.data !== null &&
+      present.data !== undefined &&
+      role.data?.is_truong_khoa === true,
   });
 
   const question = useQuery({
     queryKey: ["getQuestion_assign_CTGD"],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_GV_BATCH_QUESTION_API}${
-          present.data.hientai[0].hocky
-        }/${present.data.hientai[0].manamhoc}`,
-        {
-          method: "GET",
-          headers: {
-            authorization: `Bearer ${await getToken({
-              template: import.meta.env.VITE_TEMPLATE_GV_TRUONG_KHOA,
-            })}`,
-          },
-        }
-      ).then((res) => res.json());
-    },
-    enabled: present.data?.hientai.length > 0,
-  });
-
-  const data = useQuery({
-    queryKey: ["getData_assign_CTGD"],
-    queryFn: async () => {
-      return await fetch(
-        `${import.meta.env.VITE_GET_ASSIGN_OBJECT_API}${
-          role.data?.result[0].khoa_gv
-        }/${present.data.hientai[0].hocky}/${present.data.hientai[0].manamhoc}`,
+        `${import.meta.env.VITE_GV_BATCH_QUESTION_API}${present.data?.hocky}/${
+          present.data?.manamhoc
+        }`,
         {
           method: "GET",
           headers: {
@@ -141,14 +129,38 @@ export default function Index() {
       ).then((res) => res.json());
     },
     enabled:
-      present.data?.hientai.length > 0 &&
-      role.data?.result[0].is_truong_khoa === true,
+      present.data !== null &&
+      present.data !== undefined &&
+      role.data?.is_truong_khoa === true,
+  });
+
+  const data = useQuery({
+    queryKey: ["getData_assign_CTGD"],
+    queryFn: async () => {
+      return await fetch(
+        `${import.meta.env.VITE_GET_ASSIGN_OBJECT_API}${role.data?.khoa_gv}/${
+          present.data?.hocky
+        }/${present.data?.manamhoc}`,
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${await getToken({
+              template: import.meta.env.VITE_TEMPLATE_GV_TRUONG_KHOA,
+            })}`,
+          },
+        }
+      ).then((res) => res.json());
+    },
+    enabled:
+      present.data !== null &&
+      present.data !== undefined &&
+      role.data?.is_truong_khoa === true,
   });
   // const data =
 
   // console.log();
 
-  if (role.isLoading || role.isFetching) {
+  if (role.isLoading && role.isFetching) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -165,7 +177,7 @@ export default function Index() {
     );
   }
 
-  if (!role.data.result[0].is_truong_khoa) {
+  if (!role.data?.is_truong_khoa) {
     return (
       <div className="wrap">
         <div className="flex justify-center ">
@@ -179,14 +191,10 @@ export default function Index() {
   }
 
   if (
-    present.isLoading ||
-    present.isFetching ||
-    staff.isLoading ||
-    staff.isFetching ||
-    question.isLoading ||
-    question.isFetching ||
-    data.isLoading ||
-    data.isFetching
+    (present.isLoading && present.isFetching) ||
+    (staff.isLoading && staff.isFetching) ||
+    (question.isLoading && question.isFetching) ||
+    (data.isLoading && data.isFetching)
   ) {
     return (
       <div className="wrap">
@@ -204,26 +212,26 @@ export default function Index() {
     );
   }
 
-  if (
-    role.data?.result.lenght === 0 ||
-    present.data?.hientai.length === 0 ||
-    question.data?.result.length === 0 ||
-    staff.data?.result.length === 0 ||
-    data.data?.result.length === 0
-  ) {
-    return (
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Phân công dự giờ</h2>
-        </div>
-        <div className="flex justify-center">
-          <h3>Đã có lỗi xảy ra. Vùi lòng tải lại trang</h3>
-        </div>
-      </div>
-    );
-  }
+  // if (
+  //   role.data?.result.lenght === 0 ||
+  //   present.data?.hientai.length === 0 ||
+  //   question.data?.result.length === 0 ||
+  //   staff.data?.result.length === 0 ||
+  //   data.data?.result.length === 0
+  // ) {
+  //   return (
+  //     <div className="wrap">
+  //       <div className="flex justify-center">
+  //         <h2 className="text-primary">Phân công dự giờ</h2>
+  //       </div>
+  //       <div className="flex justify-center">
+  //         <h3>Đã có lỗi xảy ra. Vùi lòng tải lại trang</h3>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  if (data.data.result.length === 0) {
+  if (data.data?.result.length === 0) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -286,8 +294,9 @@ export default function Index() {
                   <Content
                     data={item}
                     staff={staff.data?.result}
-                    present={present.data?.hientai[0]}
+                    present={present.data}
                     question={question.data?.result}
+                    isRefetch={data.isRefetching}
                   />
                 </Fragment>
               );
@@ -305,7 +314,7 @@ export default function Index() {
                   <Content
                     data={item}
                     staff={staff.data?.result}
-                    present={present.data?.hientai[0]}
+                    present={present.data}
                   />
                 </Fragment>
               );

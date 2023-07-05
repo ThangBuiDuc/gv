@@ -14,104 +14,6 @@ import { useQuery } from "@tanstack/react-query";
 export default function Index() {
   const { getToken } = useAuth();
 
-  // const handleOnClick = () => {
-  //   Swal.fire({
-  //     title: "Duyệt tư cách phản hồi sinh viên",
-  //     text: "Quá trình này sẽ duyệt tư cách sinh viên cho tất cả lớp môn học. Hãy chắc chắn tất cả lớp môn học đã kết thúc!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     showConfirmButton: true,
-  //     confirmButtonText: "Xác nhận",
-  //     cancelButtonText: "Huỷ",
-  //     showLoaderOnConfirm: true,
-  //     allowOutsideClick: () => !Swal.isLoading(),
-  //     preConfirm: async () => {
-  //       let data = await fetch(`${import.meta.env.VITE_QLGD_QLDT_SV_ALL}`, {
-  //         method: "GET",
-  //         headers: {
-  //           authorization: `Bearer ${await getToken({
-  //             template: import.meta.env.VITE_TEMPLATE_QLGD_CREATOR,
-  //           })}`,
-  //         },
-  //       })
-  //         .then((res) => res.json())
-  //         .then((res) => res.result);
-
-  //       // console.log(data);
-  //       let updates;
-
-  //       if (data.length > 0) {
-  //         updates = data.reduce((total, curr) => {
-  //           let item = {
-  //             _set: {
-  //               status: curr.tinhhinh
-  //                 ? curr.tinhhinh > 20
-  //                   ? false
-  //                   : true
-  //                 : true,
-  //               updated_at: new Date(),
-  //             },
-  //             where: {
-  //               class_code: {
-  //                 _eq: curr.ma_lop,
-  //               },
-  //               subject_code: {
-  //                 _eq: curr.ma_mon_hoc,
-  //               },
-  //               user_code: {
-  //                 _eq: curr.ma_sv,
-  //               },
-  //               hocky: {
-  //                 _eq: present.hocky,
-  //               },
-  //               namhoc: {
-  //                 _eq: present.manamhoc,
-  //               },
-  //             },
-  //           };
-  //           return [...total, item];
-  //         }, []);
-
-  //         let result = await fetch(
-  //           `${import.meta.env.VITE_QLDT_COURSE_RESPOND}`,
-  //           {
-  //             method: "PUT",
-  //             headers: {
-  //               authorization: `Bearer ${await getToken({
-  //                 template: import.meta.env.VITE_TEMPLATE_GV_QLDT,
-  //               })}`,
-  //             },
-  //             body: JSON.stringify({ updates }),
-  //           }
-  //         )
-  //           .then((res) => res.json())
-  //           .then((res) =>
-  //             res.result.reduce((total, curr) => {
-  //               return [...total, curr.affected_rows];
-  //             }, [])
-  //           );
-
-  //         if (result.every((item) => item === 1)) {
-  //           Swal.fire({
-  //             title: "Duyệt tư cách tất cả sinh viên thành công!",
-  //             icon: "success",
-  //           });
-  //         } else {
-  //           Swal.fire({
-  //             title: "Duyệt thất bại!",
-  //             icon: "error",
-  //           });
-  //         }
-  //       } else {
-  //         Swal.fire({
-  //           title: "Có lỗi xảy ra. Vui lòng thử lại!",
-  //           icon: "error",
-  //         });
-  //       }
-  //     },
-  //   });
-  // };
-
   const role = useQuery({
     queryKey: ["getRole_CTGD"],
     queryFn: async () => {
@@ -122,7 +24,9 @@ export default function Index() {
             template: import.meta.env.VITE_TEMPLATE_ROLE,
           })}`,
         },
-      }).then((res) => res.json());
+      })
+        .then((res) => res.json())
+        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
     },
   });
 
@@ -131,11 +35,12 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
         .then((res) => res.json())
-        .then((res) => res.hientai);
+        .then((res) => (res?.hientai.length > 0 ? res?.hientai[0] : null));
     },
     enabled:
-      role.data?.result[0].role_id.toString() ===
-      import.meta.env.VITE_ROLE_QLDT,
+      role.data !== null &&
+      role.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
   });
 
   // var condition =
@@ -146,8 +51,8 @@ export default function Index() {
     queryKey: ["getCourse_qldt_sv"],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_QLDT_COURSE}${present.data[0]?.manamhoc}/${
-          present.data[0]?.hocky
+        `${import.meta.env.VITE_QLDT_COURSE}${present.data?.manamhoc}/${
+          present.data?.hocky
         }`,
         {
           method: "GET",
@@ -162,8 +67,9 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      present.data?.length > 0 &&
-      role.data?.result[0].role_id == import.meta.env.VITE_ROLE_QLDT,
+      present.data !== null &&
+      present.data !== undefined &&
+      role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
   });
 
   // console.log(present.data);
@@ -203,7 +109,7 @@ export default function Index() {
   //   };
   //   if (present) callApi();
   // }, [present, afterUpdate]);
-  if (role.isLoading || role.isFetching) {
+  if (role.isLoading && role.isFetching) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -220,7 +126,7 @@ export default function Index() {
     );
   }
 
-  if (role.data?.result[0].role_id != import.meta.env.VITE_ROLE_QLDT) {
+  if (role.data?.role_id != import.meta.env.VITE_ROLE_QLDT) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
@@ -234,10 +140,8 @@ export default function Index() {
   }
 
   if (
-    present.isLoading ||
-    present.isFetching ||
-    data.isLoading ||
-    data.isFetching
+    (present.isLoading && present.isFetching) ||
+    (data.isLoading && data.isFetching)
   ) {
     return (
       <div className="wrap">
