@@ -10,7 +10,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false, // default: true
-      refetchOnMount: true,
+      refetchOnMount: "always",
     },
   },
 });

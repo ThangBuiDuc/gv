@@ -49,9 +49,7 @@ export default function Index() {
             template: import.meta.env.VITE_TEMPLATE_ROLE,
           })}`,
         },
-      })
-        .then((res) => res.json())
-        .then((res) => res.result[0]);
+      }).then((res) => res.json());
     },
   });
 
@@ -62,7 +60,9 @@ export default function Index() {
         .then((res) => res.json())
         .then((res) => res.hientai);
     },
-    enabled: role.data?.role_id.toString() === import.meta.env.VITE_ROLE_QLDT,
+    enabled:
+      role.data?.result[0].role_id.toString() ===
+      import.meta.env.VITE_ROLE_QLDT,
   });
 
   const data = useQuery({
@@ -86,7 +86,7 @@ export default function Index() {
     },
     enabled:
       present.data?.length > 0 &&
-      role.data?.role_id == import.meta.env.VITE_ROLE_QLDT,
+      role.data?.result[0].role_id == import.meta.env.VITE_ROLE_QLDT,
   });
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export default function Index() {
     );
   }
 
-  if (role.data.role_id != import.meta.env.VITE_ROLE_QLDT) {
+  if (role.data?.result[0].role_id != import.meta.env.VITE_ROLE_QLDT) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
