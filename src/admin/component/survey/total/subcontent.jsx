@@ -167,10 +167,10 @@ export default function Index({
         </p>
       </div>
       <div className="flex justify-center gap-[40px]">
-        <button className="btn w-f" onClick={() => handleOnClickSV()}>
+        <button className="selfBtn w-f" onClick={() => handleOnClickSV()}>
           Tính điểm sinh viên
         </button>
-        <button className="btn w-f" onClick={() => handleOnClickGV()}>
+        <button className="selfBtn w-f" onClick={() => handleOnClickGV()}>
           Tính điểm Giảng viên
         </button>
       </div>

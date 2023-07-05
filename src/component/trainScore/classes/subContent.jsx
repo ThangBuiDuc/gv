@@ -60,6 +60,7 @@ export default function Index({ data, rootIndex }) {
             <input type="checkbox" disabled className="toggle toggle-info" />
           )}
           {data.enrollment.map((item, index) => {
+            console.log(item);
             return (
               <div key={index} className="flex items-center">
                 {item.total_staff_point || !item.total_monitor_point ? (

@@ -185,7 +185,7 @@ export default function AddQ() {
           onChange={(e) => setSv(e.target.value)}
         />
         <button
-          className="btn w-[10%]"
+          className="selfBtn w-[10%]"
           onClick={() => {
             handleSvOnClick();
           }}
@@ -226,7 +226,7 @@ export default function AddQ() {
             })}
           </div>
           <button
-            className="btn w-fit self-center"
+            className="selfBtn w-fit self-center"
             onClick={() => {
               handleGvOnClick();
             }}

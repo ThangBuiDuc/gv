@@ -28,6 +28,7 @@ function TableRender({ table }) {
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
+                  colSpan={header.colSpan}
                   className="border-solid border border-[#0083c2]"
                 >
                   {header.isPlaceholder
@@ -63,7 +64,6 @@ function TableRender({ table }) {
 }
 
 export default function Index({ dataPass, setDataPass }) {
-  console.log(dataPass.data);
   const [data, setData] = useState(null);
   const queryClient = useQueryClient();
   const { getToken } = useAuth();
@@ -116,7 +116,7 @@ export default function Index({ dataPass, setDataPass }) {
               .sort((a, b) => a.position - b.position);
 
             return {
-              self_point: question.every((item) => item.point)
+              self_point: question.every((item) => item.self_point)
                 ? question.reduce((total, curr) => total + curr.self_point, 0)
                 : null,
               ...object,
@@ -146,7 +146,14 @@ export default function Index({ dataPass, setDataPass }) {
         type="number"
         value={value}
         onWheel={(e) => e.target.blur()}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) =>
+          setValue(
+            Math.max(
+              0,
+              Math.min(row.original.max_point, Number(e.target.value))
+            )
+          )
+        }
         onBlur={onBlur}
       />
     ) : (
@@ -157,58 +164,74 @@ export default function Index({ dataPass, setDataPass }) {
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor("name", {
-        header: "Câu hỏi",
-        cell: ({ row, getValue }) => {
-          return (
-            <div
-              style={{
-                // Since rows are flattened by default,
-                // we can use the row.depth property
-                // and paddingLeft to visually indicate the depth
-                // of the row
-                paddingLeft: `${row.depth * 2}rem`,
-              }}
-              className={`${row.depth === 0 ? "font-semibold" : ""}`}
-            >
-              {row.getCanExpand() && (
-                <button
-                  className="mr-[10px] ml-[10px]"
-                  onClick={row.getToggleExpandedHandler()}
+      columnHelper.group({
+        id: "noidung",
+        columns: [
+          columnHelper.accessor("name", {
+            header: "Nội dung đánh giá",
+            cell: ({ row, getValue }) => {
+              return (
+                <div
+                  style={{
+                    // Since rows are flattened by default,
+                    // we can use the row.depth property
+                    // and paddingLeft to visually indicate the depth
+                    // of the row
+                    paddingLeft: `${row.depth * 2}rem`,
+                  }}
+                  className={`${row.depth === 0 ? "font-semibold" : ""}`}
                 >
-                  {row.getIsExpanded() ? "-" : "+"}
-                </button>
-              )}
-              {getValue()}
-            </div>
-          );
-        },
+                  {row.getCanExpand() && (
+                    <button
+                      className="mr-[10px] ml-[10px]"
+                      onClick={row.getToggleExpandedHandler()}
+                    >
+                      {row.getIsExpanded() ? "-" : "+"}
+                    </button>
+                  )}
+                  {getValue()}
+                </div>
+              );
+            },
+          }),
+
+          columnHelper.accessor("max_point", {
+            header: "Điểm tối đa",
+            cell: ({ getValue }) => <p>{getValue()}</p>,
+          }),
+        ],
       }),
-      columnHelper.accessor("self_point", {
-        header: "Tự đánh giá",
-        cell: ({ row, getValue }) => (
-          <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
-            {getValue()}
-          </p>
-        ),
-      }),
-      columnHelper.accessor("monitor_point", {
-        header: "Điểm cán bộ lớp",
-        cell: ({ row, getValue }) => (
-          <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
-            {getValue()}
-          </p>
-        ),
-      }),
-      columnHelper.accessor("staff_point", {
-        header: "Điểm QLSV",
-        cell: dataPass.data.total_staff_point
-          ? ({ row, getValue }) => (
+
+      columnHelper.group({
+        header: "Điểm",
+        columns: [
+          columnHelper.accessor("self_point", {
+            header: "Tự đánh giá",
+            cell: ({ row, getValue }) => (
               <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
                 {getValue()}
               </p>
-            )
-          : EditableCell,
+            ),
+          }),
+          columnHelper.accessor("monitor_point", {
+            header: "Điểm cán bộ lớp",
+            cell: ({ row, getValue }) => (
+              <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
+                {getValue()}
+              </p>
+            ),
+          }),
+          columnHelper.accessor("staff_point", {
+            header: "Điểm QLSV",
+            cell: dataPass.data.total_staff_point
+              ? ({ row, getValue }) => (
+                  <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
+                    {getValue()}
+                  </p>
+                )
+              : EditableCell,
+          }),
+        ],
       }),
     ],
     []
@@ -401,8 +424,8 @@ export default function Index({ dataPass, setDataPass }) {
       <p>
         Điểm cán bộ lớp đánh giá:{" "}
         <span className="font-semibold">
-          {dataPass.data.total_staff_point
-            ? dataPass.data.total_staff_point
+          {dataPass.data.total_monitor_point
+            ? dataPass.data.total_monitor_point
             : "..."}
         </span>
       </p>

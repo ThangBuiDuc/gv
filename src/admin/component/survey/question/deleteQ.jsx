@@ -4,7 +4,7 @@ import { useState, useLayoutEffect, Fragment } from "react";
 import ReactLoading from "react-loading";
 import Swal from "sweetalert2";
 
-function DeleteQuestion({ item , afterUpdate,setAfterUpdate}) {
+function DeleteQuestion({ item, afterUpdate, setAfterUpdate }) {
   const { getToken } = useAuth();
 
   const handleOnClick = (id) => {
@@ -24,8 +24,8 @@ function DeleteQuestion({ item , afterUpdate,setAfterUpdate}) {
             })}`,
           },
           body: JSON.stringify({
-            id
-          })
+            id,
+          }),
         }).then((res) => res.status);
 
         if (result === 200) {
@@ -34,8 +34,8 @@ function DeleteQuestion({ item , afterUpdate,setAfterUpdate}) {
             title: "Xoá câu hỏi thành công!",
             icon: "success",
           });
-        }else{
-            Swal.fire({ title: "Xoá câu hỏi thất bại", icon: "error" });
+        } else {
+          Swal.fire({ title: "Xoá câu hỏi thất bại", icon: "error" });
         }
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -47,7 +47,7 @@ function DeleteQuestion({ item , afterUpdate,setAfterUpdate}) {
       <div className="flex border border-bordercl items-center justify-between p-[10px] rounded-[10px]">
         <h3>{item.content_question}</h3>
         <button
-          className="btn"
+          className="selfBtn"
           onClick={() => handleOnClick(item.question_id)}
         >
           Xoá

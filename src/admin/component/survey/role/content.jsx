@@ -240,10 +240,13 @@ export default function Index({ data, setData }) {
             className="min-w-[200px]"
             placeholder="Lựa chọn quyền"
           />
-          <button className="btn ml-[20px]" onClick={handleOnClickRole}>
+          <button className="selfBtn ml-[20px]" onClick={handleOnClickRole}>
             Cập nhật quyền
           </button>
-          <button className="btn  ml-[20px]" onClick={handleOnClickTruongKhoa}>
+          <button
+            className="selfBtn  ml-[20px]"
+            onClick={handleOnClickTruongKhoa}
+          >
             Thêm/Loại trưởng khoa
           </button>
         </div>

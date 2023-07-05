@@ -92,7 +92,7 @@ function MainRoute() {
       isSignedIn &&
       !user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")
     ) {
-      window.location.href = "https://sv.hpu.edu.vn/home";
+      // window.location.href = "https://sv.hpu.edu.vn/home";
     }
   }, [location.pathname]);
 

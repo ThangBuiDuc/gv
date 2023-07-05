@@ -2,9 +2,13 @@ import "../../../../App.css";
 import { useState, useLayoutEffect, useEffect } from "react";
 import ReactLoading from "react-loading";
 import Swal from "sweetalert2";
+import { useQueryClient } from "@tanstack/react-query";
+
 import { useAuth } from "@clerk/clerk-react";
 
-export default function Index({ hocky, namhoc, setInited }) {
+export default function Index() {
+  const queryClient = useQueryClient();
+  const present = queryClient.getQueryData({ queryKey: ["getPresent_CTGD"] });
   const [data, setData] = useState(null);
   const [checked, setChecked] = useState(null);
   const { getToken } = useAuth();
@@ -63,8 +67,8 @@ export default function Index({ hocky, namhoc, setInited }) {
       preConfirm: async () => {
         const question = data.reduce((total, current, index) => {
           let item = Object.assign({}, current);
-          item.hocky = hocky;
-          item.namhoc = namhoc;
+          item.hocky = present[0].hocky;
+          item.namhoc = present[0].manamhoc;
           delete item.point_id;
           delete item.level_point;
           delete item.content_question;
@@ -89,8 +93,8 @@ export default function Index({ hocky, namhoc, setInited }) {
             res.v_course.map((item) => {
               item.end_date = item.end_date.split("T")[0];
               item.start_date = item.start_date.split("T")[0];
-              item.hocky = hocky;
-              item.namhoc = namhoc;
+              item.hocky = present[0].hocky;
+              item.namhoc = present[0].manamhoc;
               return item;
             })
           );
@@ -108,7 +112,7 @@ export default function Index({ hocky, namhoc, setInited }) {
         }).then((res) => res.json());
 
         if (result.result && result.result1) {
-          setInited(true);
+          queryClient.invalidateQueries({ queryKey: ["getInited_CTGD"] });
           Swal.fire({
             icon: "success",
             title: `Tạo mới đợt thành công`,
@@ -165,7 +169,7 @@ export default function Index({ hocky, namhoc, setInited }) {
             })}
             <div className="flex justify-evenly">
               <button
-                className="btn"
+                className="selfBtn"
                 onClick={() => {
                   setChecked(
                     checked.map((item, index) => {
@@ -178,7 +182,7 @@ export default function Index({ hocky, namhoc, setInited }) {
                 Chọn tất cả
               </button>
               <button
-                className="btn"
+                className="selfBtn"
                 onClick={() => {
                   setChecked(
                     checked.map((item, index) => {
@@ -217,7 +221,7 @@ export default function Index({ hocky, namhoc, setInited }) {
             })}
             <div className="flex justify-evenly">
               <button
-                className="btn"
+                className="selfBtn"
                 onClick={() => {
                   setChecked(
                     checked.map((item, index) => {
@@ -230,7 +234,7 @@ export default function Index({ hocky, namhoc, setInited }) {
                 Chọn tất cả
               </button>
               <button
-                className="btn"
+                className="selfBtn"
                 onClick={() => {
                   setChecked(
                     checked.map((item, index) => {
@@ -246,7 +250,7 @@ export default function Index({ hocky, namhoc, setInited }) {
           </div>
 
           <button
-            className="btn w-fit mt-[40px] self-center"
+            className="selfBtn w-fit mt-[40px] self-center"
             onClick={() => {
               handleInit();
             }}

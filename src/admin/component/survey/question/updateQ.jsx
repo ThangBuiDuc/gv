@@ -99,11 +99,8 @@ function EditSvQuestion({ item, afterUpdate, setAfterUpdate }) {
           <AiOutlineRight size={"22px"} />
         </label>
       </div>
-      <animated.div style={spring} className={'overflow-hidden'}>
-        <div
-          ref={ref}
-          className={`flex items-center gap-[5%]`}
-        >
+      <animated.div style={spring} className={"overflow-hidden"}>
+        <div ref={ref} className={`flex items-center gap-[5%]`}>
           <input
             type="text"
             className=" w-[85%] p-[5px] rounded-[10px] border-solid border-[1px] border-bordercl"
@@ -112,7 +109,7 @@ function EditSvQuestion({ item, afterUpdate, setAfterUpdate }) {
               setQuestion({ ...question, content_question: e.target.value })
             }
           />
-          <button className="btn w-[10%]" onClick={() => handleOnClick()}>
+          <button className="selfBtn w-[10%]" onClick={() => handleOnClick()}>
             Cập nhật
           </button>
         </div>
@@ -219,7 +216,7 @@ function EditGvQuestion({ item, afterUpdate, setAfterUpdate }) {
           <AiOutlineRight size={"22px"} />
         </label>
       </div>
-      <animated.div style={spring} className={'overflow-hidden'}>
+      <animated.div style={spring} className={"overflow-hidden"}>
         <div ref={ref} className="flex flex-col pl-[20px] pt-[20px] gap-[30px]">
           <div className="flex items-center gap-[5%]">
             <p className="w-[15%]">Tiêu đề câu hỏi: </p>
@@ -262,7 +259,7 @@ function EditGvQuestion({ item, afterUpdate, setAfterUpdate }) {
             })}
           </div>
           <button
-            className="btn w-fit self-center"
+            className="selfBtn w-fit self-center"
             onClick={() => handleOnClick()}
           >
             Cập nhật

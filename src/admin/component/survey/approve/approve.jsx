@@ -7,6 +7,7 @@ import DropDown from "./dropDown";
 import NavBtn from "./navBtn";
 import { animated, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
+import { useQueryClient } from "@tanstack/react-query";
 
 function compare(a, b) {
   return a.class_name.localeCompare(b.class_name);
@@ -34,7 +35,7 @@ function Reducer(state, action) {
   }
 }
 
-export default function Index({ present }) {
+export default function Index() {
   // let date = new Date();
   const [ref1, bounds1] = useMeasure();
   const [ref2, bounds2] = useMeasure();
@@ -45,6 +46,8 @@ export default function Index({ present }) {
     toggle1: false,
     toggle2: true,
   });
+  const queryClient = useQueryClient();
+  const present = queryClient.getQueryData({ queryKey: ["getPresent_CTGD"] });
   // const spring1 = useSpring({
   //   height: toggle.toggle1 ? bounds1.height : 0,
   //   opacity: toggle.toggle1 ? 1 : 0,
@@ -83,8 +86,8 @@ export default function Index({ present }) {
   useEffect(() => {
     const callApi = async () => {
       await fetch(
-        `${import.meta.env.VITE_APPROVE_SUBJECT_API}${present.hocky}/${
-          present.manamhoc
+        `${import.meta.env.VITE_APPROVE_SUBJECT_API}${present[0]?.hocky}/${
+          present[0]?.manamhoc
         }`,
         {
           method: "GET",
@@ -149,7 +152,7 @@ export default function Index({ present }) {
                           data={data.filter((item) => item.status === false)}
                           checked={checked}
                           setChecked={setChecked}
-                          present={present}
+                          present={present[0]}
                           setStatus={setStatus}
                           status={status}
                         />
@@ -164,7 +167,7 @@ export default function Index({ present }) {
                                 index={index}
                                 checked={checked}
                                 setChecked={setChecked}
-                                present={present}
+                                present={present[0]}
                               />
                             );
                           })}
@@ -208,7 +211,7 @@ export default function Index({ present }) {
                                 index={index}
                                 checked={checked}
                                 setChecked={setChecked}
-                                present={present}
+                                present={present[0]}
                               />
                             );
                           })}
