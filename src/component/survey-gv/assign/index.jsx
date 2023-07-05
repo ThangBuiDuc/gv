@@ -286,7 +286,7 @@ export default function Index() {
                   <Content
                     data={item}
                     staff={staff.data?.result}
-                    present={present.data?.hientai}
+                    present={present.data?.hientai[0]}
                     question={question.data?.result}
                   />
                 </Fragment>
@@ -305,7 +305,7 @@ export default function Index() {
                   <Content
                     data={item}
                     staff={staff.data?.result}
-                    present={present.data?.hientai}
+                    present={present.data?.hientai[0]}
                   />
                 </Fragment>
               );
