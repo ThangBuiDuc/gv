@@ -5,6 +5,8 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { useQueryClient } from "@tanstack/react-query";
 import ReactLoading from "react-loading";
 import { useState, useEffect, useMemo } from "react";
+import { BsFillPersonFill, BsPerson } from "react-icons/bs";
+import { RiIncreaseDecreaseLine, RiIncreaseDecreaseFill } from "react-icons/ri";
 import Swal from "sweetalert2";
 import {
   createColumnHelper,
@@ -282,7 +284,7 @@ export default function Index({ dataPass, setDataPass }) {
         setDataPass((pre) => ({ toggle: !pre.toggle, data: null }));
         queryClient.invalidateQueries({ queryKey: ["rlclasses"] });
         Swal.fire({
-          title: "Đánh giá thành công!",
+          title: `Đánh giá cho sinh viên ${dataPass.data.sv.fullname} thành công!`,
           icon: "success",
         });
         // queryClient.removeQueries({ queryKey: ["RL_CLASSES"] });
@@ -309,7 +311,9 @@ export default function Index({ dataPass, setDataPass }) {
     } else {
       Swal.fire({
         title: "Hoàn thành đánh giá!",
-        text: "Bạn có chắc chắn muốn hoàn thành quá trình đánh giá không?",
+        html: `<p>
+            Bạn có chắc chắn muốn hoàn thành quá trình đánh giá cho sinh viên <span style="font-weight:600;">${dataPass.data.sv.fullname}</span> không?
+          </p>`,
         icon: "question",
         showCancelButton: true,
         showCloseButton: true,
@@ -403,6 +407,8 @@ export default function Index({ dataPass, setDataPass }) {
     );
   }
 
+  // console.log(dataPass);
+
   return (
     <div className="flex flex-col gap-[10px]">
       <BiArrowBack
@@ -410,7 +416,7 @@ export default function Index({ dataPass, setDataPass }) {
         className="cursor-pointer"
         onClick={() => setDataPass((pre) => ({ ...pre, toggle: !pre.toggle }))}
       />
-      <h4 className="text-center">
+      {/* <h4 className="text-center">
         Đánh giá sinh viên: <span>{dataPass.data.sv.fullname}</span>
       </h4>
       <p>
@@ -444,10 +450,76 @@ export default function Index({ dataPass, setDataPass }) {
             ? dataPass.data.total_add_point
             : "..."}
         </span>
-      </p>
+      </p> */}
       {data && (
         <>
-          <div className="flex justify-end gap-[30px] p-2">
+          <div className="flex justify-evenly items-center gap-[30px] p-2">
+            <h3>{dataPass.data.sv.fullname}</h3>
+            <div
+              className=" flex items-center justify-center gap-[10px] tooltip"
+              data-tip="Điểm tự đánh giá của sinh viên"
+            >
+              <BsFillPersonFill size={"20px"} />
+              <h3>
+                {dataPass.data.total_self_point ? (
+                  <span
+                    className={`${
+                      dataPass.data.total_monitor_point !==
+                        dataPass.data.total_self_point &&
+                      !dataPass.data.total_staff_point &&
+                      dataPass.data.total_monitor_point
+                        ? "text-red-600"
+                        : ""
+                    }`}
+                  >
+                    {dataPass.data.total_self_point}
+                  </span>
+                ) : (
+                  ". . ."
+                )}
+              </h3>
+            </div>
+
+            <div
+              className=" flex items-center justify-center gap-[10px] tooltip"
+              data-tip="Điểm đánh giá của cán bộ lớp cho sinh viên"
+            >
+              <BsPerson size={"20px"} />
+              <h3>
+                {dataPass.data.total_monitor_point ? (
+                  <span
+                    className={`${
+                      dataPass.data.total_monitor_point !==
+                        dataPass.data.total_self_point &&
+                      !dataPass.data.total_staff_point &&
+                      dataPass.data.total_monitor_point
+                        ? "text-red-600"
+                        : ""
+                    }`}
+                  >
+                    {dataPass.data.total_monitor_point}
+                  </span>
+                ) : (
+                  ". . ."
+                )}
+              </h3>
+            </div>
+
+            <div
+              className=" flex items-center justify-center gap-[10px] tooltip"
+              data-tip="Điểm trừ theo sự kiện của sinh viên"
+            >
+              <RiIncreaseDecreaseLine size={"20px"} />
+              <h3>{dataPass.data.total_sub_point}</h3>
+            </div>
+
+            <div
+              className="flex items-center justify-center gap-[10px] tooltip"
+              data-tip="Điểm cộng theo sự kiện của sinh viên"
+            >
+              <RiIncreaseDecreaseFill size={"20px"} />
+              <h3>{dataPass.data.total_add_point}</h3>
+            </div>
             <button
               className={`${
                 data.every((item) => item.self_point) ? "selfBtn" : "disableBtn"

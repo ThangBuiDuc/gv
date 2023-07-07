@@ -77,11 +77,11 @@ export const sideBarData = [
         path: "/trainscore/classes",
         icon: <MdAppRegistration size={"22px"} />,
       },
-      {
-        title: "Sự kiện",
-        path: "/trainscore/event",
-        icon: <BsCalendarEvent size={"22px"} />,
-      },
+      // {
+      //   title: "Sự kiện",
+      //   path: "/trainscore/event",
+      //   icon: <BsCalendarEvent size={"22px"} />,
+      // },
     ],
   },
   // {
