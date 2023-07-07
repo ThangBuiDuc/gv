@@ -16,7 +16,7 @@ import { HiOutlineInformationCircle } from "react-icons/hi";
 import { SlCalender } from "react-icons/sl";
 import {
   BsCalendarCheck,
-  // ,BsCalendarEvent
+  // BsCalendarEvent
 } from "react-icons/bs";
 
 export const sideBarData = [
