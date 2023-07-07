@@ -96,6 +96,27 @@ export default function Index({ dataPass, setDataPass }) {
     },
   });
 
+  const tbhk1 = useQuery({
+    queryKey: ["tbhk1", { type: dataPass.data.student_code }],
+    queryFn: async () => {
+      return await fetch(
+        `${import.meta.env.VITE_RL_EDU_TBHK}${dataPass.data.student_code}/${
+          batch?.term
+        }/${batch?.school_year}`,
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${await getToken({
+              template: import.meta.env.VITE_TEMPLATE_RL_EDU,
+            })}`,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((res) => res.result[0]);
+    },
+  });
+
   useEffect(() => {
     if (detailSV.data)
       setData(
@@ -191,7 +212,45 @@ export default function Index({ dataPass, setDataPass }) {
                       {row.getIsExpanded() ? "-" : "+"}
                     </button>
                   )}
-                  {getValue()}
+                  {row.parentId === "0" && row.original.position === 2 ? (
+                    <>
+                      <div className="flex">
+                        <p>
+                          {getValue()}
+                          {tbhk1.data ? (
+                            <span style={{ fontWeight: "bold" }}>
+                              &nbsp;---&nbsp;{tbhk1.data.diem4}
+                            </span>
+                          ) : (
+                            ". . ."
+                          )}
+                        </p>
+                      </div>
+                      <ul className="list-disc ">
+                        <li className="ml-[20px]">
+                          Có điểm trung bình chung học tập từ 3.6 trở lên =&gt;
+                          05 điểm
+                        </li>
+                        <li className="ml-[20px]">
+                          Có điểm trung bình chung học tập từ 3.2 đến 3.59 =&gt;
+                          04 điểm
+                        </li>
+                        <li className="ml-[20px]">
+                          Có điểm trung bình chung học tập từ 2.5 đến 3.19 =&gt;
+                          03 điểm
+                        </li>
+                        <li className="ml-[20px]">
+                          Có điểm trung bình chung học tập từ 2.0 đến 3.49 =&gt;
+                          02 điểm
+                        </li>
+                        <li className="ml-[20px]">
+                          Có điểm trung bình chung học tập dưới 2.0 =&gt; 0 điểm
+                        </li>
+                      </ul>
+                    </>
+                  ) : (
+                    getValue()
+                  )}
                 </div>
               );
             },
@@ -236,7 +295,7 @@ export default function Index({ dataPass, setDataPass }) {
         ],
       }),
     ],
-    []
+    [tbhk1]
   );
 
   const mutation = useMutation({
