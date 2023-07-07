@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { Suspense, useLayoutEffect, useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import {
   Routes,
   Route,
@@ -60,41 +60,14 @@ function MainRoute() {
   const location = useLocation();
   const { isSignedIn } = useAuth();
   const { user } = useUser();
-  useLayoutEffect(() => {
-    // const callApi = async () => {
-    //   await fetch(`${import.meta.env.VITE_ROLE_API}`, {
-    //     method: "GET",
-    //     headers: {
-    //       authorization: `Bearer ${await getToken({
-    //         template: import.meta.env.VITE_TEMPLATE_ROLE,
-    //       })}`,
-    //     },
-    //   })
-    //     .then((res) => res.json())
-    //     .then((res) => {
-    //       if (res.result) setRole(res.result[0]);
-    //     })
-    //     .catch(() => {
-    //       setRole({ role_id: 0 });
-    //     });
-    // };
 
-    // if (
-    //   isSignedIn &&
-    //   user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")
-    // ) {
-    //   callApi();
-    // } else if (isSignedIn !== undefined) {
-    //   setRole({ role_id: 0 });
-    // }
-
-    if (
-      isSignedIn &&
-      !user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")
-    ) {
-      window.location.href = "https://sv.hpu.edu.vn/home";
-    }
-  }, [location.pathname]);
+  if (
+    isSignedIn &&
+    !user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")
+  ) {
+    console.log(1);
+    window.location.href = "https://sv.hpu.edu.vn/home";
+  }
 
   return (
     <Routes>
