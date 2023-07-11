@@ -7,7 +7,7 @@
     "dev": "vite --port $PORT",
     "build": "vite build",
     "preview": "vite preview",
-    "vercel": "vercel dev --listen 3001"
+    "vercel": "vercel dev --listen 3000"
   },
   "dependencies": {
     "@clerk/clerk-react": "^4.12.8",

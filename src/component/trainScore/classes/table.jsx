@@ -139,7 +139,9 @@ export default function Index({ dataPass, setDataPass }) {
               .sort((a, b) => a.position - b.position);
 
             return {
-              self_point: question.every((item) => item.self_point)
+              self_point: question.every(
+                (item) => typeof item.self_point === "number"
+              )
                 ? question.reduce((total, curr) => total + curr.self_point, 0)
                 : null,
               ...object,
@@ -150,6 +152,8 @@ export default function Index({ dataPass, setDataPass }) {
           .sort((a, b) => a.position - b.position)
       );
   }, [detailSV.data]);
+
+  console.log(data);
 
   const EditableCell = ({ getValue, row, table, column }) => {
     const [value, setValue] = useState(getValue() ? getValue() : "");
