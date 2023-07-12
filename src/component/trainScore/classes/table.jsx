@@ -151,7 +151,7 @@ export default function Index({ dataPass, setDataPass }) {
     return row.depth === 0 && column.id === "staff_point" ? (
       // <div className="flex justify-center h-full w-full">
       <input
-        className="input input-bordered w-[90%] h-[90%] input-sm font-semibold leading-[24px] text-[16px]"
+        className="input input-bordered w-[90%] h-[90%] input-info font-semibold leading-[24px] text-[16px]"
         type="number"
         value={value}
         onWheel={(e) => e.target.blur()}
