@@ -4,31 +4,31 @@ import "../../../App.css";
 import { useAuth } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
-import { CSVLink } from "react-csv";
+// import { CSVLink } from "react-csv";
 import { useQuery } from "@tanstack/react-query";
 
-const headersCSV = [
-  {
-    label: "STT",
-    key: "stt",
-  },
-  {
-    label: "Lớp môn học",
-    key: "class_name",
-  },
-  {
-    label: "Tên giảng viên phụ trách",
-    key: "name",
-  },
-  {
-    label: "Điểm trung bình",
-    key: "qldt_result",
-  },
-  {
-    label: "Ý kiến riêng",
-    key: "",
-  },
-];
+// const headersCSV = [
+//   {
+//     label: "STT",
+//     key: "stt",
+//   },
+//   {
+//     label: "Lớp môn học",
+//     key: "class_name",
+//   },
+//   {
+//     label: "Tên giảng viên phụ trách",
+//     key: "name",
+//   },
+//   {
+//     label: "Điểm trung bình",
+//     key: "qldt_result",
+//   },
+//   {
+//     label: "Ý kiến riêng",
+//     key: "",
+//   },
+// ];
 
 function compare(a, b) {
   return a.user.name.localeCompare(b.user.name);
@@ -163,7 +163,7 @@ export default function Index() {
         </div>
       ) : (
         <>
-          <div className="flex justify-end">
+          {/* <div className="flex justify-end">
             <CSVLink
               data={data.data.map((item, index) => {
                 return {
@@ -179,7 +179,7 @@ export default function Index() {
             >
               Xuất CSV
             </CSVLink>
-          </div>
+          </div> */}
           <div className="flex justify-end">
             <input
               type="text"

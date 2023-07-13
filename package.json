@@ -7,7 +7,7 @@
     "dev": "vite --port $PORT",
     "build": "vite build",
     "preview": "vite preview",
-    "vercel": "vercel dev --listen 3001"
+    "vercel": "vercel dev --listen 3000"
   },
   "dependencies": {
     "@clerk/clerk-react": "^4.12.8",
@@ -16,11 +16,14 @@
     "@fullcalendar/moment": "^6.1.5",
     "@fullcalendar/react": "^6.1.5",
     "@fullcalendar/timegrid": "^6.1.5",
+    "@react-pdf/renderer": "^3.1.12",
     "@react-spring/web": "^9.7.2",
     "@tanstack/react-query": "^4.29.19",
     "@tanstack/react-table": "^8.9.2",
     "dotenv": "^16.0.3",
     "draftjs-to-html": "^0.9.1",
+    "exceljs": "^4.3.0",
+    "file-saver": "^2.0.5",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
@@ -28,7 +31,6 @@
     "nodemailer": "^6.9.2",
     "react": "^18.2.0",
     "react-awesome-slider": "^4.1.0",
-    "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-icons": "^4.10.1",

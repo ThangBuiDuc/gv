@@ -1,9 +1,20 @@
 import { useClerk } from "@clerk/clerk-react";
 import "../../../App.css";
 import logo from "../../../assets/logo1.png";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Index() {
   const { user } = useClerk();
+  const queryClient = useQueryClient();
+  const { signOut } = useClerk();
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    queryClient.clear();
+    signOut();
+    navigate("/home");
+  };
   return (
     <div className="fixed z-[1000] w-[100%] h-[80px] shadow-sm flex bg-white">
       <div className="w-[250px] bg-primary h-[100%]">
@@ -22,7 +33,9 @@ export default function Index() {
           <h3 className="text-center self-center">
             {user?.publicMetadata.name}
           </h3>
-          <button className="text-[#636e75]">Đăng xuất</button>
+          <button className="text-[#636e75]" onClick={handleLogOut}>
+            Đăng xuất
+          </button>
         </div>
       </div>
     </div>

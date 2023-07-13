@@ -36,7 +36,7 @@ export default function Index() {
         .then((res) => res.json())
         .then((res) => res.hientai);
     },
-    enabled: role.data?.role_id.toString() === import.meta.env.VITE_ROLE_ADMIN,
+    enabled: role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN,
   });
 
   const inited = useQuery({

@@ -2,86 +2,20 @@
 import { useEffect, useState } from "react";
 import "../../../../App.css";
 import { useAuth } from "@clerk/clerk-react";
+// import { useUser } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
 import { useQuery } from "@tanstack/react-query";
-import { CSVLink } from "react-csv";
-
-const headersCSV = [
-  {
-    label: "STT",
-    key: "stt",
-  },
-  {
-    label: "Mã môn học",
-    key: "subject_code",
-  },
-  {
-    label: "Mã lớp môn học",
-    key: "class_code",
-  },
-  {
-    label: "Môn học",
-    key: "class_name",
-  },
-  {
-    label: "Giảng viên",
-    key: "name",
-  },
-  {
-    label: "Khoa",
-    key: "khoa",
-  },
-  {
-    label: "Điểm trung bình sinh viên",
-    key: "student_result",
-  },
-  {
-    label: "Số lượng sinh viên đã phản hồi",
-    key: "count_sv_resonded",
-  },
-  {
-    label: "Tổng số lượng sinh viên của lớp học",
-    key: "total_student",
-  },
-  {
-    label: "Điểm trung bình sinh viên dự giờ",
-    key: "teacher_result",
-  },
-  {
-    label: "Số lượng giảng viên đã phản hồi",
-    key: "count_gv_resonded",
-  },
-  {
-    label: "Tổng số giảng viên được phân công dự giờ",
-    key: "total_teacher",
-  },
-  {
-    label: "Điểm quản lý đào tạo",
-    key: "qldt_result",
-  },
-  {
-    label: "Tổng điểm",
-    key: "result_evaluate",
-  },
-  {
-    label: "Xếp loại",
-    key: "xep_loai",
-  },
-];
+import * as Excel from "exceljs";
+import { saveAs } from "file-saver";
+import moment from "moment";
 
 function compare(a, b) {
-  // if ( a.class_name < b.class_name ){
-  //   return -1;
-  // }
-  // if ( a.class_name > b.class_name ){
-  //   return 1;
-  // }
-  // return 0;
   return a.class_name.localeCompare(b.class_name);
 }
 
 export default function Index() {
+  // const { user } = useUser();
   const { getToken } = useAuth();
   const [course, setCourse] = useState(null);
   const [afterUpdate, setAfterUpdate] = useState(false);
@@ -110,7 +44,7 @@ export default function Index() {
         .then((res) => res.json())
         .then((res) => res.hientai);
     },
-    enabled: role.data?.role_id.toString() === import.meta.env.VITE_ROLE_ADMIN,
+    enabled: role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN,
   });
 
   useEffect(() => {
@@ -166,7 +100,7 @@ export default function Index() {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
-          <h2 className="text-primary">Khởi tạo đợt đánh giá</h2>
+          <h2 className="text-primary">Tổng kết điểm môn học</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -183,7 +117,7 @@ export default function Index() {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
-          <h2 className="text-primary">Khởi tạo đợt đánh giá</h2>
+          <h2 className="text-primary">Tổng kết điểm môn học</h2>
         </div>
         <div className="flex justify-center">
           <h3>Tài khoản hiện tại không có quyền thực hiện chức năng này!</h3>
@@ -196,7 +130,7 @@ export default function Index() {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
-          <h2 className="text-primary">Khởi tạo đợt đánh giá</h2>
+          <h2 className="text-primary">Tổng kết điểm môn học</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -208,6 +142,117 @@ export default function Index() {
       </div>
     );
   }
+
+  const handleDownXLSX = async () => {
+    const workbook = new Excel.Workbook();
+    try {
+      const sheet = workbook.addWorksheet("CTGD");
+      sheet.views = [
+        {
+          state: "frozen",
+          xSplit: 0,
+          ySplit: 2,
+        },
+      ];
+      sheet.addRow([
+        "STT",
+        "Mã lớp",
+        "Mã môn",
+        "Số tín chỉ",
+        "Tên môn",
+        "Giảng viên",
+        "Khoa",
+        "Phản hồi của sinh viên",
+        "",
+        "",
+        "Phản hồi của đồng nghiệp",
+        "",
+        "",
+        "Quản lý đào tạo",
+        "Tổng điểm = 0.8 x d1 + 0.4 x d2 + 0.2 x d3",
+        "Xếp loại",
+      ]);
+
+      sheet.addRow([
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Điểm TB (d1)",
+        "Đã phản hồi",
+        "Sĩ số",
+        "Điểm TB (d2)",
+        "Đã phản hồi",
+        "Số giảng viên được phân công dự giờ",
+        "Điểm TB (d3)",
+      ]);
+
+      sheet.mergeCells("A1:A2");
+      sheet.mergeCells("B1:B2");
+      sheet.mergeCells("C1:C2");
+      sheet.mergeCells("D1:D2");
+      sheet.mergeCells("E1:E2");
+      sheet.mergeCells("F1:F2");
+      sheet.mergeCells("G1:G2");
+      sheet.mergeCells("H1:J1");
+      sheet.mergeCells("K1:M1");
+      sheet.mergeCells("O1:O2");
+      sheet.mergeCells("P1:P2");
+
+      csv.forEach((item, index) => {
+        sheet.addRow([
+          index + 1,
+          item.class_code,
+          item.subject_code,
+          item.so_tc,
+          item.class_name,
+          item.name,
+          item.khoa,
+          item.student_result,
+          item.count_sv_resonded,
+          item.total_student,
+          item.teacher_result,
+          item.count_gv_resonded,
+          item.total_teacher,
+          item.qldt_result,
+          item.result_evaluate,
+          item.xep_loai,
+        ]);
+      });
+
+      sheet.getRow(1).alignment = {
+        vertical: "middle",
+        horizontal: "center",
+        wrapText: true,
+      };
+      sheet.getRow(2).alignment = {
+        vertical: "middle",
+        horizontal: "center",
+        wrapText: true,
+      };
+
+      moment.locale("vi");
+      const buf = await workbook.xlsx.writeBuffer();
+
+      saveAs(
+        new Blob([buf]),
+        `BaoCao_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+      );
+    } finally {
+      workbook.removeWorksheet("CTGD");
+    }
+    // workbook.xlsx.writeBuffer().then((data) => {
+    //   const blob = new Blob([data], {
+    //     type: "application/vnd.openxmlformats-officedocument.spreadsheet.sheet",
+    //   });
+    //   const url = window.URL.createObjectURL(blob);
+    //   ref.current.href = url;
+    //   ref.current.download = "test.xlsx";
+    // });
+  };
 
   return (
     <div className="wrapAdmin">
@@ -223,14 +268,12 @@ export default function Index() {
         <>
           <div className="flex justify-end">
             {csv.length > 0 ? (
-              <CSVLink
-                data={csv}
-                headers={headersCSV}
-                className="selfBtn"
-                filename={`${new Date().toDateString()}-TongKetKhaoSat.csv`}
-              >
-                Xuất CSV
-              </CSVLink>
+              <div className="flex gap-[20px]">
+                <button className="selfBtn" onClick={handleDownXLSX}>
+                  Xuất Excel
+                </button>
+                {/* <PDFExport data={csv} name={user.publicMetadata.name} /> */}
+              </div>
             ) : (
               <ReactLoading
                 type="spin"

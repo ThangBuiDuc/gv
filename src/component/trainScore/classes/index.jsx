@@ -176,17 +176,19 @@ export default function Index() {
           <h2 className="text-primary">Đánh giá sinh viên</h2>
         </div>
         {data &&
-          data.map((item, index) => {
-            return (
-              <Fragment key={index}>
-                <Content
-                  data={item}
-                  rootIndex={index}
-                  isRefetch={preData.isRefetching}
-                />
-              </Fragment>
-            );
-          })}
+          data
+            .sort((a, b) => a.class_code.localeCompare(b.class_code))
+            .map((item, index) => {
+              return (
+                <Fragment key={index}>
+                  <Content
+                    data={item}
+                    rootIndex={index}
+                    isRefetch={preData.isRefetching}
+                  />
+                </Fragment>
+              );
+            })}
       </div>
     </setRootChecked.Provider>
   );

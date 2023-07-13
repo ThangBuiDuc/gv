@@ -3,59 +3,59 @@ import { Fragment } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
-import { CSVLink } from "react-csv";
+// import { CSVLink } from "react-csv";
 import { useQuery } from "@tanstack/react-query";
 
-const headersCSV = [
-  {
-    label: "STT",
-    key: "stt",
-  },
-  {
-    label: "Mã lớp môn học",
-    key: "class_code",
-  },
-  {
-    label: "Lớp môn học",
-    key: "class_name",
-  },
-  {
-    label: "Phòng học",
-    key: "",
-  },
-  {
-    label: "Thời gian dự giờ",
-    key: "",
-  },
-  {
-    label: "Số tiết dự giờ",
-    key: "",
-  },
-  {
-    label: "Tên giảng viên phụ trách",
-    key: "name",
-  },
-  {
-    label: "Chủ tịch hội đồng",
-    key: "teacher_attend_1",
-  },
-  {
-    label: "Thư ký",
-    key: "teacher_attend_2",
-  },
-  {
-    label: "Uỷ viên",
-    key: "teacher_attend_3",
-  },
-  {
-    label: "Điểm trung bình",
-    key: "teacher_result",
-  },
-  {
-    label: "Ý kiến riêng",
-    key: "",
-  },
-];
+// const headersCSV = [
+//   {
+//     label: "STT",
+//     key: "stt",
+//   },
+//   {
+//     label: "Mã lớp môn học",
+//     key: "class_code",
+//   },
+//   {
+//     label: "Lớp môn học",
+//     key: "class_name",
+//   },
+//   {
+//     label: "Phòng học",
+//     key: "",
+//   },
+//   {
+//     label: "Thời gian dự giờ",
+//     key: "",
+//   },
+//   {
+//     label: "Số tiết dự giờ",
+//     key: "",
+//   },
+//   {
+//     label: "Tên giảng viên phụ trách",
+//     key: "name",
+//   },
+//   {
+//     label: "Chủ tịch hội đồng",
+//     key: "teacher_attend_1",
+//   },
+//   {
+//     label: "Thư ký",
+//     key: "teacher_attend_2",
+//   },
+//   {
+//     label: "Uỷ viên",
+//     key: "teacher_attend_3",
+//   },
+//   {
+//     label: "Điểm trung bình",
+//     key: "teacher_result",
+//   },
+//   {
+//     label: "Ý kiến riêng",
+//     key: "",
+//   },
+// ];
 
 function compare(a, b) {
   return a.class_name.localeCompare(b.class_name);
@@ -250,7 +250,7 @@ export default function Index() {
         <h2 className="text-primary">Phân công dự giờ</h2>
       </div>
       <>
-        <div className="flex justify-end">
+        {/* <div className="flex justify-end">
           <CSVLink
             data={data.data?.result.sort(compare).map((item, index) => {
               return {
@@ -270,17 +270,7 @@ export default function Index() {
           >
             Xuất CSV
           </CSVLink>
-          {/* <button
-            className="btn w-[fit]"
-            onClick={() => {
-              queryClient.invalidateQueries({
-                queryKey: ["getData_assign_CTGD"],
-              });
-            }}
-          >
-            Click Me!
-          </button> */}
-        </div>
+        </div> */}
         <div className="flex flex-col gap-[20px]">
           <h3 className="self-center text-primary text-center">
             Những lớp môn học chưa phân công dự giờ
