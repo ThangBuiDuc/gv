@@ -58,43 +58,43 @@ export default function Index() {
       import.meta.env.VITE_ROLE_RL_MANAGERMENT,
   });
 
-  const listSV = useQuery({
-    queryKey: ["RL_LIST_SV"],
-    queryFn: async () => {
-      return await fetch(import.meta.env.VITE_RL_LIST_SV, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${await getToken({
-            template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
-          })}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => res.result);
-    },
-    enabled:
-      role.data?.role_id.toString() ===
-      import.meta.env.VITE_ROLE_RL_MANAGERMENT,
-  });
+  // const listSV = useQuery({
+  //   queryKey: ["RL_LIST_SV"],
+  //   queryFn: async () => {
+  //     return await fetch(import.meta.env.VITE_RL_LIST_SV, {
+  //       method: "GET",
+  //       headers: {
+  //         authorization: `Bearer ${await getToken({
+  //           template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+  //         })}`,
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((res) => res.result);
+  //   },
+  //   enabled:
+  //     role.data?.role_id.toString() ===
+  //     import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+  // });
 
-  const listEvent = useQuery({
-    queryKey: ["RL_LIST_EV"],
-    queryFn: async () => {
-      return await fetch(import.meta.env.VITE_RL_LIST_EVENT, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${await getToken({
-            template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
-          })}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => res.result);
-    },
-    enabled:
-      role.data?.role_id.toString() ===
-      import.meta.env.VITE_ROLE_RL_MANAGERMENT,
-  });
+  // const listEvent = useQuery({
+  //   queryKey: ["RL_LIST_EV"],
+  //   queryFn: async () => {
+  //     return await fetch(import.meta.env.VITE_RL_LIST_EVENT, {
+  //       method: "GET",
+  //       headers: {
+  //         authorization: `Bearer ${await getToken({
+  //           template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+  //         })}`,
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((res) => res.result);
+  //   },
+  //   enabled:
+  //     role.data?.role_id.toString() ===
+  //     import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+  // });
 
   console.log(batch.data);
   // console.log(listSV.data);
@@ -134,11 +134,11 @@ export default function Index() {
 
   if (
     batch.isFetching ||
-    batch.isLoading ||
-    listEvent.isFetching ||
-    listEvent.isLoading ||
-    listSV.isFetching ||
-    listSV.isLoading
+    batch.isLoading 
+    // listEvent.isFetching ||
+    // listEvent.isLoading ||
+    // listSV.isFetching ||
+    // listSV.isLoading
   ) {
     return (
       <div className="eventWrap">

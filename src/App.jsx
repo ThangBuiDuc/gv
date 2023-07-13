@@ -55,6 +55,7 @@ const Work = React.lazy(() => import("./component/calendar/work"));
 // TrainScore
 const Classes = React.lazy(() => import("./component/trainScore/classes"));
 const Event = React.lazy(() => import("./component/trainScore/event"));
+const SetMonitor = React.lazy(() => import("./component/trainScore/setMonitor"));
 
 function MainRoute() {
   const location = useLocation();
@@ -322,6 +323,28 @@ function MainRoute() {
             </>
           }
         />
+
+        <Route
+          path="/trainscore/setMonitor"
+          element={
+            <>
+              <SignedIn>
+                <SetMonitor />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/trainscore/setMonitor"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+        
 
         {/* <Route
             path="/survey/total"

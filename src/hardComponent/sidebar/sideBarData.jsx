@@ -15,6 +15,7 @@ import {
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { SlCalender } from "react-icons/sl";
 import { BsCalendarCheck, BsCalendarEvent } from "react-icons/bs";
+import { TbSettingsCog } from "react-icons/tb";
 
 export const sideBarData = [
   {
@@ -81,6 +82,11 @@ export const sideBarData = [
         title: "Sự kiện",
         path: "/trainscore/event",
         icon: <BsCalendarEvent size={"22px"} />,
+      },
+      {
+        title: "Phân công lớp trưởng",
+        path: "/trainscore/setMonitor",
+        icon: <TbSettingsCog size={"22px"}/>,
       },
     ],
   },
