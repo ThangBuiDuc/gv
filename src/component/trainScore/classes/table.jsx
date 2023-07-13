@@ -156,7 +156,9 @@ export default function Index({ dataPass, setDataPass }) {
   console.log(data);
 
   const EditableCell = ({ getValue, row, table, column }) => {
-    const [value, setValue] = useState(getValue() ? getValue() : "");
+    const [value, setValue] = useState(
+      typeof getValue() === "number" ? getValue() : ""
+    );
     useEffect(() => {
       if (getValue()) setValue(getValue());
     }, [getValue()]);
@@ -173,14 +175,25 @@ export default function Index({ dataPass, setDataPass }) {
         type="number"
         value={value}
         onWheel={(e) => e.target.blur()}
-        onChange={(e) =>
-          setValue(
-            Math.max(
-              0,
-              Math.min(row.original.max_point, Number(e.target.value))
-            )
-          )
-        }
+        onChange={(e) => {
+          const re = /^[0-9\b]+$/;
+          let number = parseInt(e.target.value, 10);
+          // if value is not blank, then test the regex
+
+          if (number === "" || re.test(number)) {
+            number < 0
+              ? setValue(0)
+              : number > row.original.max_point
+              ? setValue(0)
+              : setValue(number);
+          }
+        }}
+        onKeyDown={(e) => {
+          console.log(e.key);
+          if (e.key !== "Backspace" && (e.key < "0" || e.key > "9")) {
+            e.preventDefault();
+          }
+        }}
         onBlur={onBlur}
       />
     ) : (
@@ -299,7 +312,7 @@ export default function Index({ dataPass, setDataPass }) {
         ],
       }),
     ],
-    [tbhk1]
+    [tbhk1.data]
   );
 
   const mutation = useMutation({

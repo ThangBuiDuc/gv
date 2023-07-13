@@ -3,7 +3,7 @@
 
 @layer base {
   body {
-    @apply font-montserrat;
+    @apply font-montserrat bg-white;
   }
 }
 
