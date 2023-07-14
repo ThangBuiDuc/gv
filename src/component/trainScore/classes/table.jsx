@@ -189,7 +189,6 @@ export default function Index({ dataPass, setDataPass }) {
           }
         }}
         onKeyDown={(e) => {
-          console.log(e.key);
           if (e.key !== "Backspace" && (e.key < "0" || e.key > "9")) {
             e.preventDefault();
           }
@@ -301,13 +300,14 @@ export default function Index({ dataPass, setDataPass }) {
           }),
           columnHelper.accessor("staff_point", {
             header: "Điểm QLSV",
-            cell: dataPass.data.total_staff_point
-              ? ({ row, getValue }) => (
-                  <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
-                    {getValue()}
-                  </p>
-                )
-              : EditableCell,
+            cell:
+              typeof dataPass.data.total_staff_point === "number"
+                ? ({ row, getValue }) => (
+                    <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
+                      {getValue()}
+                    </p>
+                  )
+                : EditableCell,
           }),
         ],
       }),
@@ -537,13 +537,13 @@ export default function Index({ dataPass, setDataPass }) {
             >
               <BsFillPersonFill size={"20px"} />
               <h3>
-                {dataPass.data.total_self_point ? (
+                {typeof dataPass.data.total_self_point === "number" ? (
                   <span
                     className={`${
                       dataPass.data.total_monitor_point !==
                         dataPass.data.total_self_point &&
-                      !dataPass.data.total_staff_point &&
-                      dataPass.data.total_monitor_point
+                      typeof dataPass.data.total_staff_point !== "number" &&
+                      typeof dataPass.data.total_monitor_point === "number"
                         ? "text-red-600"
                         : ""
                     }`}
@@ -562,13 +562,13 @@ export default function Index({ dataPass, setDataPass }) {
             >
               <BsPerson size={"20px"} />
               <h3>
-                {dataPass.data.total_monitor_point ? (
+                {typeof dataPass.data.total_monitor_point === "number" ? (
                   <span
                     className={`${
                       dataPass.data.total_monitor_point !==
                         dataPass.data.total_self_point &&
-                      !dataPass.data.total_staff_point &&
-                      dataPass.data.total_monitor_point
+                      typeof dataPass.data.total_staff_point !== "number" &&
+                      typeof dataPass.data.total_monitor_point === "number"
                         ? "text-red-600"
                         : ""
                     }`}
@@ -598,9 +598,15 @@ export default function Index({ dataPass, setDataPass }) {
             </div>
             <button
               className={`${
-                data.every((item) => item.self_point) ? "selfBtn" : "disableBtn"
+                data.every((item) => typeof item.self_point === "number")
+                  ? "selfBtn"
+                  : "disableBtn"
               } w-fit`}
-              disabled={data.every((item) => item.self_point) ? false : true}
+              disabled={
+                data.every((item) => typeof item.self_point === "number")
+                  ? false
+                  : true
+              }
               onClick={() =>
                 setData((pre) =>
                   pre.map((item) => ({ ...item, staff_point: item.self_point }))
@@ -611,11 +617,15 @@ export default function Index({ dataPass, setDataPass }) {
             </button>
             <button
               className={`${
-                data.every((item) => item.monitor_point)
+                data.every((item) => typeof item.monitor_point === "number")
                   ? "selfBtn"
                   : "disableBtn"
               } w-fit`}
-              disabled={data.every((item) => item.monitor_point) ? false : true}
+              disabled={
+                data.every((item) => typeof item.monitor_point === "number")
+                  ? false
+                  : true
+              }
               onClick={() =>
                 setData((pre) =>
                   pre.map((item) => ({

@@ -111,7 +111,8 @@ export default function Index({ data, rootIndex, isRefetch }) {
           <BsFillPersonFill size={"20px"} />
           <h3>
             {data.enrollment.reduce(
-              (total, curr) => (curr.total_self_point ? total + 1 : total),
+              (total, curr) =>
+                typeof curr.total_self_point === "number" ? total + 1 : total,
               0
             )}
             /{data.enrollment.length}
@@ -124,7 +125,10 @@ export default function Index({ data, rootIndex, isRefetch }) {
           <BsPerson size={"20px"} />
           <h3>
             {data.enrollment.reduce(
-              (total, curr) => (curr.total_monitor_point ? total + 1 : total),
+              (total, curr) =>
+                typeof curr.total_monitor_point === "number"
+                  ? total + 1
+                  : total,
               0
             )}
             /{data.enrollment.length}
@@ -137,7 +141,8 @@ export default function Index({ data, rootIndex, isRefetch }) {
           <GrUserManager size={"20px"} />
           <h3>
             {data.enrollment.reduce(
-              (total, curr) => (curr.total_staff_point ? total + 1 : total),
+              (total, curr) =>
+                typeof curr.total_staff_point === "number" ? total + 1 : total,
               0
             )}
             /{data.enrollment.length}

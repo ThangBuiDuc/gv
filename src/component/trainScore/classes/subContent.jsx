@@ -25,7 +25,9 @@ export default function Index({ data, rootIndex }) {
       ) : (
         <>
           {data.enrollment.some(
-            (item) => item.total_monitor_point && !item.total_staff_point
+            (item) =>
+              typeof item.total_monitor_point === "number" &&
+              typeof item.total_staff_point !== "number"
           ) ? (
             <div
               className="tooltip w-fit tooltip-right flex items-center"
@@ -42,7 +44,8 @@ export default function Index({ data, rootIndex }) {
                             ...item,
                             checkedAll: item.checkedAll ? false : true,
                             enrollment: item.enrollment.map((el) =>
-                              !el.total_monitor_point || el.total_staff_point
+                              typeof el.total_monitor_point !== "number" ||
+                              typeof el.total_staff_point === "number"
                                 ? el
                                 : {
                                     ...el,
@@ -65,7 +68,8 @@ export default function Index({ data, rootIndex }) {
             .map((item, index) => {
               return (
                 <div key={index} className="flex items-center">
-                  {item.total_staff_point || !item.total_monitor_point ? (
+                  {typeof item.total_staff_point === "number" ||
+                  typeof item.total_monitor_point !== "number" ? (
                     <input
                       type="checkbox"
                       checked={item.checked}
@@ -80,7 +84,9 @@ export default function Index({ data, rootIndex }) {
                       onChange={
                         () =>
                           data.enrollment
-                            .filter((el) => el.total_monitor_point)
+                            .filter(
+                              (el) => typeof el.total_monitor_point === "number"
+                            )
                             .every((el) => el.checked === true)
                             ? setRoot((pre) =>
                                 pre.map((el, i) =>
@@ -105,7 +111,10 @@ export default function Index({ data, rootIndex }) {
                                 .filter(
                                   (el) => el.student_code !== item.student_code
                                 )
-                                .filter((el) => el.total_monitor_point)
+                                .filter(
+                                  (el) =>
+                                    typeof el.total_monitor_point === "number"
+                                )
                                 .every((el) => el.checked === true)
                             ? setRoot((pre) =>
                                 pre.map((el, i) =>
@@ -196,7 +205,7 @@ export default function Index({ data, rootIndex }) {
                   >
                     <BsFillPersonFill size={"20px"} />
                     <h3>
-                      {item.total_self_point ? (
+                      {typeof item.total_self_point === "number" ? (
                         <span
                           className={`${
                             item.total_monitor_point !==
@@ -221,7 +230,7 @@ export default function Index({ data, rootIndex }) {
                   >
                     <BsPerson size={"20px"} />
                     <h3>
-                      {item.total_monitor_point ? (
+                      {typeof item.total_monitor_point === "number" ? (
                         <span
                           className={`${
                             item.total_monitor_point !==
@@ -246,7 +255,7 @@ export default function Index({ data, rootIndex }) {
                   >
                     <GrUserManager size={"20px"} />
                     <h3>
-                      {item.total_staff_point ? (
+                      {typeof item.total_staff_point === "number" ? (
                         <span>{item.total_staff_point}</span>
                       ) : (
                         ". . ."
@@ -290,7 +299,7 @@ export default function Index({ data, rootIndex }) {
                     </div>
                   ) : (
                     <div className="w-[5%]">
-                      {!item.total_staff_point ? (
+                      {typeof item.total_staff_point !== "number" ? (
                         <button
                           className="selfBtn w-fit"
                           onClick={() => handleOnClick(item)}
