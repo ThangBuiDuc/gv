@@ -12,7 +12,6 @@ import ReactLoading from "react-loading";
 export default function Index({ data, rootIndex }) {
   const { setRoot, isRefetch } = useContext(setRootChecked);
   const [dataPass, setDataPass] = useState({ toggle: false, data: null });
-  console.log(data.enrollment);
 
   const handleOnClick = (item) => {
     setDataPass((pre) => ({ toggle: !pre.toggle, data: item }));
