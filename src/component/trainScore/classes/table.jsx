@@ -1,4 +1,5 @@
 import "../../../App.css";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { BiArrowBack } from "react-icons/bi";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth, useUser } from "@clerk/clerk-react";
@@ -22,8 +23,8 @@ const columnHelper = createColumnHelper();
 
 function TableRender({ table }) {
   return (
-    <div className="p-2">
-      <table>
+    <div className="border border-solid rounded-[5px] border-[#0083c2]">
+      <table className="w-full border-separate">
         <thead className="bg-[#c6e0c4]">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -46,13 +47,18 @@ function TableRender({ table }) {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} style={{ backgroundColor: "#D9E1F2" }}>
+            <tr
+              key={row.id}
+              style={{
+                backgroundColor: " rgb(0, 131, 194, 0.03)",
+                paddingLeft: "5px",
+                lineHeight: "40px",
+              }}
+            >
               {row.getVisibleCells().map((cell, index) => (
                 <td
                   key={cell.id}
-                  className={`border border-solid border-[#0083c2] ${
-                    index !== 0 && "text-center"
-                  }`}
+                  className={`pl-[5px] ${index !== 0 && "text-center"}`}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
@@ -168,10 +174,17 @@ export default function Index({ dataPass, setDataPass }) {
     const onBlur = () => {
       table.options.meta?.updateData(row.index, value);
     };
+    const min = 0;
+    const max = row.original.max_point;
+
+    const handleChange = (e) => {
+      const value = Math.max(min, Math.min(max, Number(e.target.value)));
+      setValue(value);
+    };
     return row.depth === 0 && column.id === "staff_point" ? (
       // <div className="flex justify-center h-full w-full">
       <input
-        className="input input-bordered w-[90%] h-[90%] input-sm font-semibold leading-[24px] text-[16px]"
+        className="input input-bordered w-[90%] h-[90%] input-info font-semibold leading-[24px] text-[16px]"
         type="number"
         value={value}
         onWheel={(e) => e.target.blur()}
@@ -189,7 +202,6 @@ export default function Index({ dataPass, setDataPass }) {
           }
         }}
         onKeyDown={(e) => {
-          console.log(e.key);
           if (e.key !== "Backspace" && (e.key < "0" || e.key > "9")) {
             e.preventDefault();
           }
