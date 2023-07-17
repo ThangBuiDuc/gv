@@ -1,7 +1,7 @@
-import { Transfer } from 'antd';
-import { useState,
-  //  useEffect
-   } from 'react';
+// import { Transfer } from 'antd';
+// import { useState,
+//   //  useEffect
+//    } from 'react';
 
 import { CiSearch } from "react-icons/ci";
 import { IconContext } from "react-icons";
@@ -10,110 +10,110 @@ import { IconContext } from "react-icons";
 
 
 
-function TransferList() {
-  const data =[
-    {
-      key: "2012111001",
-      name: "Trịnh Hoàng Anh",
-      class: "CT2401",
-    },
-    {
-      key: "2012111002",
-      name: "Nguyễn Viết Hồng",
-      class: "CT2401",
-    },
-    {
-      key: "2012111003",
-      name: "Nguyễn Quang Huy",
-      class: "CT2401",
-    },
-    {
-      key: "2012111004",
-      name: "Đinh Văn phóng",
-      class: "CT2401",
-    },
-    {
-      key: "2012111005",
-      name: "Nguyễn Quốc Thụ",
-      class: "CT2401",
-    },
-    {
-      key: "2012111006",
-      name: "Phạm Thị Thanh Huyền",
-      class: "CT2401",
-    },
-  ];
+// function TransferList() {
+//   const data =[
+//     {
+//       key: "2012111001",
+//       name: "Trịnh Hoàng Anh",
+//       class: "CT2401",
+//     },
+//     {
+//       key: "2012111002",
+//       name: "Nguyễn Viết Hồng",
+//       class: "CT2401",
+//     },
+//     {
+//       key: "2012111003",
+//       name: "Nguyễn Quang Huy",
+//       class: "CT2401",
+//     },
+//     {
+//       key: "2012111004",
+//       name: "Đinh Văn phóng",
+//       class: "CT2401",
+//     },
+//     {
+//       key: "2012111005",
+//       name: "Nguyễn Quốc Thụ",
+//       class: "CT2401",
+//     },
+//     {
+//       key: "2012111006",
+//       name: "Phạm Thị Thanh Huyền",
+//       class: "CT2401",
+//     },
+//   ];
 
-  const [target,setTarget] = useState([]);
-  // const [mockData, setMockData] = useState([]);
-  // const [targetKeys, setTargetKeys] = useState([]);
+//   const [target,setTarget] = useState([]);
+//   // const [mockData, setMockData] = useState([]);
+//   // const [targetKeys, setTargetKeys] = useState([]);
 
-  // const getMock = () => {
-  //   const tempTargetKeys = [];
-  //   const tempMockData = [];
-  //   for (let i = 0; i < 20; i++) {
-  //     const data = {
-  //       key: i.toString(),
-  //       title: `content${i + 1}`,
-  //       description: `description of content${i + 1}`,
-  //       chosen: i % 2 === 0,
-  //     };
-  //     if (data.chosen) {
-  //       tempTargetKeys.push(data.key);
-  //     }
-  //     tempMockData.push(data);
-  //   }
-  //   // {data.map((item, i) => {
-  //   //   return {
-  //   //     ...item,
-  //   //     chosen: i % 2 === 0,
-  //   //   }
-  //   // })}
+//   // const getMock = () => {
+//   //   const tempTargetKeys = [];
+//   //   const tempMockData = [];
+//   //   for (let i = 0; i < 20; i++) {
+//   //     const data = {
+//   //       key: i.toString(),
+//   //       title: `content${i + 1}`,
+//   //       description: `description of content${i + 1}`,
+//   //       chosen: i % 2 === 0,
+//   //     };
+//   //     if (data.chosen) {
+//   //       tempTargetKeys.push(data.key);
+//   //     }
+//   //     tempMockData.push(data);
+//   //   }
+//   //   // {data.map((item, i) => {
+//   //   //   return {
+//   //   //     ...item,
+//   //   //     chosen: i % 2 === 0,
+//   //   //   }
+//   //   // })}
 
 
-  //   setMockData(tempMockData);
-  //   setTargetKeys(tempTargetKeys);
-  // };
+//   //   setMockData(tempMockData);
+//   //   setTargetKeys(tempTargetKeys);
+//   // };
 
-  // useEffect(() => {
-  //   getMock();
-  // }, []);
+//   // useEffect(() => {
+//   //   getMock();
+//   // }, []);
 
-  const handleChange = (newTargetKeys, direction, moveKeys) => {
-    console.log(newTargetKeys, direction, moveKeys);
-    setTarget(newTargetKeys);
-  };
+//   const handleChange = (newTargetKeys, direction, moveKeys) => {
+//     console.log(newTargetKeys, direction, moveKeys);
+//     setTarget(newTargetKeys);
+//   };
 
-  const renderItem = (item) => {
-    const customLabel = (
-      <div className="flex flex-col">
-        <span className="custom-item">
-          {item.class} - {item.name}
-        </span>
-        {/* <span>{item.key}</span> */}
-      </div>
-    );
+//   const renderItem = (item) => {
+//     const customLabel = (
+//       <div className="flex flex-col">
+//         <span className="custom-item">
+//           {item.class} - {item.name}
+//         </span>
+//         {/* <span>{item.key}</span> */}
+//       </div>
+//     );
 
-    return {
-      label: customLabel,
-      value: item.name,
-    };
-  };
+//     return {
+//       label: customLabel,
+//       value: item.name,
+//     };
+//   };
 
-  return (
-    <Transfer
-      dataSource={data}
-      listStyle={{
-        width: 300,
-        height: 330,  
-      }}
-      targetKeys={target}
-      onChange={handleChange}
-      render={renderItem}
+//   return (
+//     <Transfer
+//       dataSource={data}
+//       listStyle={{
+//         width: 300,
+//         height: 330,  
+//       }}
+//       targetKeys={target}
+//       onChange={handleChange}
+//       render={renderItem}
       
-    />
-  );
-}
+//     />
+//   );
+// }
 
 
 function Participant() {
@@ -130,7 +130,7 @@ function Participant() {
         <input className="searchInput" type="search" placeholder="Search" />
       </div>
       <div className="w-full flex mt-[20px]">
-        <TransferList/>
+        {/* <TransferList/> */}
       </div>
     </div>
   );

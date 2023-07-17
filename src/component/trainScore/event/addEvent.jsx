@@ -1,21 +1,21 @@
 import { IconContext } from "react-icons";
 import { PiListPlusThin, PiFileCloudLight } from "react-icons/pi";
 
-import { useState } from "react";
+// import { useState } from "react";
 
 // import dayjs from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 
 import Participant from "./participant";
 
 
 function AddEvent() {
-  const [value, setValue] = useState('');
-  console.log(value);
+  // const [value, setValue] = useState('');
+  // console.log(value);
   return (
     <div className="">
       <div className="flex">
@@ -40,7 +40,7 @@ function AddEvent() {
             />
           </div>
       {/* datepicker */}
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker"]}>
               <DatePicker
                 className="w-[40%]"
@@ -53,7 +53,7 @@ function AddEvent() {
                 // color={'primary'}
               />
             </DemoContainer>
-          </LocalizationProvider>
+          </LocalizationProvider> */}
       {/* upload file     */}
           <label
             className="w-[40%] my-[8px] flex flex-col items-center gap-[20px] cursor-pointer content-between justify-center border-2 border-dashed border-[#cacaca] bg-[rgba(255, 255, 255, 1)] p-6 rounded-[10px] shadow-[0px 48px 35px -48px rgba(0,0,0,0.1)]"
