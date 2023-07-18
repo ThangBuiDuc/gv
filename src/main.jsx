@@ -17,7 +17,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        {/* <StyledEngineProvider injectFirst>
+          <StyleProvider hashPriority="high"> */}
         <App />
+        {/* </StyleProvider>
+        </StyledEngineProvider> */}
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>

@@ -1,14 +1,13 @@
 import "../../../App.css";
 // import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { BiArrowBack } from "react-icons/bi";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import ReactLoading from "react-loading";
 import { useState, useEffect, useMemo } from "react";
 import { BsFillPersonFill, BsPerson } from "react-icons/bs";
 import { RiIncreaseDecreaseLine, RiIncreaseDecreaseFill } from "react-icons/ri";
-import Swal from "sweetalert2";
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -75,24 +74,22 @@ export default function Index({ dataPass, setDataPass }) {
   const [data, setData] = useState(null);
   const queryClient = useQueryClient();
   const { getToken } = useAuth();
-  const { user } = useUser();
+  const batch = queryClient.getQueryData({ queryKey: ["RL_BATCH"] });
 
   const [expanded, setExpanded] = useState({});
-
-  const batch = queryClient.getQueryData({ queryKey: ["RL_BATCH"] });
 
   const detailSV = useQuery({
     queryKey: ["RL_DETAIL_SV", { type: dataPass.data.student_code }],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_RL_STUDENT_DETAIL}${user.publicMetadata.magv}/${
-          batch?.id
-        }/${dataPass.data.student_code}`,
+        `${import.meta.env.VITE_RL_SUPER_MANAGER_STUDENT_DETAIL}${batch?.id}/${
+          dataPass.data.student_code
+        }`,
         {
           method: "GET",
           headers: {
             authorization: `Bearer ${await getToken({
-              template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+              template: import.meta.env.VITE_TEMPLATE_SUPER_MANAGERMENT,
             })}`,
           },
         }
@@ -158,52 +155,6 @@ export default function Index({ dataPass, setDataPass }) {
           .sort((a, b) => a.position - b.position)
       );
   }, [detailSV.data]);
-
-  const EditableCell = ({ getValue, row, table, column }) => {
-    const [value, setValue] = useState(
-      typeof getValue() === "number" ? getValue() : ""
-    );
-    useEffect(() => {
-      if (getValue()) setValue(getValue());
-    }, [getValue()]);
-
-    // console.log(row);
-
-    const onBlur = () => {
-      table.options.meta?.updateData(row.index, value);
-    };
-    return row.depth === 0 && column.id === "staff_point" ? (
-      // <div className="flex justify-center h-full w-full">
-      <input
-        className="input input-bordered w-[90%] h-[90%] input-info font-semibold leading-[24px] text-[16px]"
-        type="number"
-        value={value}
-        onWheel={(e) => e.target.blur()}
-        onChange={(e) => {
-          const re = /^[0-9\b]+$/;
-          let number = parseInt(e.target.value, 10);
-          // if value is not blank, then test the regex
-
-          if (number === "" || re.test(number)) {
-            number < 0
-              ? setValue(0)
-              : number > row.original.max_point
-              ? setValue(0)
-              : setValue(number);
-          }
-        }}
-        onKeyDown={(e) => {
-          if (e.key !== "Backspace" && (e.key < "0" || e.key > "9")) {
-            e.preventDefault();
-          }
-        }}
-        onBlur={onBlur}
-      />
-    ) : (
-      // </div>
-      <p>{getValue()}</p>
-    );
-  };
 
   const columns = useMemo(
     () => [
@@ -304,125 +255,17 @@ export default function Index({ dataPass, setDataPass }) {
           }),
           columnHelper.accessor("staff_point", {
             header: "Điểm QLSV",
-            cell:
-              typeof dataPass.data.total_staff_point === "number"
-                ? ({ row, getValue }) => (
-                    <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
-                      {getValue()}
-                    </p>
-                  )
-                : EditableCell,
+            cell: ({ row, getValue }) => (
+              <p className={`${row.depth === 0 ? "font-semibold" : ""}`}>
+                {getValue()}
+              </p>
+            ),
           }),
         ],
       }),
     ],
     [tbhk1.data]
   );
-
-  const mutation = useMutation({
-    mutationFn: async () => {
-      return await fetch(import.meta.env.VITE_REN_LUYEN_UPDATE_STAFF, {
-        method: "PUT",
-        headers: {
-          authorization: `Bearer ${await getToken({
-            template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
-          })}`,
-        },
-        body: JSON.stringify({
-          updates: data.map((item) => {
-            return {
-              _set: {
-                staff_point: item.staff_point,
-                updated_at: new Date(),
-              },
-              where: {
-                student_code: {
-                  _eq: dataPass.data.student_code,
-                },
-                batch_id: {
-                  _eq: batch?.id,
-                },
-                group_id: {
-                  _eq: item.id,
-                },
-              },
-            };
-          }),
-        }),
-      })
-        .then((res) => res.json())
-        .then((res) => res.result);
-    },
-    onSuccess: (data) => {
-      if (data.some((item) => item.affected_rows !== 1)) {
-        Swal.fire({
-          title: "Đã có lỗi xảy ra!",
-          text: "Vui lòng liên hệ quản trị mạng để khắc phục sự cố",
-          icon: "error",
-        });
-      } else {
-        setDataPass((pre) => ({ toggle: !pre.toggle, data: null }));
-        queryClient.invalidateQueries({ queryKey: ["rlclasses"] });
-        Swal.fire({
-          title: `Đánh giá cho sinh viên ${dataPass.data.sv.fullname} thành công!`,
-          icon: "success",
-        });
-        // queryClient.removeQueries({ queryKey: ["RL_CLASSES"] });
-        // queryClient.refetchQueries({
-        //   queryKey: ["RL_CLASSES"],
-        // });
-        // return queryClient.invalidateQueries({
-        //   queryKey: ["RL_CLASSES", data],
-        // });
-      }
-    },
-  });
-  // console.log(dataPass);
-
-  const handleOnclick = () => {
-    // console.log(data);
-    // console.log(batch);
-    if (data.some((item) => item.staff_point === null)) {
-      Swal.fire({
-        title: "Chưa trả lời hết nhóm các câu hỏi!",
-        text: "Vui lòng đánh giá điểm cho từng nhóm câu hỏi",
-        icon: "warning",
-      });
-    } else {
-      Swal.fire({
-        title: "Hoàn thành đánh giá!",
-        html: `<p>
-            Bạn có chắc chắn muốn hoàn thành quá trình đánh giá cho sinh viên <span style="font-weight:600;">${dataPass.data.sv.fullname}</span> không?
-          </p>`,
-        icon: "question",
-        showCancelButton: true,
-        showCloseButton: true,
-        confirmButtonText: "Xác nhận",
-        cancelButtonText: "Huỷ bỏ",
-        showLoaderOnConfirm: () => !Swal.isLoading(),
-        preConfirm: async () => {
-          await mutation.mutateAsync();
-        },
-
-        // if (result.some((item) => item.affected_rows !== 1)) {
-        //   Swal.fire({
-        //     title: "Đã có lỗi xảy ra!",
-        //     text: "Vui lòng liên hệ quản trị mạng để khắc phục sự cố",
-        //     icon: "error",
-        //   });
-        // } else {
-        //   Swal.fire({
-        //     title: "Đánh giá thành công!",
-        //     icon: "success",
-        //   });
-        //   queryClient.invalidateQueries({
-        //     queryKey: ["RL_CLASSES"],
-        //   });
-        // }
-        //},
-      });
-    }
-  };
 
   const table = useReactTable({
     data,
@@ -434,37 +277,7 @@ export default function Index({ dataPass, setDataPass }) {
     getCoreRowModel: getCoreRowModel(),
     onExpandedChange: setExpanded,
     getSubRows: (row) => row.question,
-    meta: {
-      updateData: (index, value) => {
-        // console.log(index, original, value);
-        setData((pre) => {
-          return pre.map((item, i) => {
-            // console.log(i, index, i == index);
-            if (i == index) {
-              return {
-                ...item,
-                staff_point: value,
-              };
-            } else return item;
-          });
-        });
-        // console.log(rowIndex, columnId, value);
-        // setData((old) =>
-        //   old.map((row, index) => {
-        //     if (index === rowIndex) {
-        //       return {
-        //         ...old[rowIndex],
-        //         [columnId]: value,
-        //       };
-        //     }
-        //     return row;
-        //   })
-        // );
-      },
-    },
   });
-
-  // console.log(data);
 
   if (detailSV.isLoading && detailSV.isFetching) {
     return (
@@ -541,13 +354,13 @@ export default function Index({ dataPass, setDataPass }) {
             >
               <BsFillPersonFill size={"20px"} />
               <h3>
-                {typeof dataPass.data.total_self_point === "number" ? (
+                {dataPass.data.total_self_point ? (
                   <span
                     className={`${
                       dataPass.data.total_monitor_point !==
                         dataPass.data.total_self_point &&
-                      typeof dataPass.data.total_staff_point !== "number" &&
-                      typeof dataPass.data.total_monitor_point === "number"
+                      !dataPass.data.total_staff_point &&
+                      dataPass.data.total_monitor_point
                         ? "text-red-600"
                         : ""
                     }`}
@@ -566,13 +379,13 @@ export default function Index({ dataPass, setDataPass }) {
             >
               <BsPerson size={"20px"} />
               <h3>
-                {typeof dataPass.data.total_monitor_point === "number" ? (
+                {dataPass.data.total_monitor_point ? (
                   <span
                     className={`${
                       dataPass.data.total_monitor_point !==
                         dataPass.data.total_self_point &&
-                      typeof dataPass.data.total_staff_point !== "number" &&
-                      typeof dataPass.data.total_monitor_point === "number"
+                      !dataPass.data.total_staff_point &&
+                      dataPass.data.total_monitor_point
                         ? "text-red-600"
                         : ""
                     }`}
@@ -600,56 +413,8 @@ export default function Index({ dataPass, setDataPass }) {
               <RiIncreaseDecreaseFill size={"20px"} />
               <h3>{dataPass.data.total_add_point}</h3>
             </div>
-            <button
-              className={`${
-                data.every((item) => typeof item.self_point === "number")
-                  ? "selfBtn"
-                  : "disableBtn"
-              } w-fit`}
-              disabled={
-                data.every((item) => typeof item.self_point === "number")
-                  ? false
-                  : true
-              }
-              onClick={() =>
-                setData((pre) =>
-                  pre.map((item) => ({ ...item, staff_point: item.self_point }))
-                )
-              }
-            >
-              Đổ điểm sinh viên
-            </button>
-            <button
-              className={`${
-                data.every((item) => typeof item.monitor_point === "number")
-                  ? "selfBtn"
-                  : "disableBtn"
-              } w-fit`}
-              disabled={
-                data.every((item) => typeof item.monitor_point === "number")
-                  ? false
-                  : true
-              }
-              onClick={() =>
-                setData((pre) =>
-                  pre.map((item) => ({
-                    ...item,
-                    staff_point: item.monitor_point,
-                  }))
-                )
-              }
-            >
-              Đổ điểm Cán bộ lớp
-            </button>
           </div>
           <TableRender table={table} />
-          {/* {data.} */}
-          <button
-            className="selfBtn w-fit cursor-pointer self-center"
-            onClick={() => handleOnclick()}
-          >
-            Hoàn Thành
-          </button>
         </>
       )}
     </div>

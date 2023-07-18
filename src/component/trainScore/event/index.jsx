@@ -2,9 +2,33 @@ import "../../../App.css";
 import ReactLoading from "react-loading";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/clerk-react";
-import Content from "./content";
+import { useTransition, animated } from "@react-spring/web";
+import useMeasure from "react-use-measure";
+import { useState } from "react";
+import { IoAddCircleOutline } from "react-icons/io5";
+
+
+
+import AddEvent from "./addEvent";
+import RenderEvent from "./renderEvent";
+
+
 
 export default function Index() {
+  const [toggle, setToggle] = useState(false);
+
+  const [ref, { height }] = useMeasure();
+
+  const transitions = useTransition(toggle, {
+    from: { opacity: 0, heigth: 0, overflow: "hidden" },
+    // to:{opacity: 1, height: 100 },
+    enter: { opacity: 1, height, overflow: "visible" },
+    leave: { opacity: 0, height: 0, overflow: "hidden" },
+    update: { height },
+  });
+
+
+
   const { getToken } = useAuth();
   const role = useQuery({
     queryKey: ["RL_ROLE"],
@@ -35,6 +59,7 @@ export default function Index() {
       role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
   });
 
+<<<<<<< HEAD
   const listSV = useQuery({
     queryKey: ["RL_LIST_SV"],
     queryFn: async () => {
@@ -76,14 +101,55 @@ export default function Index() {
   });
 
   // console.log(batch.data);
+=======
+  // const listSV = useQuery({
+  //   queryKey: ["RL_LIST_SV"],
+  //   queryFn: async () => {
+  //     return await fetch(import.meta.env.VITE_RL_LIST_SV, {
+  //       method: "GET",
+  //       headers: {
+  //         authorization: `Bearer ${await getToken({
+  //           template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+  //         })}`,
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((res) => res.result);
+  //   },
+  //   enabled:
+  //     role.data?.role_id.toString() ===
+  //     import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+  // });
+
+  // const listEvent = useQuery({
+  //   queryKey: ["RL_LIST_EV"],
+  //   queryFn: async () => {
+  //     return await fetch(import.meta.env.VITE_RL_LIST_EVENT, {
+  //       method: "GET",
+  //       headers: {
+  //         authorization: `Bearer ${await getToken({
+  //           template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+  //         })}`,
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((res) => res.result);
+  //   },
+  //   enabled:
+  //     role.data?.role_id.toString() ===
+  //     import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+  // });
+
+  console.log(batch.data);
+>>>>>>> origin/ngoc
   // console.log(listSV.data);
   // console.log(listEvent.data);
 
   if (role.isFetching && role.isLoading) {
     return (
-      <div className="wrap">
+      <div className="eventWrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Sự kiện rèn luyện</h2>
+          <h2 className="text-black">Nhật ký HPU</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -101,9 +167,9 @@ export default function Index() {
     role.data?.role_id != import.meta.env.VITE_ROLE_RL_MANAGERMENT
   ) {
     return (
-      <div className="wrap">
+      <div className="eventWrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Sự kiện rèn luyện</h2>
+          <h2 className="text-black">Nhật ký HPU</h2>
         </div>
         <div className="flex justify-center">
           <h3>Tài khoản không có quyền thực hiện chức năng này!</h3>
@@ -113,14 +179,23 @@ export default function Index() {
   }
 
   if (
+<<<<<<< HEAD
     (batch.isFetching && batch.isLoading) ||
     (listEvent.isFetching && listEvent.isLoading) ||
     (listSV.isFetching && listSV.isLoading)
+=======
+    batch.isFetching ||
+    batch.isLoading 
+    // listEvent.isFetching ||
+    // listEvent.isLoading ||
+    // listSV.isFetching ||
+    // listSV.isLoading
+>>>>>>> origin/ngoc
   ) {
     return (
-      <div className="wrap">
+      <div className="eventWrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Sự kiện rèn luyện</h2>
+          <h2 className="text-black">Nhật ký HPU</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -133,12 +208,47 @@ export default function Index() {
     );
   }
 
+
+
+  
+
+
+
   return (
-    <div className="wrap">
-      <div className="flex justify-center">
-        <h2 className="text-primary">Sự kiện rèn luyện</h2>
+    <div className="eventWrap">
+      <div className="flex justify-center my-[40px]">
+        <h2 className="text-black">Nhật ký HPU</h2>
       </div>
-      <Content />
+      <button 
+        className="flex items-center w-[18%] cursor-pointer rounded-[20px] ml-[40px] pr-[40px] pl-[5px] text-[20px] text-[#1A73E8] font-medium hover:bg-[#f1f3f4]"
+        onClick={() => setToggle(!toggle)}
+      >
+        <IoAddCircleOutline className="mr-[20px] "/>
+        Thêm sự kiện
+      </button>
+      <div>
+      {transitions(
+          (style, toggle) =>
+            toggle && (
+              <animated.div style={style}>
+                <div
+                  className="mx-[40px]  rounded-[10px]"
+                  ref={ref}
+                >
+                  <AddEvent/>
+                </div>
+              </animated.div>
+            )
+        )}
+      </div>
+      <div className="flex flex-col mt-[40px] mx-[40px] p-[5px] gap-[20px]">
+        <RenderEvent/>
+        <RenderEvent/>
+        <RenderEvent/>
+        <RenderEvent/>
+        <RenderEvent/>
+        <RenderEvent/>
+      </div>
     </div>
   );
 }

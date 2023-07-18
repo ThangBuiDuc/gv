@@ -1,10 +1,9 @@
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 import { Fragment, useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import "../../../App.css";
 import { useQuery } from "@tanstack/react-query";
 import Content from "./content";
-import { createContext } from "react";
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
 import moment from "moment";
@@ -12,13 +11,10 @@ import convertToRoman from "./convertToRoman";
 
 moment.locale("vi");
 
-export const setRootChecked = createContext(null);
-
 export default function Index() {
   const { getToken } = useAuth();
   const [data, setData] = useState(null);
 
-  const { user } = useUser();
   const role = useQuery({
     queryKey: ["RL_ROLE"],
     queryFn: async () => {
@@ -26,7 +22,7 @@ export default function Index() {
         method: "GET",
         headers: {
           authorization: `Bearer ${await getToken({
-            template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+            template: import.meta.env.VITE_TEMPLATE_SUPER_MANAGERMENT,
           })}`,
         },
       })
@@ -45,21 +41,19 @@ export default function Index() {
     enabled:
       role.data !== null &&
       role.data !== undefined &&
-      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT,
   });
 
   const preData = useQuery({
     queryKey: ["rlclasses"],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_RL_CLASSES}${user.publicMetadata.magv}/${
-          batch.data?.id
-        }`,
+        `${import.meta.env.VITE_RL_SUPER_MANAGER_CLASSES}${batch.data?.id}`,
         {
           method: "GET",
           headers: {
             authorization: `Bearer ${await getToken({
-              template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+              template: import.meta.env.VITE_TEMPLATE_SUPER_MANAGERMENT,
             })}`,
           },
         }
@@ -79,7 +73,7 @@ export default function Index() {
     enabled:
       batch.data !== null &&
       batch.data !== undefined &&
-      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT,
   });
 
   useEffect(() => {
@@ -90,7 +84,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
+          <h2 className="text-primary">Tổng hợp rèn luyện</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -335,7 +329,7 @@ export default function Index() {
 
     saveAs(
       new Blob([buf]),
-      `BaoCao_RL_HK${batch.data.term}_${
+      `BaoCao_TongHop_RL_HK${batch.data.term}_${
         batch.data.school_year
       }_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
     );
@@ -343,12 +337,12 @@ export default function Index() {
 
   if (
     role.data === null ||
-    role.data?.role_id != import.meta.env.VITE_ROLE_RL_MANAGERMENT
+    role.data?.role_id != import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT
   ) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
+          <h2 className="text-primary">Tổng hợp rèn luyện</h2>
         </div>
         <div className="flex justify-center">
           <h3>Tài khoản không có quyền thực hiện chức năng này!</h3>
@@ -361,7 +355,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
+          <h2 className="text-primary">Tổng hợp rèn luyện</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -378,7 +372,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
+          <h2 className="text-primary">Tổng hợp rèn luyện</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -399,7 +393,7 @@ export default function Index() {
   //   return (
   //     <div className="wrap">
   //       <div className="flex justify-center">
-  //         <h2 className="text-primary">Đánh giá sinh viên</h2>
+  //         <h2 className="text-primary">Tổng hợp rèn luyện</h2>
   //       </div>
   //       <div className="flex justify-center">
   //         <h3>Đã có lỗi xảy ra, vui lòng tải lại trang!</h3>
@@ -412,46 +406,38 @@ export default function Index() {
   // console.log(preData.isRefetching);
 
   return (
-    <setRootChecked.Provider
-      value={{ setRoot: setData, isRefetch: preData.isRefetching }}
-    >
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
-        </div>
-        {data && (
-          <>
-            <div className="flex justify-end">
-              {preData.isRefetching ? (
-                <ReactLoading
-                  type="spin"
-                  color="#0083C2"
-                  width={"20px"}
-                  height={"20px"}
-                  className="self-center"
-                />
-              ) : (
-                <button className="selfBtn w-fit" onClick={handleOnClick}>
-                  Xuất Excel
-                </button>
-              )}
-            </div>
-            {data
-              .sort((a, b) => a.class_code.localeCompare(b.class_code))
-              .map((item, index) => {
-                return (
-                  <Fragment key={index}>
-                    <Content
-                      data={item}
-                      rootIndex={index}
-                      isRefetch={preData.isRefetching}
-                    />
-                  </Fragment>
-                );
-              })}
-          </>
-        )}
+    <div className="wrap">
+      <div className="flex justify-center">
+        <h2 className="text-primary">Tổng hợp rèn luyện</h2>
       </div>
-    </setRootChecked.Provider>
+      {data && (
+        <>
+          <div className="flex justify-end">
+            {preData.isRefetching ? (
+              <ReactLoading
+                type="spin"
+                color="#0083C2"
+                width={"20px"}
+                height={"20px"}
+                className="self-center"
+              />
+            ) : (
+              <button className="selfBtn w-fit" onClick={handleOnClick}>
+                Xuất Excel
+              </button>
+            )}
+          </div>
+          {data
+            .sort((a, b) => a.class_code.localeCompare(b.class_code))
+            .map((item, index) => {
+              return (
+                <Fragment key={index}>
+                  <Content data={item} />
+                </Fragment>
+              );
+            })}
+        </>
+      )}
+    </div>
   );
 }
