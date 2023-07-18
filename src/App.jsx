@@ -324,7 +324,7 @@ function MainRoute() {
                 {/* <Navigate to="/sign-in" /> */}
                 <Navigate
                   to={`/sign-in#/?redirect_url=${encodeURIComponent(
-                    "/trainscore/setMonitor"
+                    "/trainscore/overAll"
                   )}`}
                 />
               </SignedOut>
