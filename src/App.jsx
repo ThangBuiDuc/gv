@@ -58,6 +58,7 @@ const Classes = React.lazy(() => import("./component/trainScore/classes"));
 const SetMonitor = React.lazy(() =>
   import("./component/trainScore/setMonitor")
 );
+const OverAll = React.lazy(() => import("./component/trainScore/overAll"));
 
 function MainRoute() {
   const location = useLocation();
@@ -128,7 +129,6 @@ function MainRoute() {
       <Route path="/" element={<Hard />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
-
         <Route
           path="/survey-gv"
           element={<Navigate to="/survey-gv/infor" replace />}
@@ -193,7 +193,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="/calendar/work"
           element={
@@ -214,7 +213,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="/qldt/sv"
           element={
@@ -235,7 +233,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="/qldt/gv"
           element={
@@ -256,7 +253,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="/trainscore/classes"
           element={
@@ -277,7 +273,6 @@ function MainRoute() {
             </>
           }
         />
-
         {/* <Route
           path="/trainscore/event"
           element={
@@ -296,13 +291,32 @@ function MainRoute() {
             </>
           }
         /> */}
-
         <Route
           path="/trainscore/setMonitor"
           element={
             <>
               <SignedIn>
                 <SetMonitor />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/trainscore/setMonitor"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/trainscore/overAll"
+          element={
+            <>
+              <SignedIn>
+                <OverAll />
               </SignedIn>
 
               <SignedOut>

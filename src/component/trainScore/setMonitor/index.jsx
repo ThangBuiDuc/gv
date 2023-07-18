@@ -3,54 +3,131 @@ import ReactLoading from "react-loading";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth, useClerk } from "@clerk/clerk-react";
 import { Fragment, useState, useEffect } from "react";
-
+import Select from "react-select";
+import Swal from "sweetalert2";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 // import Select from 'react-select';
 
+function Content({ data, batch, isRefetch }) {
+  const [selectedOption, setSelectedOption] = useState(null);
+  const queryClient = useQueryClient();
+  const { getToken } = useAuth();
+  const mutation = useMutation({
+    mutationFn: async () => {
+      return await fetch(import.meta.env.VITE_RL_UPDATE_MONITOR, {
+        method: "PUT",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+          })}`,
+        },
+        body: JSON.stringify({
+          class_code: data.class_code,
+          monitor: selectedOption.value,
+          batch: batch.id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => res.result);
+    },
+    onSuccess: (data) => {
+      if (data.affected_rows !== 1) {
+        Swal.fire({
+          title: "Đã có lỗi xảy ra!",
+          text: "Vui lòng liên hệ quản trị mạng để khắc phục sự cố",
+          icon: "error",
+        });
+      } else {
+        setSelectedOption(null);
+        queryClient.invalidateQueries({ queryKey: ["RL_CLASS_LIST"] });
+        Swal.fire({
+          title: `Cập nhật lớp trưởng cho lớp ${selectedOption.class_code} thành công!`,
+          icon: "success",
+        });
+      }
+    },
+  });
+  const handleOnclick = () => {
+    Swal.fire({
+      title: "Hoàn thành cập nhật lớp trưởng",
+      html: `<p>
+            Bạn có chắc chắn muốn hoàn thành cập nhật lớp trưởng <span style="font-weight:600;">${selectedOption.fullname}</span> cho lớp <span style="font-weight:600;">${data.class_code}</span> không?
+          </p>`,
+      icon: "question",
+      showCancelButton: true,
+      showCloseButton: true,
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Huỷ bỏ",
+      showLoaderOnConfirm: () => !Swal.isLoading(),
+      preConfirm: async () => {
+        await mutation.mutateAsync();
+      },
+    });
+  };
 
-
-function Content({data}) {
-  // const [selectedOption, setSelectedOption] = useState(null);
-
-  return(
-    <div className="flex w-full">
+  return (
+    <div className="flex w-full gap-[10px] justify-center align-middle [&>div]:flex [&>div]:align-middle">
       <div className="flex w-[20%]">
-        <p>Lớp :</p>
-        <p>{data.class_code}</p>
+        <h3>{data.class_code}</h3>
       </div>
       <div className="flex w-[40%]">
-        <p>Lớp trưởng hiện tại :</p>
-        <p>{data.loptruong.fullname}</p>
+        <h3>Lớp trưởng:&nbsp;</h3>
+        <h3 className={`${data.loptruong ? "" : "text-red-600"}`}>
+          {data.loptruong ? data.loptruong.fullname : "Vui lòng phân công!"}
+        </h3>
       </div>
       <div className="w-[35%]">
-        <select className="select select-bordered select-sm w-full max-w-xs"
-                // defaultValue={"Chọn lớp trưởng"}
-        >
-          <option disabled selected>Chọn lớp trưởng</option>
-          {data.listSV.map((item,i ) => {
-            return (
-              <option key={i}>{item.fullname}</option>
-            )
-          })}
-        </select>
+        <Select
+          className="w-full"
+          placeholder="Chọn lớp trưởng"
+          value={selectedOption}
+          onChange={setSelectedOption}
+          options={data.listSV
+            .filter((item) => item.masv !== data.loptruong.masv)
+            .sort((a, b) => a.ten.localeCompare(b.ten))
+            .map((item) => ({
+              value: item.masv,
+              fullname: item.fullname,
+              class_code: data.class_code,
+              label: `${item.masv} - ${item.fullname}`,
+            }))}
+        />
       </div>
-      <div className="w-[5%]">
-        <button className="btn btn-sm">
-          <span>Lưu</span>
-        </button>
+      <div className="w-[5%] justify-center align-middle flex">
+        {selectedOption ? (
+          isRefetch ? (
+            <ReactLoading
+              type="spin"
+              color="#0083C2"
+              width={"20px"}
+              height={"20px"}
+              className="self-center"
+            />
+          ) : (
+            <button className="selfBtn w-fit" onClick={handleOnclick}>
+              Lưu
+            </button>
+          )
+        ) : isRefetch ? (
+          <ReactLoading
+            type="spin"
+            color="#0083C2"
+            width={"20px"}
+            height={"20px"}
+            className="self-center"
+          />
+        ) : (
+          <button className="disableBtn w-fit cursor-not-allowed" disabled>
+            Lưu
+          </button>
+        )}
       </div>
     </div>
   );
 }
 
-
-
-
-
-
-
 export default function Index() {
   const { user } = useClerk();
-
 
   const [data, setData] = useState(null);
 
@@ -68,7 +145,7 @@ export default function Index() {
         },
       })
         .then((res) => res.json())
-        .then((res) => res.result[0]);
+        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
     },
   });
 
@@ -77,42 +154,44 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(import.meta.env.VITE_RL_BATCH)
         .then((res) => res.json())
-        .then((res) => res.result);
+        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
     },
     enabled:
-      role.data?.role_id.toString() ===
-      import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT ||
+      role.data?.role_id == import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT,
   });
 
   const classList = useQuery({
     queryKey: ["RL_CLASS_LIST"],
     queryFn: async () => {
-        return await fetch(`${import.meta.env.VITE_RL_GET_CLASS_SV}${user.publicMetadata.magv}`, {
-            method: "GET",
-            headers: {
-              authorization: `Bearer ${await getToken({
-                template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
-              })}`,
-            },
-          }).then(res => res.json())
-          .then(res => res.result)
-    }
-  })
+      return await fetch(
+        `${import.meta.env.VITE_RL_GET_CLASS_SV}${user.publicMetadata.magv}/${
+          batch.data.id
+        }`,
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${await getToken({
+              template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+            })}`,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((res) => res.result);
+    },
+    enabled: batch.data !== null && batch.data !== undefined,
+  });
 
   useEffect(() => {
     if (classList.data) setData(classList.data);
   }, [classList.data]);
 
-
-  console.log(data);
-
-
-
-  if (role.isFetching || role.isLoading) {
+  if (role.isFetching && role.isLoading) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-black">Phân công lớp trưởng</h2>
+          <h2 className="text-primary">Phân công lớp trưởng</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -126,12 +205,13 @@ export default function Index() {
   }
 
   if (
-    role.data?.role_id.toString() !== import.meta.env.VITE_ROLE_RL_MANAGERMENT
+    role.data?.role_id != import.meta.env.VITE_ROLE_RL_MANAGERMENT &&
+    role.data?.role_id != import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT
   ) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-black">Phân công lớp trưởng</h2>
+          <h2 className="text-primary">Phân công lớp trưởng</h2>
         </div>
         <div className="flex justify-center">
           <h3>Tài khoản không có quyền thực hiện chức năng này!</h3>
@@ -141,15 +221,13 @@ export default function Index() {
   }
 
   if (
-    batch.isFetching ||
-    batch.isLoading ||
-    classList.isFetching ||
-    classList.isLoading
+    (batch.isFetching && batch.isLoading) ||
+    (classList.isFetching && classList.isLoading)
   ) {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-black">Phân công lớp trưởng</h2>
+          <h2 className="text-primary">Phân công lớp trưởng</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -162,24 +240,20 @@ export default function Index() {
     );
   }
 
-
-
-  
-
-  
-
   return (
     <div className="wrap">
       <div className="flex justify-center">
-          <h2 className="text-black">Phân công lớp trưởng</h2>
+        <h2 className="text-primary">Phân công lớp trưởng</h2>
       </div>
       {data &&
-          data.map((item, index) => {
+        data
+          .sort((a, b) => a.class_code.localeCompare(b.class_code))
+          .map((item, index) => {
             return (
               <Fragment key={index}>
                 <Content
                   data={item}
-                  rootIndex={index}
+                  batch={batch.data}
                   isRefetch={classList.isRefetching}
                 />
               </Fragment>

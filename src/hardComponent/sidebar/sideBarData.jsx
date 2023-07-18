@@ -12,7 +12,10 @@ import {
   // AiOutlineCalculator,
 } from "react-icons/ai";
 //import { IoCreateOutline } from "react-icons/io5";
-import { HiOutlineInformationCircle } from "react-icons/hi";
+import {
+  HiOutlineInformationCircle,
+  HiOutlineDocumentReport,
+} from "react-icons/hi";
 import { SlCalender } from "react-icons/sl";
 import {
   BsCalendarCheck,
@@ -90,6 +93,11 @@ export const sideBarData = [
         title: "Phân công lớp trưởng",
         path: "/trainscore/setMonitor",
         icon: <TbSettingsCog size={"22px"} />,
+      },
+      {
+        title: "Tổng hợp",
+        path: "/trainscore/overAll",
+        icon: <HiOutlineDocumentReport size={"22px"} />,
       },
     ],
   },
