@@ -45,7 +45,8 @@ export default function Index() {
     enabled:
       role.data !== null &&
       role.data !== undefined &&
-      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      (role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT),
   });
 
   const preData = useQuery({
@@ -79,7 +80,8 @@ export default function Index() {
     enabled:
       batch.data !== null &&
       batch.data !== undefined &&
-      role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT,
+      (role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT),
   });
 
   useEffect(() => {
@@ -343,7 +345,8 @@ export default function Index() {
 
   if (
     role.data === null ||
-    role.data?.role_id != import.meta.env.VITE_ROLE_RL_MANAGERMENT
+    (role.data?.role_id != import.meta.env.VITE_ROLE_RL_MANAGERMENT &&
+      role.data?.role_id != import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT)
   ) {
     return (
       <div className="wrap">
