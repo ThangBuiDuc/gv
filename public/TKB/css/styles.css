@@ -1,0 +1,24 @@
+A:link {
+	TEXT-DECORATION: none
+}
+A:visited {
+	TEXT-DECORATION: none
+}
+A:hover {
+	TEXT-DECORATION: underline
+}
+A:link {
+	COLOR: #0000ff
+}
+A:visited {
+	COLOR: #0000ff
+}
+A.dimmed:link {
+	COLOR: #aaaaaa
+}
+A.dimmed:visited {
+	COLOR: #aaaaaa
+}
+A:hover {
+	COLOR: #ff0000
+}

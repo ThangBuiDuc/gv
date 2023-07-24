@@ -9,6 +9,7 @@ import {
 import {
   //AiOutlineQuestionCircle,
   AiOutlineUsergroupDelete,
+  AiOutlineCalendar,
   // AiOutlineCalculator,
 } from "react-icons/ai";
 //import { IoCreateOutline } from "react-icons/io5";
@@ -55,6 +56,11 @@ export const sideBarData = [
         title: "Lịch giảng dạy",
         path: "/calendar/work",
         icon: <BsCalendarCheck size={"22px"} />,
+      },
+      {
+        title: "Thời khoá biểu chung",
+        path: "/calendar/tkb",
+        icon: <AiOutlineCalendar size={"22px"} />,
       },
     ],
   },

@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-export default function Index({ item ,index}) {
-    let location = useLocation();
+export default function Index({ item, index }) {
+  let location = useLocation();
   const [subnav, setSubnav] = useState(true);
   const handleOnclick = () => {
     setSubnav(!subnav);
@@ -22,16 +22,29 @@ export default function Index({ item ,index}) {
       <div className="flex flex-col ml-[30px] gap-[15px]">
         {subnav
           ? item.subNav.map((item, index) => {
-              return <Link
-                key={index}
-                className={`flex text-[16px] text-black decoration-none ${location.pathname === item.path?'font-bold':''} ${index===0?'mt-[15px]':''}`}
-                to={item.path}
-              >
-                {item.icon}
-                <span className="ml-[10px]">{item.title}</span>
-              </Link>;
+              return item.path === "/calendar/tkb" ? (
+                <a
+                  href="/TKB/Index.html"
+                  key={index}
+                  className="flex text-[16px] text-black decoration-none "
+                >
+                  {item.icon}
+                  <span className="ml-[10px]">{item.title}</span>
+                </a>
+              ) : (
+                <Link
+                  key={index}
+                  className={`flex text-[16px] text-black decoration-none ${
+                    location.pathname === item.path ? "font-bold" : ""
+                  } ${index === 0 ? "mt-[15px]" : ""}`}
+                  to={item.path}
+                >
+                  {item.icon}
+                  <span className="ml-[10px]">{item.title}</span>
+                </Link>
+              );
             })
-          : ''}
+          : ""}
       </div>
     </div>
   );
