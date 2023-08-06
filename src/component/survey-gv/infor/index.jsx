@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
+import { BsPatchQuestion } from "react-icons/bs";
 
 function compare(a, b) {
   return a.class_name.localeCompare(b.class_name);
@@ -36,7 +37,7 @@ export default function Index() {
     queryKey: ["getData_infor_CTGD"],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_STATUS_SURVEY_GV_API}/${present.data?.hocky}/${
+        `${import.meta.env.VITE_STATUS_SURVEY_GV_API}${present.data?.hocky}/${
           present.data?.manamhoc
         }`,
         {
@@ -118,7 +119,16 @@ export default function Index() {
   // console.log(present);
   // console.log(data);
   return (
-    <div className="wrap">
+    <div className="wrap relative">
+      <a
+        href="https://drive.google.com/drive/folders/1CLuXyo0iyGV4tymDM4iRwCVHw46g1nQL"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex gap-[5px] absolute right-[10px] underline"
+      >
+        <BsPatchQuestion size={22} />
+        Hướng dẫn sử dụng
+      </a>
       <div className="flex justify-center">
         <h2 className="text-primary">Phản hồi công tác giảng dạy</h2>
       </div>
