@@ -3,6 +3,7 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import ReactLoading from "react-loading";
 import Content from "./content";
 import { useQuery } from "@tanstack/react-query";
+import { BsPatchQuestion } from "react-icons/bs";
 function compare(a, b) {
   return a.class_name.localeCompare(b.class_name);
 }
@@ -74,7 +75,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Phản hồi công tác giảng dạy</h2>
+          <h2 className="text-primary">Góp ý với đồng nghiệp</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -91,7 +92,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Phản hồi công tác giảng dạy</h2>
+          <h2 className="text-primary">Góp ý với đồng nghiệp</h2>
         </div>
         <h3 className="text-center">
           Hiện tại giảng viên chưa có lớp môn học được phân công dự giờ kỳ hiện
@@ -102,7 +103,16 @@ export default function Index() {
   }
 
   return (
-    <div className="wrap">
+    <div className="wrap relative">
+      <a
+        href="https://drive.google.com/drive/folders/1CLuXyo0iyGV4tymDM4iRwCVHw46g1nQL"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex gap-[5px] absolute right-[10px] underline"
+      >
+        <BsPatchQuestion size={22} />
+        Hướng dẫn sử dụng
+      </a>
       <div className="flex justify-center">
         <h2 className="text-primary">Góp ý với đồng nghiệp</h2>
       </div>

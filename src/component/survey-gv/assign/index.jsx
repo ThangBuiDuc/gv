@@ -5,6 +5,7 @@ import ReactLoading from "react-loading";
 import Content from "./content";
 // import { CSVLink } from "react-csv";
 import { useQuery } from "@tanstack/react-query";
+import { BsPatchQuestion } from "react-icons/bs";
 
 // const headersCSV = [
 //   {
@@ -245,7 +246,16 @@ export default function Index() {
   }
 
   return (
-    <div className="wrap">
+    <div className="wrap relative">
+      <a
+        href="https://drive.google.com/drive/folders/1CLuXyo0iyGV4tymDM4iRwCVHw46g1nQL"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex gap-[5px] absolute right-[10px] underline"
+      >
+        <BsPatchQuestion size={22} />
+        Hướng dẫn sử dụng
+      </a>
       <div className="flex justify-center">
         <h2 className="text-primary">Phân công dự giờ</h2>
       </div>

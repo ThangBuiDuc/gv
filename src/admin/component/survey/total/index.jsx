@@ -73,7 +73,8 @@ export default function Index() {
           present.data[0]?.hocky
         }`,
         {
-          method: "GET",
+          method: "POST",
+          body: JSON.stringify({ result_evaluate: "desc_nulls_last" }),
           headers: {
             authorization: `Bearer ${await getToken({
               template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
@@ -144,6 +145,34 @@ export default function Index() {
   }
 
   const handleDownXLSX = async () => {
+    const convertKhoa = (item) => {
+      switch (item) {
+        case "Công nghệ thông tin":
+          return "CNTT";
+        case "Cơ sở cơ bản":
+          return "CSCB";
+        case "Giáo viên thỉnh giảng":
+          return "TG";
+        case "Ngoại ngữ":
+          return "NN";
+        case "Quản trị kinh doanh":
+          return "QTKD";
+        case "Môi trường":
+          return "MT";
+        case "Việt Nam học":
+          return "VH";
+        case "Điện - Điện tử":
+          return "DT";
+        case "Phòng ban trung tâm tổ":
+          return "PBTT";
+        case "Xây dựng":
+          return "XD";
+        case "Ban thanh tra":
+          return "TT";
+        default:
+          return "CXD";
+      }
+    };
     const workbook = new Excel.Workbook();
     try {
       const sheet = workbook.addWorksheet("CTGD");
@@ -210,7 +239,7 @@ export default function Index() {
           item.so_tc,
           item.class_name,
           item.name,
-          item.khoa,
+          convertKhoa(item.khoa),
           item.student_result,
           item.count_sv_resonded,
           item.total_student,
