@@ -19,10 +19,20 @@ export default function Index() {
   const [data, setData] = useState(null);
 
   const { user } = useUser();
+
+  const batch = useQuery({
+    queryKey: ["RL_BATCH"],
+    queryFn: async () => {
+      return await fetch(import.meta.env.VITE_RL_BATCH)
+        .then((res) => res.json())
+        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
+    },
+  });
+
   const role = useQuery({
     queryKey: ["RL_ROLE"],
     queryFn: async () => {
-      return await fetch(import.meta.env.VITE_RL_ROLE, {
+      return await fetch(`${import.meta.env.VITE_RL_ROLE}/${batch.data?.id}`, {
         method: "GET",
         headers: {
           authorization: `Bearer ${await getToken({
@@ -33,20 +43,7 @@ export default function Index() {
         .then((res) => res.json())
         .then((res) => (res.result[0] ? res.result[0] : null));
     },
-  });
-
-  const batch = useQuery({
-    queryKey: ["RL_BATCH"],
-    queryFn: async () => {
-      return await fetch(import.meta.env.VITE_RL_BATCH)
-        .then((res) => res.json())
-        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
-    },
-    enabled:
-      role.data !== null &&
-      role.data !== undefined &&
-      (role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT ||
-        role.data?.role_id == import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT),
+    enabled: batch.data !== null && batch.data !== undefined,
   });
 
   const preData = useQuery({
@@ -87,6 +84,23 @@ export default function Index() {
   useEffect(() => {
     if (preData.data) setData(preData.data);
   }, [preData.data]);
+
+  if (batch.isFetching && batch.isLoading) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Đánh giá sinh viên</h2>
+        </div>
+        <ReactLoading
+          type="spin"
+          color="#0083C2"
+          width={"50px"}
+          height={"50px"}
+          className="self-center"
+        />
+      </div>
+    );
+  }
 
   if (role.isFetching && role.isLoading) {
     return (
@@ -356,23 +370,6 @@ export default function Index() {
         <div className="flex justify-center">
           <h3>Tài khoản không có quyền thực hiện chức năng này!</h3>
         </div>
-      </div>
-    );
-  }
-
-  if (batch.isFetching && batch.isLoading) {
-    return (
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
-        </div>
-        <ReactLoading
-          type="spin"
-          color="#0083C2"
-          width={"50px"}
-          height={"50px"}
-          className="self-center"
-        />
       </div>
     );
   }
