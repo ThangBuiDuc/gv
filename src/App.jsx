@@ -27,13 +27,28 @@ import SideBarAdmin from "./admin/hardComponent/sideBar";
 
 // ADMIN SURVEY IMPORT
 const Init = React.lazy(() => import("./admin/component/survey/init"));
-const Approve = React.lazy(() => import("./admin/component/survey/approve"));
+const UpdateClass = React.lazy(() =>
+  import("./admin/component/survey/updateClass")
+);
+const UpdateStudent = React.lazy(() =>
+  import("./admin/component/survey/updateStudent")
+);
 const Question = React.lazy(() => import("./admin/component/survey/question"));
 const Total = React.lazy(() => import("./admin/component/survey/total"));
 const Role = React.lazy(() => import("./admin/component/survey/role"));
 
 // ADMIN MAIL IMPORT
 const MailSend = React.lazy(() => import("./admin/component/mail/sendMail"));
+
+// ADMIN TRAIN SCORE
+const RLInit = React.lazy(() => import("./admin/component/trainscore/init"));
+const RLInfor = React.lazy(() => import("./admin/component/trainscore/infor"));
+const RLUpdateClass = React.lazy(() =>
+  import("./admin/component/trainscore/updateClass")
+);
+const RLUpdateStudent = React.lazy(() =>
+  import("./admin/component/trainscore/updateStudent")
+);
 
 ////////////////////////////////////////
 import NotFound from "./hardComponent/notFound";
@@ -58,6 +73,7 @@ const Classes = React.lazy(() => import("./component/trainScore/classes"));
 const SetMonitor = React.lazy(() =>
   import("./component/trainScore/setMonitor")
 );
+const SetStaff = React.lazy(() => import("./component/trainScore/setStaff"));
 const OverAll = React.lazy(() => import("./component/trainScore/overAll"));
 
 function MainRoute() {
@@ -123,9 +139,7 @@ function MainRoute() {
           </>
         }
       />
-
       <Route path="*" element={<NotFound />} />
-
       <Route path="/" element={<Hard />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
@@ -311,6 +325,28 @@ function MainRoute() {
             </>
           }
         />
+
+        <Route
+          path="/trainscore/setStaff"
+          element={
+            <>
+              <SignedIn>
+                <SetStaff />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/trainscore/setStaff"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
         <Route
           path="/trainscore/overAll"
           element={
@@ -370,7 +406,6 @@ function MainRoute() {
             }
           /> */}
       </Route>
-
       {/* ADMIN ROUTE */}
       <Route path="/admin" element={<HardAdmin />}>
         <Route path="/admin" element={<Navigate to="dashboard" />} />
@@ -414,11 +449,11 @@ function MainRoute() {
         />
 
         <Route
-          path="survey/approve"
+          path="survey/updateClass"
           element={
             <>
               <SignedIn>
-                <Approve />
+                <UpdateClass />
               </SignedIn>
 
               <SignedOut>
@@ -426,7 +461,28 @@ function MainRoute() {
                 {/* <Navigate to="/sign-in" /> */}
                 <Navigate
                   to={`/sign-in#/?redirect_url=${encodeURIComponent(
-                    "/admin/survey/approve"
+                    "/admin/survey/updateClass"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
+        <Route
+          path="survey/updateStudent"
+          element={
+            <>
+              <SignedIn>
+                <UpdateStudent />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/admin/survey/updateStudent"
                   )}`}
                 />
               </SignedOut>
@@ -496,7 +552,7 @@ function MainRoute() {
             </>
           }
         />
-
+        {/* -------------------------- MAIL SEND ---------------------------- */}
         <Route
           path="mail/mailsend"
           element={
@@ -511,6 +567,92 @@ function MainRoute() {
                 <Navigate
                   to={`/sign-in#/?redirect_url=${encodeURIComponent(
                     "/admin/mail/mailsend"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
+        {/* ---------------------------- TRAIN SCORE -------------------------- */}
+
+        <Route
+          path="trainscore/init"
+          element={
+            <>
+              <SignedIn>
+                <RLInit />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/admin/trainscore/init"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
+        <Route
+          path="trainscore/update-class"
+          element={
+            <>
+              <SignedIn>
+                <RLUpdateClass />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/admin/trainscore/update-class"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
+        <Route
+          path="trainscore/update-student"
+          element={
+            <>
+              <SignedIn>
+                <RLUpdateStudent />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/admin/trainscore/update-student"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
+        <Route
+          path="trainscore/infor"
+          element={
+            <>
+              <SignedIn>
+                <RLInfor />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/admin/trainscore/infor"
                   )}`}
                 />
               </SignedOut>

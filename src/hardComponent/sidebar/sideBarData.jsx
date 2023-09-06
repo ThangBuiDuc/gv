@@ -101,6 +101,11 @@ export const sideBarData = [
         icon: <TbSettingsCog size={"22px"} />,
       },
       {
+        title: "Phân công QLSV",
+        path: "/trainscore/setStaff",
+        icon: <TbSettingsCog size={"22px"} />,
+      },
+      {
         title: "Tổng hợp",
         path: "/trainscore/overAll",
         icon: <HiOutlineDocumentReport size={"22px"} />,

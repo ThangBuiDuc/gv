@@ -1,8 +1,8 @@
 import "../../../../App.css";
 import ReactLoading from "react-loading";
-import Approve from "./approve";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/clerk-react";
+import Content from "./content";
 
 export default function Index() {
   const { getToken } = useAuth();
@@ -28,30 +28,16 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
         .then((res) => res.json())
-        .then((res) => res.hientai);
+        .then((res) => res.hientai[0]);
     },
     enabled: role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN,
   });
 
-  const inited = useQuery({
-    queryKey: ["getInited_CTGD"],
-    queryFn: async () => {
-      return await fetch(
-        `${import.meta.env.VITE_CHECK_INITED_API}${present.data[0]?.hocky}/${
-          present.data[0]?.manamhoc
-        }`
-      )
-        .then((res) => res.json())
-        .then((res) => res.result[0].result);
-    },
-    enabled: present.data?.length > 0,
-  });
-
-  if (role.isLoading || role.isFetching) {
+  if (role.isLoading && role.isFetching) {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
-          <h2 className="text-primary">Duyệt đánh giá lớp môn học</h2>
+          <h2 className="text-primary">Cập nhật sinh viên</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -68,7 +54,7 @@ export default function Index() {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
-          <h2 className="text-primary">Duyệt đánh giá lớp môn học</h2>
+          <h2 className="text-primary">Cập nhật sinh viên</h2>
         </div>
         <div className="flex justify-center">
           <h3>Tài khoản hiện tại không có quyền thực hiện chức năng này!</h3>
@@ -77,16 +63,11 @@ export default function Index() {
     );
   }
 
-  if (
-    present.isLoading ||
-    present.isFetching ||
-    inited.isLoading ||
-    inited.isFetching
-  ) {
+  if (present.isLoading && present.isFetching) {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
-          <h2 className="text-primary">Duyệt đánh giá lớp môn học</h2>
+          <h2 className="text-primary">Cập nhật sinh viên</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -102,15 +83,18 @@ export default function Index() {
   return (
     <div className="wrapAdmin">
       <div className="flex justify-center">
-        <h2 className="text-primary">Duyệt đánh giá lớp môn học</h2>
+        <h2 className="text-primary">Cập nhật lớp môn học</h2>
       </div>
-      {inited.data === true ? (
-        <Approve />
-      ) : (
-        <div className="flex justify-center">
-          <h3>Chưa khởi tạo đợt đánh giá, vui lòng khởi tạo đợt đánh giá!</h3>
-        </div>
-      )}
+      <div className="flex justify-center gap-[30px]">
+        <p className="font-semibold">Học kỳ: {present?.data.hocky}</p>
+        <p className="font-semibold">Năm học: {present?.data.manamhoc}</p>
+      </div>
+      <div className="flex justify-center flex-col gap-[10px]">
+        <h3 className="text-primary text-center">
+          Danh sách những sinh viên chưa được đưa vào đợt đánh giá
+        </h3>
+        <Content />
+      </div>
     </div>
   );
 }

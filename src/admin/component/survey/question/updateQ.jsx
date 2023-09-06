@@ -302,6 +302,7 @@ export default function Index() {
         <div className="flex-col flex p-[10px] gap-[20px]">
           {question
             .filter((item) => item.point_id === 1)
+            .sort((item) => item.position)
             .map((item, index) => {
               return (
                 <Fragment key={index}>
@@ -320,6 +321,7 @@ export default function Index() {
         <div className="flex-col flex p-[10px] gap-[20px]">
           {question
             .filter((item) => item.point_id === 2)
+            .sort((item) => item.position)
             .map((item, index) => {
               return (
                 <Fragment key={index}>

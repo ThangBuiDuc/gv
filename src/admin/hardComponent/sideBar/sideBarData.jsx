@@ -11,8 +11,12 @@ export const navLink = [
         path: "survey/init",
       },
       {
-        title: "Duyệt lớp môn học",
-        path: "survey/approve",
+        title: "Cập nhật lớp môn học",
+        path: "survey/updateClass",
+      },
+      {
+        title: "Cập nhật sinh viên",
+        path: "survey/updateStudent",
       },
       {
         title: "Tổng kết",
@@ -21,6 +25,27 @@ export const navLink = [
       {
         title: "Phân quyền",
         path: "survey/role",
+      },
+    ],
+  },
+  {
+    title: "Rèn luyện",
+    subNav: [
+      {
+        title: "Khởi tạo",
+        path: "trainscore/init",
+      },
+      {
+        title: "Cập nhật lớp",
+        path: "trainscore/update-class",
+      },
+      {
+        title: "Cập nhật sinh viên",
+        path: "trainscore/update-student",
+      },
+      {
+        title: "Thông tin đánh giá",
+        path: "trainscore/infor",
       },
     ],
   },
