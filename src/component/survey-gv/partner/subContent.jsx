@@ -36,7 +36,7 @@ export default function Index({ setToggle, dataSent }) {
         .then((res) => res.json())
         .then((res) => {
           // console.log(res.result)
-          setPreData(res.result.reverse());
+          setPreData(res.result.sort((a, b) => a.position - b.position));
           //   setPoint(new Array(preData.length))
         });
     };

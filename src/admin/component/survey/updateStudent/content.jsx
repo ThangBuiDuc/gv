@@ -74,7 +74,11 @@ export default function Index() {
   });
 
   useEffect(() => {
-    if (listSVCourseEDU?.data && listSVCourseEDU?.data.length > 0) {
+    if (
+      listSVCourseEDU?.data &&
+      listSVCourseEDU?.data.length > 0 &&
+      listSV_HK?.data
+    ) {
       setMergeSV(
         listSVCourseEDU?.data.reduce((total, item) => {
           if (
@@ -109,7 +113,7 @@ export default function Index() {
           }
         }, [])
       );
-    }
+    } else setMergeSV([]);
   }, [listSV_HK?.data, listSVCourseEDU?.data]);
 
   useEffect(() => {
@@ -252,8 +256,6 @@ export default function Index() {
       </h3>
     );
   }
-
-  console.log(mergeSV);
 
   return (
     <>
