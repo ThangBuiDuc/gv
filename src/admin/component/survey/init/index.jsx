@@ -194,8 +194,6 @@ export default function Index() {
     );
   }
 
-  console.log(present.data);
-  console.log(eduPresent.data);
   return (
     <div className="wrapAdmin">
       <div className="flex justify-center">
