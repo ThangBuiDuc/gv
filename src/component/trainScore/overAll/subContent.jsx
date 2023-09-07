@@ -20,7 +20,9 @@ export default function Index({ data }) {
       ) : (
         <>
           {data.enrollment
-            .sort((a, b) => a.sv.ten.localeCompare(b.sv.ten))
+            .sort((a, b) =>
+              a.sv && b.sv ? a.sv.ten.localeCompare(b.sv.ten) : 1
+            )
             .map((item, index) => {
               return (
                 <div key={index} className="flex items-center">
@@ -28,7 +30,7 @@ export default function Index({ data }) {
                     className="w-[35%] flex gap-[10px] tooltip "
                     data-tip={`Mã sinh viên ${item.student_code}`}
                   >
-                    <h3>{item.sv.fullname}</h3>
+                    <h3>{item.sv ? item.sv.fullname : ". . ."}</h3>
                   </div>
 
                   <div

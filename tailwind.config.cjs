@@ -6,6 +6,31 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/tailwind-datepicker-react/dist/**/*.js",
   ],
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+          primary: "#0083C2",
+
+          secondary: "#f000b8",
+
+          accent: "#1dcdbc",
+
+          neutral: "#2b3440",
+
+          "base-100": "#ffffff",
+
+          info: "#3abff8",
+
+          success: "#36d399",
+
+          warning: "#fbbd23",
+
+          error: "#f87272",
+        },
+      },
+    ],
+  },
   theme: {
     screens: {
       sm: "640px",

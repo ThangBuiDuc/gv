@@ -103,7 +103,9 @@ export default function Index({ data, rootIndex, isRefetch }) {
     <>
       <div className="flex border-t-[1px] pt-[5px] border-solid border-bordercl gap-[10px]">
         <h3 className="w-[10%]">{data.class_code}</h3>
-        <h3 className="w-[50%]">Lớp trưởng: {data.canbo.fullname}</h3>
+        <h3 className="w-[50%]">
+          Lớp trưởng: {data.canbo ? data.canbo.fullname : ". . ."}
+        </h3>
         <div
           className="w-[15%] flex items-center justify-center gap-[10px] tooltip"
           data-tip="Số lượng sinh viên trên tổng sinh viên của lớp đã tự đánh giá!"
