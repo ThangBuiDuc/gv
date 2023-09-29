@@ -111,7 +111,7 @@ export default function Index() {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
-          <h2 className="text-primary">Cập nhật sinh viên</h2>
+          <h2 className="text-primary">Bổ sung sinh viên</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -131,7 +131,7 @@ export default function Index() {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
-          <h2 className="text-primary">Cập nhật sinh viên</h2>
+          <h2 className="text-primary">Bổ sung sinh viên</h2>
         </div>
         <div className="flex justify-center">
           <h3>Tài khoản không có quyền thực hiện chức năng này!</h3>
@@ -143,7 +143,7 @@ export default function Index() {
   return (
     <div className="wrapAdmin">
       <div className="flex justify-center">
-        <h2 className="text-primary">Cập nhật sinh viên</h2>
+        <h2 className="text-primary">Bổ sung sinh viên</h2>
       </div>
       <div className="flex justify-center gap-[30px]">
         <p className="font-semibold">Học kỳ: {batch?.data.term}</p>

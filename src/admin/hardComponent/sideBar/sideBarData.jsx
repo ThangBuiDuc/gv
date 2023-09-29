@@ -15,7 +15,7 @@ export const navLink = [
         path: "survey/updateClass",
       },
       {
-        title: "Cập nhật sinh viên",
+        title: "Bổ sung sinh viên",
         path: "survey/updateStudent",
       },
       {

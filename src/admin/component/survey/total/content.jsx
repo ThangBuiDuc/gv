@@ -5,9 +5,10 @@ import { AiOutlineRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
+import ReactLoading from "react-loading";
 import SubContent from "./subcontent";
 
-export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
+export default function Index({ data, present, isRefetching }) {
   const [toggle, setToggle] = useState();
   const [ref, { height }] = useMeasure();
 
@@ -24,27 +25,37 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
       <div className="flex">
         <h3 className={`w-[30%]`}>{data.class_code}</h3>
         <h3 className={`w-[30%]`}>{data.class_name}</h3>
-        <h3 className={`w-[30%]`}>{data.user.name}</h3>
+        <h3 className={`w-[30%]`}>{data.name}</h3>
 
         {typeof data.result_evaluate === "number" ? (
           <h3 className={`w-[5%] text-green-600`}>{data.result_evaluate}</h3>
         ) : (
           <div className="w-[5%]"></div>
         )}
-        <label
-          onClick={() => setToggle(!toggle)}
-          className={`w-[5%] justify-end flex`}
-        >
-          <IconContext.Provider
-            value={{
-              className: `${
-                toggle ? "rotate-90" : ""
-              } transition-transform duration-200 cursor-pointer`,
-            }}
+        {isRefetching ? (
+          <ReactLoading
+            type="spin"
+            color="#0083C2"
+            width={"20px"}
+            height={"20px"}
+            className="self-center"
+          />
+        ) : (
+          <label
+            onClick={() => setToggle(!toggle)}
+            className={`w-[5%] justify-end flex`}
           >
-            <AiOutlineRight size={"20px"} />
-          </IconContext.Provider>
-        </label>
+            <IconContext.Provider
+              value={{
+                className: `${
+                  toggle ? "rotate-90" : ""
+                } transition-transform duration-200 cursor-pointer`,
+              }}
+            >
+              <AiOutlineRight size={"20px"} />
+            </IconContext.Provider>
+          </label>
+        )}
       </div>
       <div>
         {transitions(
@@ -55,14 +66,7 @@ export default function Index({ data, present, afterUpdate, setAfterUpdate }) {
                   className="flex gap-[20px] justify-between flex-col "
                   ref={ref}
                 >
-                  <SubContent
-                    dataCourse={data}
-                    present={present}
-                    afterUpdate={afterUpdate}
-                    setAfterUpdate={setAfterUpdate}
-                    toggle={toggle}
-                    setToggle={setToggle}
-                  />
+                  <SubContent dataCourse={data} present={present} />
                 </div>
               </animated.div>
             )

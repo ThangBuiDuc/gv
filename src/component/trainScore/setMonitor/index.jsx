@@ -243,6 +243,10 @@ export default function Index() {
       <div className="flex justify-center">
         <h2 className="text-primary">Phân công lớp trưởng</h2>
       </div>
+      <div className="flex justify-center gap-[30px]">
+        <p className="font-semibold">Học kỳ: {batch?.data.term}</p>
+        <p className="font-semibold">Năm học: {batch?.data.school_year}</p>
+      </div>
       {data &&
         data
           .sort((a, b) => a.class_code.localeCompare(b.class_code))

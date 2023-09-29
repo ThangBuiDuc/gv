@@ -1,127 +1,62 @@
-import { useAuth, useUser } from "@clerk/clerk-react";
-import { Fragment, useEffect, useState } from "react";
-import ReactLoading from "react-loading";
 import "../../../App.css";
 import { useQuery } from "@tanstack/react-query";
-import Content from "./content";
-import { createContext } from "react";
+import { useAuth } from "@clerk/clerk-react";
+import { memo } from "react";
+import ReactLoading from "react-loading";
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
 import moment from "moment";
-import convertToRoman from "./convertToRoman";
+import convertToRoman from "../convertToRoman";
+import SubContent from "./subContent";
+import { Fragment } from "react";
+import { createContext } from "react";
 
-moment.locale("vi");
+export const BatchContext = createContext();
 
-export const setRootChecked = createContext(null);
-
-export default function Index() {
+const Index = ({ action }) => {
   const { getToken } = useAuth();
-  const [data, setData] = useState(null);
-
-  const { user } = useUser();
-
-  const batch = useQuery({
-    queryKey: ["RL_BATCH"],
-    queryFn: async () => {
-      return await fetch(import.meta.env.VITE_RL_BATCH)
-        .then((res) => res.json())
-        .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
-    },
-  });
-
-  const role = useQuery({
-    queryKey: ["RL_ROLE"],
-    queryFn: async () => {
-      return await fetch(`${import.meta.env.VITE_RL_ROLE}/${batch.data?.id}`, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${await getToken({
-            template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
-          })}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => (res.result[0] ? res.result[0] : null));
-    },
-    enabled: batch.data !== null && batch.data !== undefined,
-  });
-
-  const preData = useQuery({
-    queryKey: ["rlclasses"],
+  const data = useQuery({
+    queryKey: ["RL_OVERALL", { type: action.value }],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_RL_CLASSES}${user.publicMetadata.magv}/${
-          batch.data?.id
-        }`,
+        `${import.meta.env.VITE_RL_SUPER_MANAGER_CLASSES}${action.value}`,
         {
           method: "GET",
           headers: {
             authorization: `Bearer ${await getToken({
-              template: import.meta.env.VITE_TEMPLATE_MANAGERMENT,
+              template: import.meta.env.VITE_TEMPLATE_SUPER_MANAGERMENT,
             })}`,
           },
         }
       )
         .then((res) => res.json())
-        .then((res) =>
-          res.result.map((item) => ({
-            ...item,
-            checkedAll: false,
-            enrollment: item.enrollment.map((el) => ({
-              ...el,
-              checked: false,
-            })),
-          }))
-        );
+        .then((res) => res.result);
     },
-    enabled:
-      batch.data !== null &&
-      batch.data !== undefined &&
-      (role.data?.role_id == import.meta.env.VITE_ROLE_RL_MANAGERMENT ||
-        role.data?.role_id == import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT),
   });
 
-  useEffect(() => {
-    if (preData.data) setData(preData.data);
-  }, [preData.data]);
-
-  if (batch.isFetching && batch.isLoading) {
+  if (data.isLoading && data.isFetching) {
     return (
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
-        </div>
-        <ReactLoading
-          type="spin"
-          color="#0083C2"
-          width={"50px"}
-          height={"50px"}
-          className="self-center"
-        />
-      </div>
+      <ReactLoading
+        type="spin"
+        color="#0083C2"
+        width={"50px"}
+        height={"50px"}
+        className="self-center"
+      />
     );
   }
 
-  if (role.isFetching && role.isLoading) {
+  if (data.isError) {
     return (
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
-        </div>
-        <ReactLoading
-          type="spin"
-          color="#0083C2"
-          width={"50px"}
-          height={"50px"}
-          className="self-center"
-        />
+      <div className="flex justify-center">
+        <h3>Đã có lỗi xảy ra, vui lòng thử lại sau!</h3>
       </div>
     );
   }
 
   const handleOnClick = async () => {
     const workbook = new Excel.Workbook();
-    data
+    data.data
       .sort((a, b) => a.class_code.localeCompare(b.class_code))
       .forEach((item) => {
         let sheet = workbook.addWorksheet(item.class_code);
@@ -190,8 +125,8 @@ export default function Index() {
         ]);
         sheet.addRow([
           `Lớp ${item.class_code} - Học kỳ: ${convertToRoman(
-            batch.data.term
-          )} - Năm học ${batch.data.school_year}`,
+            action.term
+          )} - Năm học ${action.school_year}`,
           "",
           "",
           "",
@@ -216,7 +151,7 @@ export default function Index() {
           "",
           "",
           "",
-          `ĐIỂM HK ${convertToRoman(batch.data.term)}`,
+          `ĐIỂM HK ${convertToRoman(action.term)}`,
           "XẾP LOẠI",
           "GHI CHÚ",
         ]);
@@ -461,111 +396,32 @@ export default function Index() {
 
     saveAs(
       new Blob([buf]),
-      `BaoCao_RL_HK${batch.data.term}_${
-        batch.data.school_year
+      `BaoCao_TongHop_RL_HK${action.term}_${
+        action.school_year
       }_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
     );
   };
 
-  if (
-    role.data === null ||
-    (role.data?.role_id != import.meta.env.VITE_ROLE_RL_MANAGERMENT &&
-      role.data?.role_id != import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT)
-  ) {
-    return (
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
-        </div>
-        <div className="flex justify-center">
-          <h3>Tài khoản không có quyền thực hiện chức năng này!</h3>
-        </div>
-      </div>
-    );
-  }
-
-  if (preData.isFetching && preData.isLoading) {
-    return (
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
-        </div>
-        <ReactLoading
-          type="spin"
-          color="#0083C2"
-          width={"50px"}
-          height={"50px"}
-          className="self-center"
-        />
-      </div>
-    );
-  }
-
-  // if (
-  //   role.data?.role_id === undefined ||
-  //   batch.data?.length <= 0 ||
-  //   preData?.length <= 0
-  // ) {
-  //   return (
-  //     <div className="wrap">
-  //       <div className="flex justify-center">
-  //         <h2 className="text-primary">Đánh giá sinh viên</h2>
-  //       </div>
-  //       <div className="flex justify-center">
-  //         <h3>Đã có lỗi xảy ra, vui lòng tải lại trang!</h3>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // console.log(data);
-  // console.log(preData.isRefetching);
-
   return (
-    <setRootChecked.Provider
-      value={{ setRoot: setData, isRefetch: preData.isRefetching }}
-    >
-      <div className="wrap">
-        <div className="flex justify-center">
-          <h2 className="text-primary">Đánh giá sinh viên</h2>
-        </div>
-        <div className="flex justify-center gap-[30px]">
-          <p className="font-semibold">Học kỳ: {batch?.data.term}</p>
-          <p className="font-semibold">Năm học: {batch?.data.school_year}</p>
-        </div>
-        {data && (
-          <>
-            <div className="flex justify-end">
-              {preData.isRefetching ? (
-                <ReactLoading
-                  type="spin"
-                  color="#0083C2"
-                  width={"20px"}
-                  height={"20px"}
-                  className="self-center"
-                />
-              ) : (
-                <button className="selfBtn w-fit" onClick={handleOnClick}>
-                  Xuất Excel
-                </button>
-              )}
-            </div>
-            {data
-              .sort((a, b) => a.class_code.localeCompare(b.class_code))
-              .map((item, index) => {
-                return (
-                  <Fragment key={index}>
-                    <Content
-                      data={item}
-                      rootIndex={index}
-                      isRefetch={preData.isRefetching}
-                    />
-                  </Fragment>
-                );
-              })}
-          </>
-        )}
+    <>
+      <div className="flex justify-end">
+        <button className="selfBtn w-fit" onClick={handleOnClick}>
+          Xuất Excel
+        </button>
       </div>
-    </setRootChecked.Provider>
+      {data.data
+        .sort((a, b) => a.class_code.localeCompare(b.class_code))
+        .map((item, index) => {
+          return (
+            <Fragment key={index}>
+              <BatchContext.Provider value={action}>
+                <SubContent data={item} />
+              </BatchContext.Provider>
+            </Fragment>
+          );
+        })}
+    </>
   );
-}
+};
+
+export default memo(Index);

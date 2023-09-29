@@ -75,6 +75,9 @@ const SetMonitor = React.lazy(() =>
 );
 const SetStaff = React.lazy(() => import("./component/trainScore/setStaff"));
 const OverAll = React.lazy(() => import("./component/trainScore/overAll"));
+const OverAllSemester = React.lazy(() =>
+  import("./component/trainScore/overAllSemester")
+);
 
 function MainRoute() {
   const location = useLocation();
@@ -85,7 +88,6 @@ function MainRoute() {
     isSignedIn &&
     !user.emailAddresses[0].emailAddress.includes("@hpu.edu.vn")
   ) {
-    console.log(1);
     window.location.href = "https://sv.hpu.edu.vn/home";
   }
 
@@ -361,6 +363,27 @@ function MainRoute() {
                 <Navigate
                   to={`/sign-in#/?redirect_url=${encodeURIComponent(
                     "/trainscore/overAll"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
+        <Route
+          path="/trainscore/overAllSemester"
+          element={
+            <>
+              <SignedIn>
+                <OverAllSemester />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/trainscore/overAllSemester"
                   )}`}
                 />
               </SignedOut>

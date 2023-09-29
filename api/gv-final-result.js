@@ -5,7 +5,7 @@ export default async function Handler(req, res) {
   // console.log(req.body)
   // console.log(req.body.subject_code)
   const point = await fetch(
-    `https://edu-survey.hasura.app/api/rest/final-teacher`,
+    `https://survey-neon.hasura.app/api/rest/final-teacher`,
     {
       method: "POST",
       headers: {
@@ -27,7 +27,7 @@ export default async function Handler(req, res) {
 
   if (point) {
     let result = await fetch(
-      `https://edu-survey.hasura.app/api/rest/update-course`,
+      `https://survey-neon.hasura.app/api/rest/update-course`,
       {
         method: "PUT",
         headers: {
@@ -52,9 +52,9 @@ export default async function Handler(req, res) {
           },
         }),
       }
-    ).then(res=>res.status);
+    ).then((res) => res.status);
 
-    if(result === 200) res.status(200).json({ result: "success" });
+    if (result === 200) res.status(200).json({ result: "success" });
   } else {
     res.status(400).json({ result: "failed" });
   }
