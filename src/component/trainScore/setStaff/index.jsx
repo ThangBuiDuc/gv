@@ -245,6 +245,10 @@ export default function Index() {
       <div className="flex justify-center">
         <h2 className="text-primary">Phân công quản lý sinh viên</h2>
       </div>
+      <div className="flex justify-center gap-[30px]">
+        <p className="font-semibold">Học kỳ: {batch?.data.term}</p>
+        <p className="font-semibold">Năm học: {batch?.data.school_year}</p>
+      </div>
       {data &&
         data.classes
           .sort((a, b) => {

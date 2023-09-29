@@ -259,6 +259,10 @@ export default function Index() {
       <div className="flex justify-center">
         <h2 className="text-primary">Phân công dự giờ</h2>
       </div>
+      <div className="flex justify-center gap-[30px]">
+        <p className="font-semibold">Học kỳ: {present?.data.hocky}</p>
+        <p className="font-semibold">Năm học: {present?.data.manamhoc}</p>
+      </div>
       <>
         {/* <div className="flex justify-end">
           <CSVLink

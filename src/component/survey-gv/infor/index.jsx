@@ -132,6 +132,10 @@ export default function Index() {
       <div className="flex justify-center">
         <h2 className="text-primary">Phản hồi công tác giảng dạy</h2>
       </div>
+      <div className="flex justify-center gap-[30px]">
+        <p className="font-semibold">Học kỳ: {present?.data.hocky}</p>
+        <p className="font-semibold">Năm học: {present?.data.manamhoc}</p>
+      </div>
       {data.data &&
         data.data.map((item, index) => (
           <div className="flex flex-col" key={index}>

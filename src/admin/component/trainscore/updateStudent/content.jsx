@@ -74,8 +74,8 @@ export default function Index() {
             let rawData = {
               student_code: item.masv,
               class_code: item.malop,
-              monitor: classSV.monitor,
-              staff: classSV.staff,
+              monitor: classSV ? classSV.monitor : null,
+              staff: classSV ? classSV.staff : null,
               fullname: item.fullname,
               isChecked: false,
             };

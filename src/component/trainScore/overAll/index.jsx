@@ -7,7 +7,7 @@ import Content from "./content";
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
 import moment from "moment";
-import convertToRoman from "./convertToRoman";
+import convertToRoman from "../convertToRoman";
 
 moment.locale("vi");
 
@@ -42,7 +42,7 @@ export default function Index() {
   });
 
   const preData = useQuery({
-    queryKey: ["rlclasses"],
+    queryKey: ["RL_OVERALL"],
     queryFn: async () => {
       return await fetch(
         `${import.meta.env.VITE_RL_SUPER_MANAGER_CLASSES}${batch.data?.id}`,
@@ -56,16 +56,7 @@ export default function Index() {
         }
       )
         .then((res) => res.json())
-        .then((res) =>
-          res.result.map((item) => ({
-            ...item,
-            checkedAll: false,
-            enrollment: item.enrollment.map((el) => ({
-              ...el,
-              checked: false,
-            })),
-          }))
-        );
+        .then((res) => res.result);
     },
     enabled:
       batch.data !== null &&
@@ -247,6 +238,116 @@ export default function Index() {
           ]);
         });
 
+        sheet.addRow([]);
+        sheet.addRow([
+          "Tổng số sinh viên được bình xét:",
+          item.enrollment.filter((el) => el.total_staff_point).length,
+          "Trong đó:",
+        ]);
+        sheet.addRow([
+          "",
+          "",
+          "",
+          "Xuất sắc",
+          item.enrollment.filter((el) => el.staff_classification === "Xuất sắc")
+            .length,
+          "=",
+          item.enrollment.filter((el) => el.staff_classification === "Xuất sắc")
+            .length !== 0
+            ? `${(
+                (item.enrollment.filter(
+                  (el) => el.staff_classification === "Xuất sắc"
+                ).length /
+                  item.enrollment.filter((el) => el.total_staff_point).length) *
+                100
+              ).toFixed(2)}%`
+            : "0.00%",
+          "Trung bình",
+          item.enrollment.filter(
+            (el) => el.staff_classification === "Trung bình"
+          ).length,
+          "=",
+          item.enrollment.filter(
+            (el) => el.staff_classification === "Trung bình"
+          ).length !== 0
+            ? `${(
+                (item.enrollment.filter(
+                  (el) => el.staff_classification === "Trung bình"
+                ).length /
+                  item.enrollment.filter((el) => el.total_staff_point).length) *
+                100
+              ).toFixed(2)}%`
+            : "0.00%",
+        ]);
+
+        sheet.addRow([
+          "",
+          "",
+          "",
+          "Tốt",
+          item.enrollment.filter((el) => el.staff_classification === "Tốt")
+            .length,
+          "=",
+          item.enrollment.filter((el) => el.staff_classification === "Tốt")
+            .length !== 0
+            ? `${(
+                (item.enrollment.filter(
+                  (el) => el.staff_classification === "Tốt"
+                ).length /
+                  item.enrollment.filter((el) => el.total_staff_point).length) *
+                100
+              ).toFixed(2)}%`
+            : "0.00%",
+          "Yếu",
+          item.enrollment.filter((el) => el.staff_classification === "Yếu")
+            .length,
+          "=",
+          item.enrollment.filter((el) => el.staff_classification === "Yếu")
+            .length !== 0
+            ? `${(
+                (item.enrollment.filter(
+                  (el) => el.staff_classification === "Yếu"
+                ).length /
+                  item.enrollment.filter((el) => el.total_staff_point).length) *
+                100
+              ).toFixed(2)}%`
+            : "0.00%",
+        ]);
+
+        sheet.addRow([
+          "",
+          "",
+          "",
+          "Khá",
+          item.enrollment.filter((el) => el.staff_classification === "Khá")
+            .length,
+          "=",
+          item.enrollment.filter((el) => el.staff_classification === "Khá")
+            .length !== 0
+            ? `${(
+                (item.enrollment.filter(
+                  (el) => el.staff_classification === "Khá"
+                ).length /
+                  item.enrollment.filter((el) => el.total_staff_point).length) *
+                100
+              ).toFixed(2)}%`
+            : "0.00%",
+          "Kém",
+          item.enrollment.filter((el) => el.staff_classification === "Kém")
+            .length,
+          "=",
+          item.enrollment.filter((el) => el.staff_classification === "Kém")
+            .length !== 0
+            ? `${(
+                (item.enrollment.filter(
+                  (el) => el.staff_classification === "Kém"
+                ).length /
+                  item.enrollment.filter((el) => el.total_staff_point).length) *
+                100
+              ).toFixed(2)}%`
+            : "0.00%",
+        ]);
+
         // csv.forEach((item, index) => {
         //   sheet.addRow([
         //     index + 1,
@@ -406,6 +507,10 @@ export default function Index() {
     <div className="wrap">
       <div className="flex justify-center">
         <h2 className="text-primary">Tổng hợp rèn luyện</h2>
+      </div>
+      <div className="flex justify-center gap-[30px]">
+        <p className="font-semibold">Học kỳ: {batch?.data.term}</p>
+        <p className="font-semibold">Năm học: {batch?.data.school_year}</p>
       </div>
       {data && (
         <>

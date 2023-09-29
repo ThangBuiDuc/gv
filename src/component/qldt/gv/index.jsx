@@ -157,6 +157,10 @@ export default function Index() {
       <div className="flex justify-center">
         <h2 className="text-primary">Thực hiện quy định, quy chế đào tạo</h2>
       </div>
+      <div className="flex justify-center gap-[30px]">
+        <p className="font-semibold">Học kỳ: {present?.data.hocky}</p>
+        <p className="font-semibold">Năm học: {present?.data.manamhoc}</p>
+      </div>
       {data.data.length <= 0 ? (
         <div className="flex justify-center">
           <h3>Hiện tại chưa có môn học trong kỳ được duyệt đánh giá</h3>

@@ -106,8 +106,13 @@ export const sideBarData = [
         icon: <TbSettingsCog size={"22px"} />,
       },
       {
-        title: "Tổng hợp",
+        title: "Tổng hợp kỳ hiện tại",
         path: "/trainscore/overAll",
+        icon: <HiOutlineDocumentReport size={"22px"} />,
+      },
+      {
+        title: "Tổng hợp theo kỳ",
+        path: "/trainscore/overAllSemester",
         icon: <HiOutlineDocumentReport size={"22px"} />,
       },
     ],

@@ -1,15 +1,10 @@
 import "../../../../App.css";
 import Swal from "sweetalert2";
 import { useAuth } from "@clerk/clerk-react";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function Index({
-  dataCourse,
-  present,
-  afterUpdate,
-  setAfterUpdate,
-  toggle,
-  setToggle,
-}) {
+export default function Index({ dataCourse, present }) {
+  const queryClient = useQueryClient();
   const { getToken } = useAuth();
   const handleOnClickSV = () => {
     // if (
@@ -28,7 +23,7 @@ export default function Index({
         " - " +
         dataCourse.class_name +
         " - " +
-        dataCourse.user.name
+        dataCourse.name
       }`,
       text: "Bạn có chắc chắn muốn cho tính tổng điểm sinh viên của môn học này không?",
       showCancelButton: true,
@@ -51,8 +46,13 @@ export default function Index({
         }).then((res) => res.status);
 
         if (result === 200) {
-          // setToggle(!toggle);
-          setAfterUpdate(!afterUpdate);
+          queryClient.invalidateQueries({
+            queryKey: ["TOTAL_CSV_CTGD"],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["TOTAL_CSV1_CTGD"],
+          });
+          // setAfterUpdate(!afterUpdate);
           Swal.fire({
             title: "Tổng kết điểm sinh viên thành công!",
             icon: "success",
@@ -84,7 +84,7 @@ export default function Index({
         " - " +
         dataCourse.class_name +
         " - " +
-        dataCourse.user.name
+        dataCourse.name
       }`,
       text: "Bạn có chắc chắn muốn cho tính tổng điểm sinh viên của môn học này không?",
       showCancelButton: true,
@@ -107,7 +107,8 @@ export default function Index({
         }).then((res) => res.status);
 
         if (result === 200) {
-          setToggle(!toggle);
+          queryClient.invalidateQueries({ queryKey: ["TOTAL_CSV_CTGD"] });
+          queryClient.invalidateQueries({ queryKey: ["TOTAL_CSV1_CTGD"] });
           // setAfterUpdate(!afterUpdate);
           Swal.fire({
             title: "Tổng kết điểm giảng viên thành công!",

@@ -164,6 +164,10 @@ export default function Index() {
       <div className="flex justify-center">
         <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
       </div>
+      <div className="flex justify-center gap-[30px]">
+        <p className="font-semibold">Học kỳ: {present?.data.hocky}</p>
+        <p className="font-semibold">Năm học: {present?.data.manamhoc}</p>
+      </div>
       <>
         {/* <button
             className="btn w-fit self-end"
