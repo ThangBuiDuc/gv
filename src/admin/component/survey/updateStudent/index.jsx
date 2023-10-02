@@ -33,6 +33,16 @@ export default function Index() {
     enabled: role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN,
   });
 
+  const eduPresent = useQuery({
+    queryKey: ["EDU_PRESENT"],
+    queryFn: async () => {
+      return await fetch(import.meta.env.VITE_EDUMNG_PRESENT)
+        .then((res) => res.json())
+        .then((res) => (res?.hientai.length > 0 ? res?.hientai[0] : null));
+    },
+    enabled: role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN,
+  });
+
   if (role.isLoading && role.isFetching) {
     return (
       <div className="wrapAdmin">
@@ -63,7 +73,10 @@ export default function Index() {
     );
   }
 
-  if (present.isLoading && present.isFetching) {
+  if (
+    (present.isLoading && present.isFetching) ||
+    (eduPresent.isLoading && eduPresent.isFetching)
+  ) {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
@@ -76,6 +89,29 @@ export default function Index() {
           height={"50px"}
           className="self-center"
         />
+      </div>
+    );
+  }
+
+  if (
+    present?.data.hocky !== eduPresent?.data.hocky ||
+    present?.data.manamhoc !== eduPresent?.data.manamhoc
+  ) {
+    return (
+      <div className="wrapAdmin">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Cập nhật lớp hành chính</h2>
+        </div>
+        <div className="flex justify-center gap-[30px]">
+          <p className="font-semibold">Học kỳ: {present?.data.hocky}</p>
+          <p className="font-semibold">Năm học: {present?.data.manamhoc}</p>
+        </div>
+        <div className="flex justify-center flex-col gap-[10px]">
+          <h3 className="text-center">
+            Hai học kỳ giữa Rèn luyện và EDU không đồng bộ. Vui lòng tạo đợt
+            mới!
+          </h3>
+        </div>
       </div>
     );
   }

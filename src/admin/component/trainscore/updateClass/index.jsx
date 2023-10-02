@@ -18,14 +18,14 @@ export default function Index() {
     },
   });
 
-  //   const eduBatch = useQuery({
-  //     queryKey: ["EDU_BATCH"],
-  //     queryFn: async () => {
-  //       return await fetch(import.meta.env.VITE_EDUMNG_PRESENT)
-  //         .then((res) => res.json())
-  //         .then((res) => (res?.hientai.length > 0 ? res?.hientai[0] : null));
-  //     },
-  //   });
+  const eduBatch = useQuery({
+    queryKey: ["EDU_BATCH"],
+    queryFn: async () => {
+      return await fetch(import.meta.env.VITE_EDUMNG_PRESENT)
+        .then((res) => res.json())
+        .then((res) => (res?.hientai.length > 0 ? res?.hientai[0] : null));
+    },
+  });
 
   const role = useQuery({
     queryKey: ["RL_ROLE", { type: "admin" }],
@@ -106,6 +106,7 @@ export default function Index() {
 
   if (
     (batch.isLoading && batch.isFetching) ||
+    (eduBatch.isLoading && eduBatch.isFetching) ||
     (role.isLoading && role.isFetching)
   ) {
     return (
@@ -135,6 +136,29 @@ export default function Index() {
         </div>
         <div className="flex justify-center">
           <h3>Tài khoản không có quyền thực hiện chức năng này!</h3>
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    batch?.data.term !== eduBatch?.data.hocky ||
+    batch?.data.school_year !== eduBatch?.data.manamhoc
+  ) {
+    return (
+      <div className="wrapAdmin">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Cập nhật lớp hành chính</h2>
+        </div>
+        <div className="flex justify-center gap-[30px]">
+          <p className="font-semibold">Học kỳ: {batch?.data.term}</p>
+          <p className="font-semibold">Năm học: {batch?.data.school_year}</p>
+        </div>
+        <div className="flex justify-center flex-col gap-[10px]">
+          <h3 className="text-center">
+            Hai học kỳ giữa Rèn luyện và EDU không đồng bộ. Vui lòng tạo đợt
+            mới!
+          </h3>
         </div>
       </div>
     );
