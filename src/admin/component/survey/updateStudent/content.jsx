@@ -77,7 +77,8 @@ export default function Index() {
     if (
       listSVCourseEDU?.data &&
       listSVCourseEDU?.data.length > 0 &&
-      listSV_HK?.data
+      listSV_HK?.data &&
+      listSV_HK?.data.course.length > 0
     ) {
       setMergeSV(
         listSVCourseEDU?.data.reduce((total, item) => {

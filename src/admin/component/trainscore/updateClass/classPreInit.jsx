@@ -98,6 +98,7 @@ export default function Index() {
     if (
       classNewInit?.data &&
       classOldInit?.data &&
+      classPresent?.data &&
       classPresent?.data.classes.length === 0
     ) {
       setMergeClass(

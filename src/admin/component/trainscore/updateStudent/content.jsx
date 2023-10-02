@@ -58,7 +58,11 @@ export default function Index() {
   });
 
   useEffect(() => {
-    if (studentPresent?.data && listSV?.data) {
+    if (
+      studentPresent?.data &&
+      studentPresent.data.classes.length > 0 &&
+      listSV?.data
+    ) {
       setMergeSV(
         listSV?.data.reduce((total, item) => {
           if (

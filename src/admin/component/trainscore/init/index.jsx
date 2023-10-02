@@ -30,21 +30,6 @@ export default function Index() {
     },
   });
 
-  const gv = useQuery({
-    queryKey: ["RL_GV"],
-    queryFn: async () => {
-      return await fetch(`${import.meta.env.VITE_RL_GV}${batch?.data.id}`, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${await getToken({
-            template: import.meta.env.VITE_TEMPLATE_SUPER_ADMIN,
-          })}`,
-        },
-      }).then((res) => res.json());
-    },
-    enabled: batch.data !== null && batch.data !== undefined,
-  });
-
   const role = useQuery({
     queryKey: ["RL_ROLE", { type: "admin" }],
     queryFn: async () => {
@@ -59,6 +44,26 @@ export default function Index() {
         .then((res) => res.json())
         .then((res) => (res?.result.length > 0 ? res?.result[0] : null));
     },
+  });
+
+  const gv = useQuery({
+    queryKey: ["RL_GV"],
+    queryFn: async () => {
+      return await fetch(`${import.meta.env.VITE_RL_GV}${batch?.data.id}`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_SUPER_ADMIN,
+          })}`,
+        },
+      }).then((res) => res.json());
+    },
+    enabled:
+      batch.data !== null &&
+      batch.data !== undefined &&
+      role?.data !== null &&
+      role?.data !== undefined &&
+      role?.data.role_id.toString() === import.meta.env.VITE_ROLE_RL_ADMIN,
   });
 
   useEffect(() => {
