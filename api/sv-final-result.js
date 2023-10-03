@@ -5,7 +5,7 @@ export default async function Handler(req, res) {
   // console.log(req.body)
   // console.log(req.body.subject_code)
   const point = await fetch(
-    `https://survey-neon.hasura.app/api/rest/final-student`,
+    `https://edu-survey.hasura.app/api/rest/final-student`,
     {
       method: "POST",
       headers: {
@@ -27,7 +27,7 @@ export default async function Handler(req, res) {
 
   if (point) {
     let result = await fetch(
-      `https://survey-neon.hasura.app/api/rest/update-course`,
+      `https://edu-survey.hasura.app/api/rest/update-course`,
       {
         method: "PUT",
         headers: {
