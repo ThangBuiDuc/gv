@@ -106,6 +106,10 @@ export default function Index() {
           let rawData = classOldInit?.data.classes.find(
             (el) => el.class_code === item.malop
           );
+          let staff = classOldInit?.data.qlsv.res.find(
+            (el) => el.khoa.makhoa === item.makhoa
+          );
+          // console.log(staff);
           if (rawData) {
             return [
               ...total,
@@ -113,8 +117,9 @@ export default function Index() {
                 stt: index + 1,
                 class_code: rawData.class_code,
                 monitor: rawData.monitor,
-                staff: rawData.staff,
+                staff: staff ? staff : null,
                 makhoahoc: item.makhoahoc,
+                makhoa: item.makhoa,
                 isChecked: false,
               },
             ];
@@ -125,8 +130,9 @@ export default function Index() {
                 stt: index + 1,
                 class_code: item.malop,
                 makhoahoc: item.makhoahoc,
+                makhoa: item.makhoa,
                 monitor: null,
-                staff: null,
+                staff: staff ? staff : null,
                 isChecked: false,
               },
             ];
@@ -137,11 +143,15 @@ export default function Index() {
     if (
       classNewInit?.data &&
       classOldInit?.data &&
+      classPresent?.data &&
       classPresent?.data.classes.length > 0
     ) {
       let rawData = classNewInit?.data.reduce((total, item, index) => {
         let rawData = classOldInit?.data.classes.find(
           (el) => el.class_code === item.malop
+        );
+        let staff = classOldInit?.data.qlsv.res.find(
+          (el) => el.khoa.makhoa === item.makhoa
         );
         if (rawData) {
           return [
@@ -150,8 +160,9 @@ export default function Index() {
               stt: index + 1,
               class_code: rawData.class_code,
               monitor: rawData.monitor,
-              staff: rawData.staff,
+              staff: staff ? staff : null,
               makhoahoc: item.makhoahoc,
+              makhoa: item.makhoa,
               isChecked: false,
             },
           ];
@@ -163,7 +174,8 @@ export default function Index() {
               class_code: item.malop,
               makhoahoc: item.makhoahoc,
               monitor: null,
-              staff: null,
+              makhoa: item.makhoa,
+              staff: staff ? staff : null,
               isChecked: false,
             },
           ];
@@ -196,10 +208,28 @@ export default function Index() {
             classPresent?.data.classes.some(
               (el) => el.class_code === item.class_code
             )
-          ) {
+          )
             return total;
-          } else {
-            return [...total, item];
+          else {
+            if (
+              classPresent?.data.qlsv.res.find(
+                (el) => item.makhoa === el.khoa.makhoa
+              ) &&
+              item.staff !==
+                classPresent?.data.qlsv.res.find(
+                  (el) => item.makhoa === el.khoa.makhoa
+                ).staff
+            )
+              return [
+                ...total,
+                {
+                  ...item,
+                  staff: classPresent?.data.qlsv.res.find(
+                    (el) => item.makhoa === el.khoa.makhoa
+                  ),
+                },
+              ];
+            else return [...total, item];
           }
         }, [])
       );
@@ -256,16 +286,18 @@ export default function Index() {
           return {
             class_code: item.class_code,
             monitor: item.monitor.masv,
-            staff: item.staff.magiaovien,
+            staff: item.staff.staff,
             batch_id: batch.id,
+            ma_khoa: item.makhoa,
           };
         }
 
         if (item.staff) {
           return {
             class_code: item.class_code,
-            staff: item.staff.magiaovien,
+            staff: item.staff.staff,
             batch_id: batch.id,
+            ma_khoa: item.makhoa,
           };
         }
 
@@ -274,11 +306,13 @@ export default function Index() {
             class_code: item.class_code,
             monitor: item.monitor.masv,
             batch_id: batch.id,
+            ma_khoa: item.makhoa,
           };
         }
         return {
           class_code: item.class_code,
           batch_id: batch.id,
+          ma_khoa: item.makhoa,
         };
       });
       let enrollments = checkedListSV.map((item) => {
@@ -619,12 +653,12 @@ export default function Index() {
                             )}
                           </td>
                           <td>
-                            {el3.staff ? el3.staff.fullname : ""}
+                            {el3.staff ? el3.staff.gv.fullname : ""}
                             {el3.staff ? (
                               <>
                                 <br />
                                 <span className="badge badge-ghost badge-sm">
-                                  {el3.staff.magiaovien}
+                                  {el3.staff.staff}
                                 </span>
                               </>
                             ) : (
@@ -662,7 +696,7 @@ export default function Index() {
                       <>
                         <br />
                         <span className="badge badge-ghost badge-sm">
-                          {item.staff.magiaovien}
+                          {item.staff.staff}
                         </span>
                       </>
                     ) : (
