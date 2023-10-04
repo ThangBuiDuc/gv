@@ -25,6 +25,7 @@ function Content({ data, batch, isRefetch, staff }) {
           class_code: data.class_code,
           staff: selectedOption.value,
           batch: batch.id,
+          khoa: data.khoa.makhoa,
         }),
       })
         .then((res) => res.json())
@@ -41,7 +42,7 @@ function Content({ data, batch, isRefetch, staff }) {
         setSelectedOption(null);
         queryClient.invalidateQueries({ queryKey: ["RL_GET_UPDATE_STAFF"] });
         Swal.fire({
-          title: `Cập nhật quản lý sinh viên cho lớp ${selectedOption.class_code} thành công!`,
+          title: `Cập nhật quản lý sinh viên cho ngành ${selectedOption.khoa} thành công!`,
           icon: "success",
         });
       }
@@ -51,7 +52,7 @@ function Content({ data, batch, isRefetch, staff }) {
     Swal.fire({
       title: "Hoàn thành cập nhật quản lý sinh viên",
       html: `<p>
-            Bạn có chắc chắn muốn hoàn thành cập nhật quản lý sinh viên <span style="font-weight:600;">${selectedOption.fullname}</span> cho lớp <span style="font-weight:600;">${data.class_code}</span> không?
+            Bạn có chắc chắn muốn hoàn thành cập nhật quản lý sinh viên <span style="font-weight:600;">${selectedOption.fullname}</span> cho ngành <span style="font-weight:600;">${selectedOption.khoa}</span> không?
           </p>`,
       icon: "question",
       showCancelButton: true,
@@ -65,14 +66,16 @@ function Content({ data, batch, isRefetch, staff }) {
     });
   };
 
+  console.log(selectedOption);
+
   return (
     <div className="flex w-full gap-[10px] justify-center align-middle [&>div]:flex [&>div]:align-middle">
       <div className="flex w-[20%]">
-        <h3>{data.class_code}</h3>
+        <h3 className="self-center">{data.khoa.tenkhoa}</h3>
       </div>
       <div className="flex w-[40%]">
-        <h3>Quản lý sinh viên:&nbsp;</h3>
-        <h3 className={`${data.staff ? "" : "text-red-600"}`}>
+        <h3 className="self-center">Quản lý sinh viên:&nbsp;</h3>
+        <h3 className={`${data.staff ? "" : "text-red-600"}  self-center`}>
           {data.staff ? data.staff.fullname : "Vui lòng phân công!"}
         </h3>
       </div>
@@ -90,7 +93,7 @@ function Content({ data, batch, isRefetch, staff }) {
                   .map((item) => ({
                     value: item.magiaovien,
                     fullname: item.fullname,
-                    class_code: data.class_code,
+                    khoa: data.khoa.tenkhoa,
                     label: `${item.magiaovien} - ${item.fullname}`,
                   }))
               : staff
@@ -98,7 +101,7 @@ function Content({ data, batch, isRefetch, staff }) {
                   .map((item) => ({
                     value: item.magiaovien,
                     fullname: item.fullname,
-                    class_code: data.class_code,
+                    khoa: data.khoa.tenkhoa,
                     label: `${item.magiaovien} - ${item.fullname}`,
                   }))
           }
@@ -214,7 +217,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Phân công lớp trưởng</h2>
+          <h2 className="text-primary">Phân công quản lý sinh viên</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -240,6 +243,23 @@ export default function Index() {
     );
   }
 
+  if (data && data.classes.length === 0) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Phân công quản lý sinh viên</h2>
+        </div>
+        <div className="flex justify-center gap-[30px]">
+          <p className="font-semibold">Học kỳ: {batch?.data.term}</p>
+          <p className="font-semibold">Năm học: {batch?.data.school_year}</p>
+        </div>
+        <div className="flex justify-center">
+          <h3>Hiện tại chưa có lớp môn học để phân công quản lý sinh viên!</h3>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="wrap">
       <div className="flex justify-center">
@@ -250,35 +270,18 @@ export default function Index() {
         <p className="font-semibold">Năm học: {batch?.data.school_year}</p>
       </div>
       {data &&
-        data.classes
-          .sort((a, b) => {
-            // equal items sort equally
-            if (a.staff === b.staff) {
-              return 0;
-            }
-
-            // nulls sort after anything else
-            if (a.staff === null) {
-              return -1;
-            }
-            if (b.staff === null) {
-              return 1;
-            }
-
-            return a.class_code.localeCompare(b.class_code);
-          })
-          .map((item, index) => {
-            return (
-              <Fragment key={index}>
-                <Content
-                  staff={data.listStaff}
-                  data={item}
-                  batch={batch.data}
-                  isRefetch={updateStaffData.isRefetching}
-                />
-              </Fragment>
-            );
-          })}
+        data.classes.map((item, index) => {
+          return (
+            <Fragment key={index}>
+              <Content
+                staff={data.listStaff}
+                data={item}
+                batch={batch.data}
+                isRefetch={updateStaffData.isRefetching}
+              />
+            </Fragment>
+          );
+        })}
     </div>
   );
 }

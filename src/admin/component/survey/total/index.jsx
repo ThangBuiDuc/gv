@@ -790,6 +790,23 @@ export default function Index() {
     });
   };
 
+  if (csv.data.length === 0) {
+    return (
+      <div className="wrapAdmin">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Tổng kết điểm môn học</h2>
+        </div>
+        <div className="flex justify-center gap-[30px]">
+          <p className="font-semibold">Học kỳ: {present.data[0]?.hocky}</p>
+          <p className="font-semibold">Năm học: {present.data[0]?.manamhoc}</p>
+        </div>
+        <div className="flex justify-center">
+          <h3>Hiện tại chưa có dữ liệu các lớp môn học trong kỳ!</h3>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="wrapAdmin">
       <div className="flex justify-center">

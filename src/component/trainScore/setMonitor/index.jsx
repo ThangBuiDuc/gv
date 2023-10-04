@@ -238,6 +238,23 @@ export default function Index() {
     );
   }
 
+  if (data && data.length === 0) {
+    return (
+      <div className="wrap">
+        <div className="flex justify-center">
+          <h2 className="text-primary">Phân công lớp trưởng</h2>
+        </div>
+        <div className="flex justify-center gap-[30px]">
+          <p className="font-semibold">Học kỳ: {batch?.data.term}</p>
+          <p className="font-semibold">Năm học: {batch?.data.school_year}</p>
+        </div>
+        <div className="flex justify-center">
+          <h3>Hiện tại chưa có lớp môn học để phân công lớp trưởng!</h3>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="wrap">
       <div className="flex justify-center">
