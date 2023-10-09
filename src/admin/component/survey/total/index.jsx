@@ -50,7 +50,7 @@ export default function Index() {
     queryFn: async () => {
       return await fetch(`${import.meta.env.VITE_PRESENT_API}`)
         .then((res) => res.json())
-        .then((res) => res.hientai);
+        .then((res) => res.hientai[0]);
     },
     enabled: role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN,
   });
@@ -61,8 +61,8 @@ export default function Index() {
       return await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
         method: "POST",
         body: JSON.stringify({
-          hk: present.data[0]?.hocky,
-          nam: present.data[0]?.manamhoc,
+          hk: present.data?.hocky,
+          nam: present.data?.manamhoc,
           order_by: [{ result_evaluate: "desc_nulls_last" }],
         }),
         headers: {
@@ -86,8 +86,8 @@ export default function Index() {
       return await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
         method: "POST",
         body: JSON.stringify({
-          hk: present.data[0]?.hocky,
-          nam: present.data[0]?.manamhoc,
+          hk: present.data?.hocky,
+          nam: present.data?.manamhoc,
           order_by: [{ khoa: "asc", result_evaluate: "desc_nulls_last" }],
         }),
         headers: {
@@ -109,8 +109,8 @@ export default function Index() {
     queryKey: ["TOTAL_CACULATE_CTGD"],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_SURVEY_CACULATE}${present.data[0]?.hocky}/${
-          present.data[0]?.manamhoc
+        `${import.meta.env.VITE_SURVEY_CACULATE}${present.data?.hocky}/${
+          present.data?.manamhoc
         }`,
         {
           method: "GET",
@@ -132,8 +132,8 @@ export default function Index() {
     queryKey: ["TOTAL_CAMTHI_CTGD"],
     queryFn: async () => {
       return await fetch(
-        `${import.meta.env.VITE_EDUMNG_DS_CAM_THI}${present.data[0]?.hocky}/${
-          present.data[0]?.manamhoc
+        `${import.meta.env.VITE_EDUMNG_DS_CAM_THI}${present.data?.hocky}/${
+          present.data?.manamhoc
         }`,
         {
           headers: {
@@ -155,8 +155,8 @@ export default function Index() {
   // useEffect(() => {
   //   let callApi = async () => {
   //     fetch(
-  //       `${import.meta.env.VITE_QLDT_COURSE}${present.data[0]?.manamhoc}/${
-  //         present.data[0]?.hocky
+  //       `${import.meta.env.VITE_QLDT_COURSE}${present.data?.manamhoc}/${
+  //         present.data?.hocky
   //       }`,
   //       {
   //         method: "GET",
@@ -176,8 +176,8 @@ export default function Index() {
   //     // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
   //     //   method: "POST",
   //     //   body: JSON.stringify({
-  //     //     hk: present.data[0]?.hocky,
-  //     //     nam: present.data[0]?.manamhoc,
+  //     //     hk: present.data?.hocky,
+  //     //     nam: present.data?.manamhoc,
   //     //     order_by: [{ result_evaluate: "desc_nulls_last" }],
   //     //   }),
   //     //   headers: {
@@ -201,8 +201,8 @@ export default function Index() {
   //     // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
   //     //   method: "POST",
   //     //   body: JSON.stringify({
-  //     //     hk: present.data[0]?.hocky,
-  //     //     nam: present.data[0]?.manamhoc,
+  //     //     hk: present.data?.hocky,
+  //     //     nam: present.data?.manamhoc,
   //     //     order_by: [{ khoa: "asc", result_evaluate: "desc_nulls_last" }],
   //     //   }),
   //     //   headers: {
@@ -224,8 +224,8 @@ export default function Index() {
   //     //   });
 
   //     // await fetch(
-  //     //   `${import.meta.env.VITE_SURVEY_CACULATE}${present.data[0]?.hocky}/${
-  //     //     present.data[0]?.manamhoc
+  //     //   `${import.meta.env.VITE_SURVEY_CACULATE}${present.data?.hocky}/${
+  //     //     present.data?.manamhoc
   //     //   }`,
   //     //   {
   //     //     method: "GET",
@@ -244,8 +244,8 @@ export default function Index() {
   //     //   });
 
   //     // await fetch(
-  //     //   `${import.meta.env.VITE_EDUMNG_DS_CAM_THI}${present.data[0]?.hocky}/${
-  //     //     present.data[0]?.manamhoc
+  //     //   `${import.meta.env.VITE_EDUMNG_DS_CAM_THI}${present.data?.hocky}/${
+  //     //     present.data?.manamhoc
   //     //   }`,
   //     //   {
   //     //     headers: {
@@ -714,8 +714,8 @@ export default function Index() {
               where: {
                 subject_code: { _eq: item.subject_code },
                 class_code: { _eq: item.class_code },
-                hocky: { _eq: present.data[0]?.hocky },
-                namhoc: { _eq: present.data[0]?.manamhoc },
+                hocky: { _eq: present.data?.hocky },
+                namhoc: { _eq: present.data?.manamhoc },
               },
             };
           });
@@ -730,8 +730,8 @@ export default function Index() {
               where: {
                 subject_code: { _eq: item.subject_code },
                 class_code: { _eq: item.class_code },
-                hocky: { _eq: present.data[0]?.hocky },
-                namhoc: { _eq: present.data[0]?.manamhoc },
+                hocky: { _eq: present.data?.hocky },
+                namhoc: { _eq: present.data?.manamhoc },
               },
             };
           });
@@ -746,8 +746,8 @@ export default function Index() {
               where: {
                 subject_code: { _eq: item.subject_code },
                 class_code: { _eq: item.class_code },
-                hocky: { _eq: present.data[0]?.hocky },
-                namhoc: { _eq: present.data[0]?.manamhoc },
+                hocky: { _eq: present.data?.hocky },
+                namhoc: { _eq: present.data?.manamhoc },
               },
             };
           });
@@ -797,8 +797,8 @@ export default function Index() {
           <h2 className="text-primary">Tổng kết điểm môn học</h2>
         </div>
         <div className="flex justify-center gap-[30px]">
-          <p className="font-semibold">Học kỳ: {present.data[0]?.hocky}</p>
-          <p className="font-semibold">Năm học: {present.data[0]?.manamhoc}</p>
+          <p className="font-semibold">Học kỳ: {present.data?.hocky}</p>
+          <p className="font-semibold">Năm học: {present.data?.manamhoc}</p>
         </div>
         <div className="flex justify-center">
           <h3>Hiện tại chưa có dữ liệu các lớp môn học trong kỳ!</h3>
@@ -813,8 +813,8 @@ export default function Index() {
         <h2 className="text-primary">Tổng kết điểm môn học</h2>
       </div>
       <div className="flex justify-center gap-[30px]">
-        <p className="font-semibold">Học kỳ: {present.data[0]?.hocky}</p>
-        <p className="font-semibold">Năm học: {present.data[0]?.manamhoc}</p>
+        <p className="font-semibold">Học kỳ: {present.data?.hocky}</p>
+        <p className="font-semibold">Năm học: {present.data?.manamhoc}</p>
       </div>
       <>
         <div className="flex justify-end gap-[10px]">
@@ -922,7 +922,7 @@ export default function Index() {
               <div className="flex flex-col" key={index}>
                 <Content
                   data={item}
-                  present={present.data[0]}
+                  present={present.data}
                   isRefetching={csv.isRefetching}
                 />
               </div>
