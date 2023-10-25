@@ -97,6 +97,7 @@ export default function Index() {
                 el.class_code === item.malop &&
                 el.subject_code === item.mamonhoc
             );
+            console.log(course);
             return [
               ...total,
               {
@@ -250,7 +251,7 @@ export default function Index() {
     );
   }
 
-  if (mergeSV.length === 0) {
+  if (Array.isArray(mergeSV) && mergeSV.length === 0) {
     return (
       <h3 className="text-center">
         Hiện tại không có sinh viên mới để cập nhật

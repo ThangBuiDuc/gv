@@ -124,7 +124,8 @@ export default function Index() {
       if (
         mergeCourse
           .filter((item) => item.magiaovien)
-          .every((item) => item.isChecked)
+          .every((item) => item.isChecked) &&
+        mergeCourse.filter((item) => item.magiaovien).length > 0
       )
         setCheckAll(true);
       else setCheckAll(false);
@@ -330,10 +331,10 @@ export default function Index() {
             </tr>
           </thead>
           <tbody>
-            {mergeCourse.map((item) => {
+            {mergeCourse.map((item, index) => {
               return (
                 <tr key={item.malop}>
-                  <td className="font-semibold">{item.stt}</td>
+                  <td className="font-semibold">{index + 1}</td>
                   <td>
                     <div
                       className={`${
