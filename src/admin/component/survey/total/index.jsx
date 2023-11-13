@@ -351,7 +351,7 @@ export default function Index() {
         return { ...item, duthi: item.total_student };
       }
     });
-    let set = data.reduce((final, item) => {
+    let set = csv.reduce((final, item) => {
       if (final.some((el) => el === item.khoa)) return final;
       else return [...final, item.khoa];
     }, []);
