@@ -90,7 +90,8 @@ const Index = () => {
 
   if (
     role.data === null ||
-    role.data?.role_id != import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT
+    (role.data?.role_id != import.meta.env.VITE_ROLE_RL_SUPER_MANAGERMENT &&
+      role.data?.role_id != import.meta.env.VITE_ROLE_RL_HCTH)
   ) {
     return (
       <div className="wrap">

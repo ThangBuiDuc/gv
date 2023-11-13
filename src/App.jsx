@@ -35,6 +35,9 @@ const UpdateStudent = React.lazy(() =>
 );
 const Question = React.lazy(() => import("./admin/component/survey/question"));
 const Total = React.lazy(() => import("./admin/component/survey/total"));
+const TotalSemester = React.lazy(() =>
+  import("./admin/component/survey/totalSemester")
+);
 const Role = React.lazy(() => import("./admin/component/survey/role"));
 
 // ADMIN MAIL IMPORT
@@ -449,7 +452,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route path="survey" element={<Navigate to="survey/init" replace />} />
         <Route
           path="survey/init"
@@ -470,7 +472,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="survey/updateClass"
           element={
@@ -491,7 +492,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="survey/updateStudent"
           element={
@@ -512,7 +512,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="survey/question"
           element={
@@ -533,7 +532,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="survey/total"
           element={
@@ -548,6 +546,26 @@ function MainRoute() {
                 <Navigate
                   to={`/sign-in#/?redirect_url=${encodeURIComponent(
                     "/admin/survey/total"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="survey/total-semester"
+          element={
+            <>
+              <SignedIn>
+                <TotalSemester />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/admin/survey/total-semester"
                   )}`}
                 />
               </SignedOut>
@@ -596,9 +614,7 @@ function MainRoute() {
             </>
           }
         />
-
         {/* ---------------------------- TRAIN SCORE -------------------------- */}
-
         <Route
           path="trainscore/init"
           element={
@@ -619,7 +635,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="trainscore/update-class"
           element={
@@ -640,7 +655,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="trainscore/update-student"
           element={
@@ -661,7 +675,6 @@ function MainRoute() {
             </>
           }
         />
-
         <Route
           path="trainscore/infor"
           element={

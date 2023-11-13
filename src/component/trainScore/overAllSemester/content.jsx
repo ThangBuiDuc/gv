@@ -193,17 +193,18 @@ const Index = ({ action }) => {
             let group_point = el.group_point.sort(
               (a, b) => a.gr_question.position - b.gr_question.position
             );
+
             sheet.addRow([
               index + 1,
               el.student_code,
               el.sv.hodem,
               el.sv.ten,
               el.sv.ngaysinh.split("T")[0].split("-").reverse().join("/"),
-              group_point[0].staff_point,
-              group_point[1].staff_point,
-              group_point[2].staff_point,
-              group_point[3].staff_point,
-              group_point[4].staff_point,
+              group_point[0]?.staff_point,
+              group_point[1]?.staff_point,
+              group_point[2]?.staff_point,
+              group_point[3]?.staff_point,
+              group_point[4]?.staff_point,
               el.total_staff_point,
               el.staff_classification,
             ]);
