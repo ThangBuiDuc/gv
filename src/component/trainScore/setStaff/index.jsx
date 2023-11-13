@@ -66,8 +66,6 @@ function Content({ data, batch, isRefetch, staff }) {
     });
   };
 
-  console.log(selectedOption);
-
   return (
     <div className="flex w-full gap-[10px] justify-center align-middle [&>div]:flex [&>div]:align-middle">
       <div className="flex w-[20%]">

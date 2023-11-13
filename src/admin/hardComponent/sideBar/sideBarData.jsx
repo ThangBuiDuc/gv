@@ -19,8 +19,12 @@ export const navLink = [
         path: "survey/updateStudent",
       },
       {
-        title: "Tổng kết",
+        title: "Tổng kết học kỳ",
         path: "survey/total",
+      },
+      {
+        title: "Tổng kết",
+        path: "survey/total-semester",
       },
       {
         title: "Phân quyền",

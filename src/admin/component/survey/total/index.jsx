@@ -86,8 +86,8 @@ export default function Index() {
       return await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
         method: "POST",
         body: JSON.stringify({
-          hk: present.data?.hocky,
-          nam: present.data?.manamhoc,
+          hk: 2,
+          nam: "2022-2023",
           order_by: [{ khoa: "asc", result_evaluate: "desc_nulls_last" }],
         }),
         headers: {
@@ -339,9 +339,9 @@ export default function Index() {
     </div>;
   }
 
-  const handleDownXLSX = async (csv, isReward) => {
+  const handleDownXLSX = async (csv, key) => {
     csv = csv.map((item) => {
-      let rawCamthi = camthi.data.find(
+      let rawCamthi = camthi.data?.find(
         (el) =>
           el.mamonhoc === item.subject_code && el.malop === item.class_code
       );
@@ -418,28 +418,28 @@ export default function Index() {
         if (item.group === 1) {
           return {
             ...item,
-            mucthuong: "50000",
+            mucthuong: 50000,
           };
         }
 
         if (item.group === 2) {
           return {
             ...item,
-            mucthuong: "38000",
+            mucthuong: 38000,
           };
         }
 
         if (item.group === 3) {
           return {
             ...item,
-            mucthuong: "15000",
+            mucthuong: 15000,
           };
         }
 
         if (item.group === 4) {
           return {
             ...item,
-            mucthuong: "0",
+            mucthuong: 0,
           };
         }
         if (item.group === 5) {
@@ -448,6 +448,26 @@ export default function Index() {
             mucthuong: "Không xét",
           };
         }
+      })
+      .map((item) => {
+        let hesothuong =
+          item.duthi > 20
+            ? 1
+            : item.duthi >= 14
+            ? 0.8
+            : item.duthi > 0
+            ? 0.5
+            : 0;
+        let sotiet = parseInt(item.sotc) * 15;
+        return {
+          ...item,
+          hesothuong,
+          sotiet,
+          tongthuong:
+            typeof item.mucthuong === "number"
+              ? item.mucthuong * hesothuong * sotiet
+              : 0,
+        };
       });
 
     // console.log(group);
@@ -483,14 +503,15 @@ export default function Index() {
     const workbook = new Excel.Workbook();
     try {
       const sheet = workbook.addWorksheet("CTGD");
-      sheet.views = [
-        {
-          state: "frozen",
-          xSplit: 0,
-          ySplit: 2,
-        },
-      ];
-      if (isReward) {
+
+      if (key === 2) {
+        sheet.views = [
+          {
+            state: "frozen",
+            xSplit: 0,
+            ySplit: 2,
+          },
+        ];
         sheet.addRow([
           "STT",
           "Mã lớp",
@@ -512,6 +533,7 @@ export default function Index() {
           "Hệ số thưởng (k)",
           "Xếp loại",
           "Mức thưởng (đồng)",
+          "Tiền thưởng công tác giảng dạy",
         ]);
 
         sheet.addRow([
@@ -547,14 +569,24 @@ export default function Index() {
         sheet.mergeCells("R1:R2");
         sheet.mergeCells("S1:S2");
         sheet.mergeCells("T1:T2");
+        sheet.mergeCells("U1:U2");
 
         final.forEach((item, index) => {
+          // let hesothuong =
+          //   item.duthi > 20
+          //     ? 1
+          //     : item.duthi >= 14
+          //     ? 0.8
+          //     : item.duthi > 0
+          //     ? 0.5
+          //     : 0;
+          // let sotiet = parseInt(item.sotc) * 15;
           sheet.addRow([
             index + 1,
             item.class_code,
             item.subject_code,
             item.sotc,
-            parseInt(item.sotc) * 15,
+            item.sotiet,
             item.class_name,
             item.name,
             convertKhoa(item.khoa),
@@ -567,18 +599,31 @@ export default function Index() {
             item.qldt_result,
             item.result_evaluate,
             item.duthi,
-            item.duthi > 20
-              ? 1
-              : item.duthi >= 14
-              ? 0.8
-              : item.duthi > 0
-              ? 0.5
-              : 0,
+            item.hesothuong,
             item.xep_loai,
             item.mucthuong,
+            item.tongthuong,
           ]);
         });
-      } else {
+        sheet.getRow(1).alignment = {
+          vertical: "middle",
+          horizontal: "center",
+          wrapText: true,
+        };
+        sheet.getRow(2).alignment = {
+          vertical: "middle",
+          horizontal: "center",
+          wrapText: true,
+        };
+      }
+      if (key === 1) {
+        sheet.views = [
+          {
+            state: "frozen",
+            xSplit: 0,
+            ySplit: 2,
+          },
+        ];
         sheet.addRow([
           "STT",
           "Mã lớp",
@@ -654,18 +699,63 @@ export default function Index() {
             item.xep_loai,
           ]);
         });
+        sheet.getRow(1).alignment = {
+          vertical: "middle",
+          horizontal: "center",
+          wrapText: true,
+        };
+        sheet.getRow(2).alignment = {
+          vertical: "middle",
+          horizontal: "center",
+          wrapText: true,
+        };
       }
 
-      sheet.getRow(1).alignment = {
-        vertical: "middle",
-        horizontal: "center",
-        wrapText: true,
-      };
-      sheet.getRow(2).alignment = {
-        vertical: "middle",
-        horizontal: "center",
-        wrapText: true,
-      };
+      if (key === 3) {
+        sheet.addRow(["TRƯỜNG ĐẠI HỌC QUẢN LÝ VÀ CÔNG NGHỆ HẢI PHÒNG"]);
+
+        sheet.addRow(["", "", "BẢNG THƯỞNG CÔNG TÁC GIẢNG DẠY"]);
+        sheet.addRow(["", "", "Học kỳ .... Năm học ....."]);
+        sheet.addRow([""]);
+        sheet.addRow([
+          "STT",
+          "Họ tên giảng viên",
+          "Khoa",
+          "Tiền thưởng công tác giảng dạy (đồng)",
+          "Ký nhận, ghi rõ họ tên",
+        ]);
+
+        let allFinal = final.reduce((result, item) => {
+          if (result.some((el) => el.teacher_code === item.teacher_code))
+            return result;
+          else {
+            let data = final.reduce(
+              (total, el) =>
+                el.teacher_code === item.teacher_code
+                  ? total + el.tongthuong
+                  : total,
+              0
+            );
+            return [
+              ...result,
+              {
+                teacher_code: item.teacher_code,
+                khoa: convertKhoa(item.khoa),
+                name: item.name,
+                tongthuong: data,
+              },
+            ];
+          }
+        }, []);
+
+        allFinal.forEach((item, index) => {
+          sheet.addRow([index + 1, item.name, item.khoa, item.tongthuong]);
+        });
+
+        sheet.addRow(["", "Cộng"]);
+        sheet.addRow(["", "", "", "Hải Phòng, ngày ……  tháng …... năm ………."]);
+        sheet.addRow(["", "Thủ trưởng", "", "Người lập / người in"]);
+      }
 
       moment.locale("vi");
       const buf = await workbook.xlsx.writeBuffer();
@@ -673,9 +763,12 @@ export default function Index() {
       saveAs(
         new Blob([buf]),
         `${
-          isReward
+          key === 2
             ? `BaoCao_KHOA_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
-            : `BaoCao_TRUONG_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+            : key === 1
+            ? `BaoCao_TRUONG_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+            : key === 3 &&
+              `BaoCao_TONGTIEN_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
         }`
       );
     } finally {
@@ -887,7 +980,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(csv.data, false);
+                      handleDownXLSX(csv.data, 1);
                     }}
                   >
                     Sắp xếp theo toàn trường
@@ -897,10 +990,20 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(csv1.data, true);
+                      handleDownXLSX(csv1.data, 2);
                     }}
                   >
                     Sắp xếp theo khoa
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDownXLSX(csv.data, 3);
+                    }}
+                  >
+                    Tổng thưởng
                   </a>
                 </li>
               </ul>
