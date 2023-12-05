@@ -4,6 +4,7 @@ import "../../../App.css";
 import { useAuth } from "@clerk/clerk-react";
 import Content from "./content";
 import ReactLoading from "react-loading";
+import { BsPatchQuestion } from "react-icons/bs";
 // import { CSVLink } from "react-csv";
 import { useQuery } from "@tanstack/react-query";
 
@@ -153,7 +154,16 @@ export default function Index() {
   }
 
   return (
-    <div className="wrap">
+    <div className="wrap relative">
+      <a
+        href="https://drive.google.com/drive/folders/1Uw6kd0xNxBeBfMfrM3lvGIgCqOsl786G"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex gap-[5px] absolute right-[10px] underline"
+      >
+        <BsPatchQuestion size={22} />
+        Hướng dẫn sử dụng
+      </a>
       <div className="flex justify-center">
         <h2 className="text-primary">Thực hiện quy định, quy chế đào tạo</h2>
       </div>
