@@ -295,7 +295,10 @@ export default function Index() {
     );
   }
 
-  if (role.data.role_id != import.meta.env.VITE_ROLE_ADMIN) {
+  if (
+    role.data.role_id != import.meta.env.VITE_ROLE_ADMIN &&
+    role.data.role_id != import.meta.env.VITE_ROLE_HCTH
+  ) {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
