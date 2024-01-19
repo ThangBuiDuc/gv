@@ -52,7 +52,9 @@ export default function Index() {
         .then((res) => res.json())
         .then((res) => res.hientai[0]);
     },
-    enabled: role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN,
+    enabled:
+      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+      role.data?.role_id == import.meta.env.VITE_ROLE_HCTH,
   });
 
   const csv = useQuery({
@@ -75,7 +77,8 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN &&
+      (role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_HCTH) &&
       present.data !== undefined &&
       present.data !== null,
   });
@@ -100,7 +103,8 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN &&
+      (role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_HCTH) &&
       present.data !== undefined &&
       present.data !== null,
   });
@@ -123,7 +127,8 @@ export default function Index() {
       ).then((res) => res.json());
     },
     enabled:
-      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN &&
+      (role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_HCTH) &&
       present.data !== undefined &&
       present.data !== null,
   });
@@ -147,7 +152,8 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN &&
+      (role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_HCTH) &&
       present.data !== undefined &&
       present.data !== null,
   });
