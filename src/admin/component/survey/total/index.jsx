@@ -892,7 +892,7 @@ export default function Index() {
     });
   };
 
-  if (csv.data.length === 0) {
+  if (csv?.data?.length === 0) {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
