@@ -173,94 +173,94 @@ export default function Index() {
   //         else setCourse("empty");
   //       });
 
-  //     // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
-  //     //   method: "POST",
-  //     //   body: JSON.stringify({
-  //     //     hk: present.data?.hocky,
-  //     //     nam: present.data?.manamhoc,
-  //     //     order_by: [{ result_evaluate: "desc_nulls_last" }],
-  //     //   }),
-  //     //   headers: {
-  //     //     authorization: `Bearer ${await getToken({
-  //     //       template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
-  //     //     })}`,
-  //     //   },
-  //     // })
-  //     //   .then((res) => res.json())
-  //     //   .then((res) => {
-  //     //     if (res.result.length > 0) {
-  //     //       setCsv(
-  //     //         res.result.map((item, index) => {
-  //     //           item.stt = index + 1;
-  //     //           return item;
-  //     //         })
-  //     //       );
-  //     //     }
-  //     //   });
+  // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     hk: present.data?.hocky,
+  //     nam: present.data?.manamhoc,
+  //     order_by: [{ result_evaluate: "desc_nulls_last" }],
+  //   }),
+  //   headers: {
+  //     authorization: `Bearer ${await getToken({
+  //       template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+  //     })}`,
+  //   },
+  // })
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     if (res.result.length > 0) {
+  //       setCsv(
+  //         res.result.map((item, index) => {
+  //           item.stt = index + 1;
+  //           return item;
+  //         })
+  //       );
+  //     }
+  //   });
 
-  //     // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
-  //     //   method: "POST",
-  //     //   body: JSON.stringify({
-  //     //     hk: present.data?.hocky,
-  //     //     nam: present.data?.manamhoc,
-  //     //     order_by: [{ khoa: "asc", result_evaluate: "desc_nulls_last" }],
-  //     //   }),
-  //     //   headers: {
-  //     //     authorization: `Bearer ${await getToken({
-  //     //       template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
-  //     //     })}`,
-  //     //   },
-  //     // })
-  //     //   .then((res) => res.json())
-  //     //   .then((res) => {
-  //     //     if (res.result.length > 0) {
-  //     //       setCsv1(
-  //     //         res.result.map((item, index) => {
-  //     //           item.stt = index + 1;
-  //     //           return item;
-  //     //         })
-  //     //       );
-  //     //     }
-  //     //   });
+  // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     hk: present.data?.hocky,
+  //     nam: present.data?.manamhoc,
+  //     order_by: [{ khoa: "asc", result_evaluate: "desc_nulls_last" }],
+  //   }),
+  //   headers: {
+  //     authorization: `Bearer ${await getToken({
+  //       template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+  //     })}`,
+  //   },
+  // })
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     if (res.result.length > 0) {
+  //       setCsv1(
+  //         res.result.map((item, index) => {
+  //           item.stt = index + 1;
+  //           return item;
+  //         })
+  //       );
+  //     }
+  //   });
 
-  //     // await fetch(
-  //     //   `${import.meta.env.VITE_SURVEY_CACULATE}${present.data?.hocky}/${
-  //     //     present.data?.manamhoc
-  //     //   }`,
-  //     //   {
-  //     //     method: "GET",
-  //     //     headers: {
-  //     //       authorization: `Bearer ${await getToken({
-  //     //         template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
-  //     //       })}`,
-  //     //     },
-  //     //   }
-  //     // )
-  //     //   .then((res) => res.json())
-  //     //   .then((res) => {
-  //     //     if (res) {
-  //     //       setCaculate(res);
-  //     //     }
-  //     //   });
+  // await fetch(
+  //   `${import.meta.env.VITE_SURVEY_CACULATE}${present.data?.hocky}/${
+  //     present.data?.manamhoc
+  //   }`,
+  //   {
+  //     method: "GET",
+  //     headers: {
+  //       authorization: `Bearer ${await getToken({
+  //         template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+  //       })}`,
+  //     },
+  //   }
+  // )
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     if (res) {
+  //       setCaculate(res);
+  //     }
+  //   });
 
-  //     // await fetch(
-  //     //   `${import.meta.env.VITE_EDUMNG_DS_CAM_THI}${present.data?.hocky}/${
-  //     //     present.data?.manamhoc
-  //     //   }`,
-  //     //   {
-  //     //     headers: {
-  //     //       authorization: `Bearer ${await getToken({
-  //     //         template: import.meta.env.VITE_TEMPLATE_EDU_CTGD,
-  //     //       })}`,
-  //     //     },
-  //     //   }
-  //     // )
-  //     //   .then((res) => res.json())
-  //     //   .then((res) => {
-  //     //     if (res.result.length > 0) {
-  //     //       setCamthi(res.result);
-  //     //     }
-  //     //   });
+  // await fetch(
+  //   `${import.meta.env.VITE_EDUMNG_DS_CAM_THI}${present.data?.hocky}/${
+  //     present.data?.manamhoc
+  //   }`,
+  //   {
+  //     headers: {
+  //       authorization: `Bearer ${await getToken({
+  //         template: import.meta.env.VITE_TEMPLATE_EDU_CTGD,
+  //       })}`,
+  //     },
+  //   }
+  // )
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     if (res.result.length > 0) {
+  //       setCamthi(res.result);
+  //     }
+  //   });
   //   };
   //   if (present.data?.length > 0) callApi();
   // }, [present.data, afterUpdate]);
@@ -331,7 +331,7 @@ export default function Index() {
     );
   }
 
-  if (csv.data.length === 0) {
+  if (csv?.data?.length === 0) {
     <div className="wrapAdmin">
       <div className="flex justify-center">
         <h2 className="text-primary">Tổng kết điểm môn học</h2>
