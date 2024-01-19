@@ -89,8 +89,8 @@ export default function Index() {
       return await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
         method: "POST",
         body: JSON.stringify({
-          hk: 2,
-          nam: "2022-2023",
+          hk: present.data?.hocky,
+          nam: present.data?.manamhoc,
           order_by: [{ khoa: "asc", result_evaluate: "desc_nulls_last" }],
         }),
         headers: {
