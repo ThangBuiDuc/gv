@@ -374,9 +374,9 @@ export default function Index() {
   }
 
   const handleDownXLSX = async (csv, key) => {
-    console.log(camthi);
+    // console.log(camthi);
     csv = csv.map((item) => {
-      let rawCamthi = jsonCamThi.filter(
+      let rawCamthi = camthi.filter(
         (el) =>
           el.mamonhoc === item.subject_code &&
           item.class_code.includes(el.malop)
@@ -1027,7 +1027,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(rawData.sort(alphabetically(false)), 1);
+                      handleDownXLSX(csv1.sort(alphabetically(false)), 1);
                     }}
                   >
                     Sắp xếp theo toàn trường
@@ -1037,7 +1037,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(rawData, 2);
+                      handleDownXLSX(csv1, 2);
                     }}
                   >
                     Sắp xếp theo khoa
@@ -1047,7 +1047,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(rawData, 3);
+                      handleDownXLSX(csv1, 3);
                     }}
                   >
                     Tổng thưởng
