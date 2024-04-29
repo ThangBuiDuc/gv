@@ -18,6 +18,31 @@ function compare(a, b) {
   return a.class_name.localeCompare(b.class_name);
 }
 
+function alphabetically(ascending) {
+  return function (a, b) {
+    // equal items sort equally
+    if (a.result_evaluate === b.result_evaluate) {
+      return 0;
+    }
+
+    // nulls sort after anything else
+    if (a.result_evaluate === null) {
+      return 1;
+    }
+    if (b.result_evaluate === null) {
+      return -1;
+    }
+
+    // otherwise, if we're ascending, lowest sorts first
+    if (ascending) {
+      return a.result_evaluate < b.result_evaluate ? -1 : 1;
+    }
+
+    // if descending, highest sorts first
+    return a.result_evaluate < b.result_evaluate ? 1 : -1;
+  };
+}
+
 export default function Index() {
   // const { user } = useUser();
   const { getToken } = useAuth();
@@ -349,13 +374,20 @@ export default function Index() {
   }
 
   const handleDownXLSX = async (csv, key) => {
+    console.log(camthi);
     csv = csv.map((item) => {
-      let rawCamthi = camthi.data?.find(
+      let rawCamthi = jsonCamThi.filter(
         (el) =>
-          el.mamonhoc === item.subject_code && el.malop === item.class_code
+          el.mamonhoc === item.subject_code &&
+          item.class_code.includes(el.malop)
       );
       if (rawCamthi) {
-        return { ...item, duthi: item.total_student - rawCamthi.camthi };
+        return {
+          ...item,
+          duthi:
+            item.total_student -
+            rawCamthi.reduce((total, curr) => total + curr.camthi, 0),
+        };
       } else {
         return { ...item, duthi: item.total_student };
       }
@@ -995,7 +1027,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(csv.data, 1);
+                      handleDownXLSX(rawData.sort(alphabetically(false)), 1);
                     }}
                   >
                     Sắp xếp theo toàn trường
@@ -1005,7 +1037,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(csv1.data, 2);
+                      handleDownXLSX(rawData, 2);
                     }}
                   >
                     Sắp xếp theo khoa
@@ -1015,7 +1047,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(csv.data, 3);
+                      handleDownXLSX(rawData, 3);
                     }}
                   >
                     Tổng thưởng
