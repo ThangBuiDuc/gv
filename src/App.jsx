@@ -64,8 +64,8 @@ import ResetPass from "./hardComponent/resetPass";
 
 const HomePage = React.lazy(() => import("./component/homePage"));
 const Infor = React.lazy(() => import("./component/survey-gv/infor"));
-const Partner = React.lazy(() => import("./component/survey-gv/partner"));
-const Assign = React.lazy(() => import("./component/survey-gv/assign"));
+// const Partner = React.lazy(() => import("./component/survey-gv/partner"));
+// const Assign = React.lazy(() => import("./component/survey-gv/assign"));
 const QLDTSV = React.lazy(() => import("./component/qldt/sv"));
 const QLDTGV = React.lazy(() => import("./component/qldt/gv"));
 const Work = React.lazy(() => import("./component/calendar/work"));
