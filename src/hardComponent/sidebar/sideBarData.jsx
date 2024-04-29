@@ -1,14 +1,14 @@
 import { RiSurveyFill } from "react-icons/ri";
 import {
   // MdCreateNewFolder,
-  MdOutlineAssignment,
+  // MdOutlineAssignment,
   MdOutlineManageAccounts,
   MdAppRegistration,
 } from "react-icons/md";
 //import { TiTickOutline } from "react-icons/ti";
 import {
   //AiOutlineQuestionCircle,
-  AiOutlineUsergroupDelete,
+  // AiOutlineUsergroupDelete,
   AiOutlineCalendar,
   // AiOutlineCalculator,
 } from "react-icons/ai";
@@ -35,16 +35,16 @@ export const sideBarData = [
         path: "/survey-gv/infor",
         icon: <HiOutlineInformationCircle size={"22px"} />,
       },
-      {
-        title: "Góp ý với đồng nghiệp",
-        path: "/survey-gv/partner",
-        icon: <AiOutlineUsergroupDelete size={"22px"} />,
-      },
-      {
-        title: "Phân công dự giờ",
-        path: "/survey-gv/assign",
-        icon: <MdOutlineAssignment size={"22px"} />,
-      },
+      // {
+      //   title: "Góp ý với đồng nghiệp",
+      //   path: "/survey-gv/partner",
+      //   icon: <AiOutlineUsergroupDelete size={"22px"} />,
+      // },
+      // {
+      //   title: "Phân công dự giờ",
+      //   path: "/survey-gv/assign",
+      //   icon: <MdOutlineAssignment size={"22px"} />,
+      // },
     ],
   },
   {

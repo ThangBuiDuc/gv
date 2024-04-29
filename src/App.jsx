@@ -172,7 +172,7 @@ function MainRoute() {
             </>
           }
         />
-        <Route
+        {/* <Route
           path="/survey-gv/partner"
           element={
             <>
@@ -181,8 +181,6 @@ function MainRoute() {
               </SignedIn>
 
               <SignedOut>
-                {/* <RedirectToSignIn /> */}
-                {/* <Navigate to="/sign-in" /> */}
                 <Navigate
                   to={`/sign-in#/?redirect_url=${encodeURIComponent(
                     "/survey-gv/partner"
@@ -201,8 +199,6 @@ function MainRoute() {
               </SignedIn>
 
               <SignedOut>
-                {/* <RedirectToSignIn /> */}
-                {/* <Navigate to="/sign-in" /> */}
                 <Navigate
                   to={`/sign-in#/?redirect_url=${encodeURIComponent(
                     "/survey-gv/assign"
@@ -211,7 +207,7 @@ function MainRoute() {
               </SignedOut>
             </>
           }
-        />
+        /> */}
         <Route
           path="/calendar/work"
           element={
