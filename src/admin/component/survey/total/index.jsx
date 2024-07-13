@@ -449,9 +449,13 @@ export default function Index() {
           return { ...el, group: 3 };
         }
 
-        return { ...el, group: 4 };
+        if (el.xep_loai === "C") return { ...el, group: 3 };
+
+        return { ...el, group: 4, index, secoundReward };
       });
     });
+
+    // console.log(group);
 
     let final = group
       .reduce((final, item) => [...final, ...item], [])
