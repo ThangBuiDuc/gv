@@ -10,6 +10,7 @@
     "vercel": "vercel dev --listen 3000"
   },
   "dependencies": {
+    "react-pdf": "^7.3.3",
     "@clerk/clerk-react": "^4.12.8",
     "@emotion/css": "^11.11.2",
     "@emotion/react": "^11.11.1",

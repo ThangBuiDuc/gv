@@ -23,8 +23,22 @@ import {
   // BsCalendarEvent
 } from "react-icons/bs";
 import { TbSettingsCog } from "react-icons/tb";
+import { GrCertificate } from "react-icons/gr";
+import { AiOutlineFileSearch } from "react-icons/ai";
 
 export const sideBarData = [
+  {
+    title: "Phụ lục văn bằng",
+    path: "/vbcc",
+    icon: <GrCertificate size={"30px"} />,
+    subNav: [
+      {
+        title: "Tra cứu",
+        path: "/vbcc/search",
+        icon: <AiOutlineFileSearch size={"22px"} />,
+      },
+    ],
+  },
   {
     title: "Phản hồi CTGD",
     path: "/survey-gv",
