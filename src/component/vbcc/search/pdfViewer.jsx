@@ -114,21 +114,21 @@ const styles = StyleSheet.create({
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 const Doc1 = ({ data }) => {
-  const raw = data;
-  if ((data.diem_toan_khoa.length + data.chung_chi.length) % 2) {
-    raw.diem_toan_khoa.push(null);
+  const raw = [
+    ...data.diem_toan_khoa,
+    ...data.chung_chi.map((item) => ({ ...item, isChungChi: true })),
+  ];
+  if (raw.length % 2) {
+    raw.push(null);
   }
 
-  let raw1 = raw.diem_toan_khoa.slice(
-    0,
-    (raw.diem_toan_khoa.length + raw.chung_chi.length + 1) / 2
-  );
+  let raw1 = raw.slice(0, raw.length / 2);
 
-  let raw2 = raw.diem_toan_khoa.slice(
-    (raw.diem_toan_khoa.length + raw.chung_chi.length + 1) / 2
-  );
+  let raw2 = raw.slice(raw.length / 2);
 
-  let countTable2 = (raw.diem_toan_khoa.length + raw.chung_chi.length) / 2;
+  // console.log(raw2.length);
+
+  let countTable2 = raw.length / 2;
   moment().locale("vi");
   // const [date, setDate] = useState(moment());
   // // console.log(moment().year());
@@ -724,6 +724,86 @@ const Doc1 = ({ data }) => {
                     <Text style={styles.tableCell}></Text>
                   </View>
                 </View>
+              ) : item.isChungChi ? (
+                <View
+                  style={{
+                    ...styles.tableRow,
+                    width: "100%",
+                    height: "35px",
+                    border: "0.5px solid black",
+                    borderTop: 0,
+                  }}
+                  wrap={false}
+                  key={index}
+                >
+                  <View style={{ ...styles.tableCol, width: "10%" }}>
+                    <Text style={styles.tableCell}>
+                      {countTable2 + index + 1}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      ...styles.tableCol,
+                      width: "45%",
+                      border: "0.5px solid black",
+                      borderTop: 0,
+                      borderBottom: 0,
+                      borderRight: 0,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: "8",
+                        textAlign: "left",
+                      }}
+                    >
+                      {item.ten}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      ...styles.tableCol,
+                      width: "10%",
+                      border: "0.5px solid black",
+                      borderTop: 0,
+                      borderBottom: 0,
+                    }}
+                  >
+                    <Text style={styles.tableCell}></Text>
+                  </View>
+                  <View
+                    style={{
+                      ...styles.tableCol,
+                      width: "10%",
+                    }}
+                  >
+                    <Text style={styles.tableCell}></Text>
+                  </View>
+                  <View
+                    style={{
+                      ...styles.tableCol,
+                      width: "10%",
+                      border: "0.5px solid black",
+                      borderTop: 0,
+                      borderBottom: 0,
+                      borderRight: 0,
+                    }}
+                  >
+                    <Text style={styles.tableCell}></Text>
+                  </View>
+                  <View
+                    style={{
+                      ...styles.tableCol,
+                      width: "15%",
+                      border: "0.5px solid black",
+                      borderTop: 0,
+                      borderBottom: 0,
+                      borderRight: 0,
+                    }}
+                  >
+                    <Text style={styles.tableCell}>Đạt</Text>
+                  </View>
+                </View>
               ) : (
                 <View
                   style={{
@@ -806,7 +886,7 @@ const Doc1 = ({ data }) => {
                 </View>
               );
             })}
-            {data.chung_chi.map((item, index) => {
+            {/* {data.chung_chi.map((item, index) => {
               return (
                 <View
                   style={{
@@ -888,7 +968,7 @@ const Doc1 = ({ data }) => {
                   </View>
                 </View>
               );
-            })}
+            })} */}
           </View>
         </View>
         <Text style={{ fontSize: "10px", marginLeft: "25px" }}>
@@ -2358,7 +2438,7 @@ export default function Index({ studentCode, type }) {
       ) : (
         <></>
       ),
-    [data]
+    [data, type.value]
   );
 
   const [instance, UpdateInstance] = usePDF({
@@ -2366,8 +2446,11 @@ export default function Index({ studentCode, type }) {
   });
 
   useEffect(() => {
-    if (data?.tt.length > 0) UpdateInstance(document);
-  }, [data]);
+    if (data?.tt.length > 0) {
+      UpdateInstance(document);
+      setPageNumber(1);
+    }
+  }, [data, type.value]);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -2397,7 +2480,8 @@ export default function Index({ studentCode, type }) {
       </div>
     );
 
-  if (data?.tt.length === 0) return <p>dashduish</p>;
+  if (data?.tt.length === 0)
+    return <h5>Không tìm thấy sinh viên hoặc đã có lỗi xảy ra!</h5>;
 
   return instance.loading ? (
     <div className="flex flex-col gap-[15px]">
