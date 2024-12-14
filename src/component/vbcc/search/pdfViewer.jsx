@@ -112,6 +112,11 @@ const styles = StyleSheet.create({
 });
 // { raw1, raw2, countTable2, chungChi }
 
+function capitalizeFirstLetter(string) {
+  if (!string) return string; // Handle empty or undefined strings
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 //-----------------------------------------------------------------------------------------------------------------------------------------
 const Doc1 = ({ data }) => {
   const raw = [
@@ -264,7 +269,7 @@ const Doc1 = ({ data }) => {
             <Text style={{ fontSize: "12px" }}>
               Giới tính:{" "}
               <Text style={{ fontWeight: "semibold" }}>
-                {data.tt[0].gioitinh}
+                {capitalizeFirstLetter(data.tt[0].gioitinh)}
               </Text>
             </Text>
             <Text style={{ fontSize: "12px" }}>
@@ -276,7 +281,7 @@ const Doc1 = ({ data }) => {
             <Text style={{ fontSize: "12px" }}>
               Hình thức đào tạo:{" "}
               <Text style={{ fontWeight: "semibold" }}>
-                {data.tt[0].daotao}
+                {capitalizeFirstLetter(data.tt[0].daotao)}
               </Text>
             </Text>
             <Text style={{ fontSize: "12px" }}>
@@ -322,11 +327,19 @@ const Doc1 = ({ data }) => {
             </Text>
             <Text style={{ fontSize: "12px" }}>
               Ngày nhập học:{" "}
-              <Text style={{ fontWeight: "semibold" }}>. . .</Text>
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.tt[0].ngaynhaphoc
+                  .split(" ")[0]
+                  .split("-")
+                  .reverse()
+                  .join("-")}
+              </Text>
             </Text>
             <Text style={{ fontSize: "12px" }}>
               Thời gian đào tạo:{" "}
-              <Text style={{ fontWeight: "semibold" }}>. . .</Text>
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.addition[0].sonamhoc} năm
+              </Text>
             </Text>
           </View>
         </View>
@@ -973,6 +986,7 @@ const Doc1 = ({ data }) => {
         </View>
         <Text style={{ fontSize: "10px", marginLeft: "25px" }}>
           Tên đề tài tốt nghiệp:{" "}
+          <Text style={{ fontWeight: "semibold" }}>{data.tt[0].tendoan}</Text>
         </Text>
         <View
           style={{
@@ -997,7 +1011,9 @@ const Doc1 = ({ data }) => {
             </Text>
             <Text style={{ fontSize: "10px" }}>
               Tổng số tín chỉ tích luỹ:{" "}
-              <Text style={{ fontWeight: "semibold" }}></Text>
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.addition[0].tongtinchi}
+              </Text>
             </Text>
             <Text style={{ fontSize: "10px" }}>
               Xếp hạng tốt nghiệp:{" "}
@@ -1006,11 +1022,16 @@ const Doc1 = ({ data }) => {
               </Text>
             </Text>
             <Text style={{ fontSize: "10px" }}>
-              Số hiệu văn bằng: <Text style={{ fontWeight: "semibold" }}></Text>
+              Số hiệu văn bằng:{" "}
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.addition[0].sohieubang}
+              </Text>
             </Text>
             <Text style={{ fontSize: "10px" }}>
               Số vào sổ cấp bằng:{" "}
-              <Text style={{ fontWeight: "semibold" }}></Text>
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.addition[0].sovaoso}
+              </Text>
             </Text>
           </View>
           <View
@@ -1275,11 +1296,11 @@ const Doc2 = ({ data }) => {
             <View
               style={{ display: "flex", width: "100%", flexDirection: "row" }}
             >
-              <Text style={{ width: "50%", fontSize: "10px" }}>Khoá học: </Text>
+              <Text style={{ width: "50%", fontSize: "10px" }}>Khoá học</Text>
               <Text
                 style={{ width: "50%", fontWeight: "bold", fontSize: "10px" }}
               >
-                {data.tt[0].makhoahoc}
+                : {data.tt[0].makhoahoc}
               </Text>
             </View>
             <View
@@ -1975,7 +1996,7 @@ const Doc3 = ({ data }) => {
             <Text style={{ fontSize: "12px" }}>
               Giới tính:{" "}
               <Text style={{ fontWeight: "semibold" }}>
-                {data.tt[0].gioitinh}
+                {capitalizeFirstLetter(data.tt[0].gioitinh)}
               </Text>
             </Text>
             <Text style={{ fontSize: "12px" }}>
@@ -1991,7 +2012,7 @@ const Doc3 = ({ data }) => {
             <Text style={{ fontSize: "12px" }}>
               Trình độ đào tạo:{" "}
               <Text style={{ fontWeight: "semibold" }}>
-                {data.tt[0].daotao}
+                {capitalizeFirstLetter(data.tt[0].daotao)}
               </Text>
             </Text>
           </View>
@@ -2011,7 +2032,9 @@ const Doc3 = ({ data }) => {
             </Text>
             <Text style={{ fontSize: "12px" }}>
               Thời gian đào tạo:{" "}
-              <Text style={{ fontWeight: "semibold" }}>. . .</Text>
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.addition[0].sonamhoc} năm
+              </Text>
             </Text>
             <Text style={{ fontSize: "12px" }}>
               Ngôn ngữ đào tạo:{" "}
@@ -2259,6 +2282,7 @@ const Doc3 = ({ data }) => {
         </View>
         <Text style={{ fontSize: "10px", marginLeft: "10px" }}>
           Tên đề tài tốt nghiệp:{" "}
+          <Text style={{ fontWeight: "semibold" }}>{data.tt[0].tendoan}</Text>
         </Text>
         <View
           style={{
@@ -2283,7 +2307,9 @@ const Doc3 = ({ data }) => {
             </Text>
             <Text style={{ fontSize: "10px" }}>
               Tổng số tín chỉ tích luỹ:{" "}
-              <Text style={{ fontWeight: "semibold" }}>. . .</Text>
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.addition[0].tongtinchi}
+              </Text>
             </Text>
             <Text style={{ fontSize: "10px" }}>
               Xếp hạng tốt nghiệp:{" "}
@@ -2293,11 +2319,15 @@ const Doc3 = ({ data }) => {
             </Text>
             <Text style={{ fontSize: "10px" }}>
               Số hiệu văn bằng:{" "}
-              <Text style={{ fontWeight: "semibold" }}>. . .</Text>
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.addition[0].sohieubang}
+              </Text>
             </Text>
             <Text style={{ fontSize: "10px" }}>
               Số vào sổ cấp bằng:{" "}
-              <Text style={{ fontWeight: "semibold" }}>. . .</Text>
+              <Text style={{ fontWeight: "semibold" }}>
+                {data.addition[0].sovaoso}
+              </Text>
             </Text>
           </View>
           <View
@@ -2396,6 +2426,8 @@ export default function Index({ studentCode, type }) {
     },
     enabled: !!studentCode && !!type,
   });
+
+  console.log(data);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const ref = useRef();
