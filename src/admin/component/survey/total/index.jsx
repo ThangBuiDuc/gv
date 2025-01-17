@@ -837,7 +837,7 @@ export default function Index() {
   // console.log(caculate.data);
   const caculater = async (level) => {
     Swal.fire({
-      title: "Tính điểm sinh viên mà giảng viên dự giờ",
+      title: "Tính điểm sinh viên và giảng viên dự giờ",
       text: "Bạn có chắc chắn muốn tính tổng điểm sinh viên và giảng viên dự giờ cho tất cả lớp môn học không?",
       icon: "question",
       showCancelButton: true,
