@@ -780,7 +780,7 @@ export default function Index() {
       new Blob([buf]),
       `BaoCao_TongHop_RL_HK${batch.data.term}_${
         batch.data.school_year
-      }_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+      }_${moment().date()}-${moment().month() + 1}-${moment().year()}.xlsx`
     );
   };
 

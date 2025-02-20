@@ -1,14 +1,14 @@
 import { RiSurveyFill } from "react-icons/ri";
 import {
   // MdCreateNewFolder,
-  // MdOutlineAssignment,
+  MdOutlineAssignment,
   MdOutlineManageAccounts,
   MdAppRegistration,
 } from "react-icons/md";
 //import { TiTickOutline } from "react-icons/ti";
 import {
   //AiOutlineQuestionCircle,
-  // AiOutlineUsergroupDelete,
+  AiOutlineUsergroupDelete,
   AiOutlineCalendar,
   // AiOutlineCalculator,
 } from "react-icons/ai";
@@ -23,8 +23,22 @@ import {
   // BsCalendarEvent
 } from "react-icons/bs";
 import { TbSettingsCog } from "react-icons/tb";
+import { GrCertificate } from "react-icons/gr";
+import { AiOutlineFileSearch } from "react-icons/ai";
 
 export const sideBarData = [
+  {
+    title: "Phụ lục văn bằng",
+    path: "/vbcc",
+    icon: <GrCertificate size={"30px"} />,
+    subNav: [
+      {
+        title: "Tra cứu",
+        path: "/vbcc/search",
+        icon: <AiOutlineFileSearch size={"22px"} />,
+      },
+    ],
+  },
   {
     title: "Phản hồi CTGD",
     path: "/survey-gv",
@@ -35,16 +49,16 @@ export const sideBarData = [
         path: "/survey-gv/infor",
         icon: <HiOutlineInformationCircle size={"22px"} />,
       },
-      // {
-      //   title: "Góp ý với đồng nghiệp",
-      //   path: "/survey-gv/partner",
-      //   icon: <AiOutlineUsergroupDelete size={"22px"} />,
-      // },
-      // {
-      //   title: "Phân công dự giờ",
-      //   path: "/survey-gv/assign",
-      //   icon: <MdOutlineAssignment size={"22px"} />,
-      // },
+      {
+        title: "Góp ý với đồng nghiệp",
+        path: "/survey-gv/partner",
+        icon: <AiOutlineUsergroupDelete size={"22px"} />,
+      },
+      {
+        title: "Phân công dự giờ",
+        path: "/survey-gv/assign",
+        icon: <MdOutlineAssignment size={"22px"} />,
+      },
     ],
   },
   {

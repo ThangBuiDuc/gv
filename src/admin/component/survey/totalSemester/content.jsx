@@ -531,11 +531,17 @@ const Content = ({ action }) => {
         new Blob([buf]),
         `${
           key === 2
-            ? `BaoCao_KHOA_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+            ? `BaoCao_KHOA_CTGD_${moment().date()}-${
+                moment().month() + 1
+              }-${moment().year()}.xlsx`
             : key === 1
-            ? `BaoCao_TRUONG_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+            ? `BaoCao_TRUONG_CTGD_${moment().date()}-${
+                moment().month() + 1
+              }-${moment().year()}.xlsx`
             : key === 3 &&
-              `BaoCao_TONGTIEN_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+              `BaoCao_TONGTIEN_CTGD_${moment().date()}-${
+                moment().month() + 1
+              }-${moment().year()}.xlsx`
         }`
       );
     } finally {

@@ -53,6 +53,9 @@ const RLUpdateStudent = React.lazy(() =>
   import("./admin/component/trainscore/updateStudent")
 );
 
+//VBCC
+const Search = React.lazy(() => import("./component/vbcc/search"));
+
 ////////////////////////////////////////
 import NotFound from "./hardComponent/notFound";
 import Header from "./hardComponent/header";
@@ -148,6 +151,8 @@ function MainRoute() {
       <Route path="/" element={<Hard />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
+
+        {/* SURVEY */}
         <Route
           path="/survey-gv"
           element={<Navigate to="/survey-gv/infor" replace />}
@@ -172,7 +177,7 @@ function MainRoute() {
             </>
           }
         />
-        {/* <Route
+        <Route
           path="/survey-gv/partner"
           element={
             <>
@@ -207,7 +212,30 @@ function MainRoute() {
               </SignedOut>
             </>
           }
-        /> */}
+        />
+
+        {/* VBCC */}
+        <Route
+          path="/vbcc/search"
+          element={
+            <>
+              <SignedIn>
+                <Search />
+              </SignedIn>
+
+              <SignedOut>
+                {/* <RedirectToSignIn /> */}
+                {/* <Navigate to="/sign-in" /> */}
+                <Navigate
+                  to={`/sign-in#/?redirect_url=${encodeURIComponent(
+                    "/vbcc/search"
+                  )}`}
+                />
+              </SignedOut>
+            </>
+          }
+        />
+
         <Route
           path="/calendar/work"
           element={

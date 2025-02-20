@@ -750,7 +750,7 @@ const Index = ({ action }) => {
       new Blob([buf]),
       `BaoCao_TongHop_RL_HK${action.term}_${
         action.school_year
-      }_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+      }_${moment().date()}-${moment().month() + 1}-${moment().year()}.xlsx`
     );
   };
 

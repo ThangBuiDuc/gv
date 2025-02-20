@@ -82,15 +82,26 @@ function Content({ data, batch, isRefetch }) {
           placeholder="Chọn lớp trưởng"
           value={selectedOption}
           onChange={setSelectedOption}
-          options={data.listSV
-            .filter((item) => item.masv !== data.loptruong.masv)
-            .sort((a, b) => a.ten.localeCompare(b.ten))
-            .map((item) => ({
-              value: item.masv,
-              fullname: item.fullname,
-              class_code: data.class_code,
-              label: `${item.masv} - ${item.fullname}`,
-            }))}
+          options={
+            data.loptruong
+              ? data.listSV
+                  .filter((item) => item.masv !== data.loptruong.masv)
+                  .sort((a, b) => a.ten.localeCompare(b.ten))
+                  .map((item) => ({
+                    value: item.masv,
+                    fullname: item.fullname,
+                    class_code: data.class_code,
+                    label: `${item.masv} - ${item.fullname}`,
+                  }))
+              : data.listSV
+                  .sort((a, b) => a.ten.localeCompare(b.ten))
+                  .map((item) => ({
+                    value: item.masv,
+                    fullname: item.fullname,
+                    class_code: data.class_code,
+                    label: `${item.masv} - ${item.fullname}`,
+                  }))
+          }
         />
       </div>
       <div className="w-[5%] justify-center align-middle flex">

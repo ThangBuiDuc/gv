@@ -22,7 +22,6 @@ function Content({ data, batch, isRefetch, staff }) {
           })}`,
         },
         body: JSON.stringify({
-          class_code: data.class_code,
           staff: selectedOption.value,
           batch: batch.id,
           khoa: data.khoa.makhoa,
@@ -32,7 +31,7 @@ function Content({ data, batch, isRefetch, staff }) {
         .then((res) => res.result);
     },
     onSuccess: (data) => {
-      if (data.affected_rows !== 1) {
+      if (data.affected_rows === 0) {
         Swal.fire({
           title: "Đã có lỗi xảy ra!",
           text: "Vui lòng liên hệ quản trị mạng để khắc phục sự cố",

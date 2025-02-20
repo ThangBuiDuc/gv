@@ -77,7 +77,9 @@ export default function Index() {
         .then((res) => res.json())
         .then((res) => res.hientai[0]);
     },
-    enabled: role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN,
+    enabled:
+      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+      role.data?.role_id == import.meta.env.VITE_ROLE_HCTH,
   });
 
   const csv = useQuery({
@@ -100,7 +102,8 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN &&
+      (role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_HCTH) &&
       present.data !== undefined &&
       present.data !== null,
   });
@@ -125,7 +128,8 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN &&
+      (role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_HCTH) &&
       present.data !== undefined &&
       present.data !== null,
   });
@@ -148,7 +152,8 @@ export default function Index() {
       ).then((res) => res.json());
     },
     enabled:
-      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN &&
+      (role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_HCTH) &&
       present.data !== undefined &&
       present.data !== null,
   });
@@ -172,7 +177,8 @@ export default function Index() {
         .then((res) => res.result);
     },
     enabled:
-      role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN &&
+      (role.data?.role_id == import.meta.env.VITE_ROLE_ADMIN ||
+        role.data?.role_id == import.meta.env.VITE_ROLE_HCTH) &&
       present.data !== undefined &&
       present.data !== null,
   });
@@ -198,94 +204,94 @@ export default function Index() {
   //         else setCourse("empty");
   //       });
 
-  //     // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
-  //     //   method: "POST",
-  //     //   body: JSON.stringify({
-  //     //     hk: present.data?.hocky,
-  //     //     nam: present.data?.manamhoc,
-  //     //     order_by: [{ result_evaluate: "desc_nulls_last" }],
-  //     //   }),
-  //     //   headers: {
-  //     //     authorization: `Bearer ${await getToken({
-  //     //       template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
-  //     //     })}`,
-  //     //   },
-  //     // })
-  //     //   .then((res) => res.json())
-  //     //   .then((res) => {
-  //     //     if (res.result.length > 0) {
-  //     //       setCsv(
-  //     //         res.result.map((item, index) => {
-  //     //           item.stt = index + 1;
-  //     //           return item;
-  //     //         })
-  //     //       );
-  //     //     }
-  //     //   });
+  // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     hk: present.data?.hocky,
+  //     nam: present.data?.manamhoc,
+  //     order_by: [{ result_evaluate: "desc_nulls_last" }],
+  //   }),
+  //   headers: {
+  //     authorization: `Bearer ${await getToken({
+  //       template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+  //     })}`,
+  //   },
+  // })
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     if (res.result.length > 0) {
+  //       setCsv(
+  //         res.result.map((item, index) => {
+  //           item.stt = index + 1;
+  //           return item;
+  //         })
+  //       );
+  //     }
+  //   });
 
-  //     // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
-  //     //   method: "POST",
-  //     //   body: JSON.stringify({
-  //     //     hk: present.data?.hocky,
-  //     //     nam: present.data?.manamhoc,
-  //     //     order_by: [{ khoa: "asc", result_evaluate: "desc_nulls_last" }],
-  //     //   }),
-  //     //   headers: {
-  //     //     authorization: `Bearer ${await getToken({
-  //     //       template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
-  //     //     })}`,
-  //     //   },
-  //     // })
-  //     //   .then((res) => res.json())
-  //     //   .then((res) => {
-  //     //     if (res.result.length > 0) {
-  //     //       setCsv1(
-  //     //         res.result.map((item, index) => {
-  //     //           item.stt = index + 1;
-  //     //           return item;
-  //     //         })
-  //     //       );
-  //     //     }
-  //     //   });
+  // await fetch(`${import.meta.env.VITE_OVERALL_SURVEY}`, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     hk: present.data?.hocky,
+  //     nam: present.data?.manamhoc,
+  //     order_by: [{ khoa: "asc", result_evaluate: "desc_nulls_last" }],
+  //   }),
+  //   headers: {
+  //     authorization: `Bearer ${await getToken({
+  //       template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+  //     })}`,
+  //   },
+  // })
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     if (res.result.length > 0) {
+  //       setCsv1(
+  //         res.result.map((item, index) => {
+  //           item.stt = index + 1;
+  //           return item;
+  //         })
+  //       );
+  //     }
+  //   });
 
-  //     // await fetch(
-  //     //   `${import.meta.env.VITE_SURVEY_CACULATE}${present.data?.hocky}/${
-  //     //     present.data?.manamhoc
-  //     //   }`,
-  //     //   {
-  //     //     method: "GET",
-  //     //     headers: {
-  //     //       authorization: `Bearer ${await getToken({
-  //     //         template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
-  //     //       })}`,
-  //     //     },
-  //     //   }
-  //     // )
-  //     //   .then((res) => res.json())
-  //     //   .then((res) => {
-  //     //     if (res) {
-  //     //       setCaculate(res);
-  //     //     }
-  //     //   });
+  // await fetch(
+  //   `${import.meta.env.VITE_SURVEY_CACULATE}${present.data?.hocky}/${
+  //     present.data?.manamhoc
+  //   }`,
+  //   {
+  //     method: "GET",
+  //     headers: {
+  //       authorization: `Bearer ${await getToken({
+  //         template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+  //       })}`,
+  //     },
+  //   }
+  // )
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     if (res) {
+  //       setCaculate(res);
+  //     }
+  //   });
 
-  //     // await fetch(
-  //     //   `${import.meta.env.VITE_EDUMNG_DS_CAM_THI}${present.data?.hocky}/${
-  //     //     present.data?.manamhoc
-  //     //   }`,
-  //     //   {
-  //     //     headers: {
-  //     //       authorization: `Bearer ${await getToken({
-  //     //         template: import.meta.env.VITE_TEMPLATE_EDU_CTGD,
-  //     //       })}`,
-  //     //     },
-  //     //   }
-  //     // )
-  //     //   .then((res) => res.json())
-  //     //   .then((res) => {
-  //     //     if (res.result.length > 0) {
-  //     //       setCamthi(res.result);
-  //     //     }
-  //     //   });
+  // await fetch(
+  //   `${import.meta.env.VITE_EDUMNG_DS_CAM_THI}${present.data?.hocky}/${
+  //     present.data?.manamhoc
+  //   }`,
+  //   {
+  //     headers: {
+  //       authorization: `Bearer ${await getToken({
+  //         template: import.meta.env.VITE_TEMPLATE_EDU_CTGD,
+  //       })}`,
+  //     },
+  //   }
+  // )
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     if (res.result.length > 0) {
+  //       setCamthi(res.result);
+  //     }
+  //   });
   //   };
   //   if (present.data?.length > 0) callApi();
   // }, [present.data, afterUpdate]);
@@ -320,7 +326,10 @@ export default function Index() {
     );
   }
 
-  if (role.data.role_id != import.meta.env.VITE_ROLE_ADMIN) {
+  if (
+    role.data.role_id != import.meta.env.VITE_ROLE_ADMIN &&
+    role.data.role_id != import.meta.env.VITE_ROLE_HCTH
+  ) {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
@@ -353,7 +362,7 @@ export default function Index() {
     );
   }
 
-  if (csv.data.length === 0) {
+  if (csv?.data?.length === 0) {
     <div className="wrapAdmin">
       <div className="flex justify-center">
         <h2 className="text-primary">Tổng kết điểm môn học</h2>
@@ -365,9 +374,9 @@ export default function Index() {
   }
 
   const handleDownXLSX = async (csv, key) => {
-    console.log(camthi);
+    // console.log(camthi);
     csv = csv.map((item) => {
-      let rawCamthi = jsonCamThi.filter(
+      let rawCamthi = camthi.data.filter(
         (el) =>
           el.mamonhoc === item.subject_code &&
           item.class_code.includes(el.malop)
@@ -440,9 +449,13 @@ export default function Index() {
           return { ...el, group: 3 };
         }
 
-        return { ...el, group: 4 };
+        if (el.xep_loai === "C") return { ...el, group: 3 };
+
+        return { ...el, group: 4, index, secoundReward };
       });
     });
+
+    // console.log(group);
 
     let final = group
       .reduce((final, item) => [...final, ...item], [])
@@ -796,11 +809,17 @@ export default function Index() {
         new Blob([buf]),
         `${
           key === 2
-            ? `BaoCao_KHOA_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+            ? `BaoCao_KHOA_CTGD_${moment().date()}-${
+                moment().month() + 1
+              }-${moment().year()}.xlsx`
             : key === 1
-            ? `BaoCao_TRUONG_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+            ? `BaoCao_TRUONG_CTGD_${moment().date()}-${
+                moment().month() + 1
+              }-${moment().year()}.xlsx`
             : key === 3 &&
-              `BaoCao_TONGTIEN_CTGD_${moment().date()}-${moment().month()}-${moment().year()}.xlsx`
+              `BaoCao_TONGTIEN_CTGD_${moment().date()}-${
+                moment().month() + 1
+              }-${moment().year()}.xlsx`
         }`
       );
     } finally {
@@ -818,7 +837,7 @@ export default function Index() {
   // console.log(caculate.data);
   const caculater = async (level) => {
     Swal.fire({
-      title: "Tính điểm sinh viên mà giảng viên dự giờ",
+      title: "Tính điểm sinh viên và giảng viên dự giờ",
       text: "Bạn có chắc chắn muốn tính tổng điểm sinh viên và giảng viên dự giờ cho tất cả lớp môn học không?",
       icon: "question",
       showCancelButton: true,
@@ -915,7 +934,7 @@ export default function Index() {
     });
   };
 
-  if (csv.data.length === 0) {
+  if (csv?.data?.length === 0) {
     return (
       <div className="wrapAdmin">
         <div className="flex justify-center">
@@ -1012,7 +1031,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(rawData.sort(alphabetically(false)), 1);
+                      handleDownXLSX(csv1.data.sort(alphabetically(false)), 1);
                     }}
                   >
                     Sắp xếp theo toàn trường
@@ -1022,7 +1041,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(rawData, 2);
+                      handleDownXLSX(csv1.data, 2);
                     }}
                   >
                     Sắp xếp theo khoa
@@ -1032,7 +1051,7 @@ export default function Index() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDownXLSX(rawData, 3);
+                      handleDownXLSX(csv1.data, 3);
                     }}
                   >
                     Tổng thưởng

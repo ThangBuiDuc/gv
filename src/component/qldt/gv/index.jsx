@@ -107,7 +107,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+          <h2 className="text-primary">Thực hiện quy định, quy chế đào tạo</h2>
         </div>
         <ReactLoading
           type="spin"
@@ -124,7 +124,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+          <h2 className="text-primary">Thực hiện quy định, quy chế đào tạo</h2>
         </div>
         <div className="flex justify-center">
           <h3>Tài khoản hiện tại không có quyền thực hiện chức năng này!</h3>
@@ -140,7 +140,7 @@ export default function Index() {
     return (
       <div className="wrap">
         <div className="flex justify-center">
-          <h2 className="text-primary">Duyệt tư cách sinh viên</h2>
+          <h2 className="text-primary">Thực hiện quy định, quy chế đào tạo</h2>
         </div>
         <ReactLoading
           type="spin"
