@@ -75,9 +75,9 @@ export default function Index() {
 
   useEffect(() => {
     if (
-      listSVCourseEDU?.data &&
+      listSVCourseEDU.isSuccess &&
       listSVCourseEDU?.data.length > 0 &&
-      listSV_HK?.data &&
+      listSV_HK.isSuccess &&
       listSV_HK?.data.course.length > 0
     ) {
       setMergeSV(
@@ -97,7 +97,11 @@ export default function Index() {
                 el.class_code === item.malop &&
                 el.subject_code === item.mamonhoc
             );
-            console.log(course);
+
+            if (!course) {
+              return total;
+            }
+            // console.log(course);
             return [
               ...total,
               {

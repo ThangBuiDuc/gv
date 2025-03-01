@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { useState } from "react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import Select from "react-select";
 
 export default function Index() {
   const queryClient = useQueryClient();
@@ -12,6 +13,22 @@ export default function Index() {
   const { getToken } = useAuth();
   const [mergeCourse, setMergeCourse] = useState(null);
   const [checkAll, setCheckAll] = useState(false);
+
+  const listGv = useQuery({
+    queryKey: ["CTGD_LIST_GV"],
+    queryFn: async () => {
+      return await fetch(import.meta.env.VITE_LIST_CB_GV, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${await getToken({
+            template: import.meta.env.VITE_TEMPLATE_GV_CREATOR,
+          })}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => (res.result.length > 0 ? res.result : null));
+    },
+  });
 
   const svQuestion = useQuery({
     queryKey: ["CTGD_SV_QUESTION"],
@@ -161,9 +178,9 @@ export default function Index() {
         })),
         ...checkedCourse.map((item) => ({
           role_id: parseInt(import.meta.env.VITE_ROLE_TEACHER),
-          code: item.magiaovien,
-          name: item.tengiaovien,
-          khoa_gv: item.tenkhoa,
+          code: item.magiaovien ? item.magiaovien : item.selectGV.code,
+          name: item.tengiaovien ? item.tengiaovien : item.selectGV.name,
+          khoa_gv: item.tenkhoa ? item.tenkhoa : item.selectGV.khoa_gv,
         })),
       ];
 
@@ -173,8 +190,8 @@ export default function Index() {
         class_name: item.tenmonhoc,
         class_code: item.malop,
         subject_code: item.mamonhoc,
-        ten_khoa: item.tenkhoa,
-        teacher_code: item.magiaovien,
+        ten_khoa: item.tenkhoa ? item.tenkhoa : item.selectGV.khoa_gv,
+        teacher_code: item.magiaovien ? item.magiaovien : item.selectGV.code,
         total_student: item.siso,
         start_date: item.ngaybatdau,
         end_date: item.ngayketthuc,
@@ -262,6 +279,20 @@ export default function Index() {
     });
   };
 
+  // console.log(listGv.data);
+
+  if (listGv.isLoading || listGv.isFetching) {
+    return (
+      <ReactLoading
+        type="spin"
+        color="#0083C2"
+        width={"30px"}
+        height={"30px"}
+        className="self-center"
+      />
+    );
+  }
+
   if (listSVCourseEDU.isLoading && listSVCourseEDU.isFetching) {
     return (
       <ReactLoading
@@ -293,6 +324,8 @@ export default function Index() {
       </h3>
     );
   }
+
+  console.log(mergeCourse);
 
   return (
     <>
@@ -338,11 +371,13 @@ export default function Index() {
                   <td>
                     <div
                       className={`${
-                        item.magiaovien ? "" : "tooltip tooltip-right"
+                        item.magiaovien || item.selectGV
+                          ? ""
+                          : "tooltip tooltip-right"
                       }`}
                       data-tip="Lớp môn học không đủ điều kiện"
                     >
-                      {item.magiaovien ? (
+                      {item.magiaovien || item.selectGV ? (
                         <input
                           type="checkbox"
                           className={`checkbox checkbox-primary`}
@@ -384,7 +419,28 @@ export default function Index() {
                       </span>
                     </td>
                   ) : (
-                    <td>. . .</td>
+                    <td>
+                      <Select
+                        options={listGv?.data.map((item) => ({
+                          ...item,
+                          value: item.code,
+                          label: `${item.name} - ${item.code}`,
+                        }))}
+                        value={item.selectGV}
+                        onChange={(e) => {
+                          setMergeCourse((pre) =>
+                            pre.map((el) =>
+                              el.malop === item.malop &&
+                              el.mamonhoc === item.mamonhoc
+                                ? { ...el, selectGV: e }
+                                : el
+                            )
+                          );
+                        }}
+                        className="w-[300px]"
+                        placeholder="Lựa chọn giảng viên"
+                      />
+                    </td>
                   )}
                   <td>{item.siso}</td>
                 </tr>

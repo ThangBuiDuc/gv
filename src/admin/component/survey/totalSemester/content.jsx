@@ -338,6 +338,61 @@ const Content = ({ action }) => {
         sheet.mergeCells("T1:T2");
         sheet.mergeCells("U1:U2");
 
+        const finalSheet = workbook.addWorksheet("Final");
+        finalSheet.addRow([
+          "STT",
+          "Mã lớp",
+          "Mã môn",
+          "Số tín chỉ",
+          "Tiết chuẩn",
+          "Tên môn",
+          "Giảng viên",
+          "Khoa",
+          "Sĩ số sinh viên được duyện tư cách dự thi",
+          "Hệ số thưởng (k)",
+          "Xếp loại",
+          "Mức thưởng (đồng)",
+          "Mức thưởng liên thông (đồng)",
+          "Thưởng năng suất GV",
+          "",
+          "Ký nhận, ghi rõ họ tên",
+        ]);
+
+        finalSheet.addRow([
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Chi tiết",
+          "Tổng",
+          "",
+        ]);
+
+        finalSheet.mergeCells("A1:A2");
+        finalSheet.mergeCells("B1:B2");
+        finalSheet.mergeCells("C1:C2");
+        finalSheet.mergeCells("D1:D2");
+        finalSheet.mergeCells("E1:E2");
+        finalSheet.mergeCells("F1:F2");
+        finalSheet.mergeCells("G1:G2");
+        finalSheet.mergeCells("H1:H2");
+        finalSheet.mergeCells("I1:I2");
+        finalSheet.mergeCells("J1:J2");
+        finalSheet.mergeCells("K1:K2");
+        finalSheet.mergeCells("L1:L2");
+        finalSheet.mergeCells("M1:M2");
+        finalSheet.mergeCells("N1:O1");
+        finalSheet.mergeCells("P1:P2");
+
         final.forEach((item, index) => {
           // let hesothuong =
           //   item.duthi > 20
@@ -382,6 +437,62 @@ const Content = ({ action }) => {
           horizontal: "center",
           wrapText: true,
         };
+
+        final
+          .sort(
+            (a, b) =>
+              a.khoa.localeCompare(b.khoa) || a.name.localeCompare(b.name)
+          )
+          .forEach((item, index) => {
+            finalSheet.addRow([
+              index + 1,
+              item.class_code,
+              item.subject_code,
+              item.sotc,
+              item.sotiet,
+              item.class_name,
+              item.name,
+              convertKhoa(item.khoa),
+              item.duthi,
+              item.hesothuong,
+              item.xep_loai,
+              item.mucthuong,
+              "",
+              item.tongthuong,
+            ]);
+          });
+
+        let groupName = null;
+        let startRow;
+        let endRow;
+        finalSheet.eachRow((row, rowNumber) => {
+          if (rowNumber > 2) {
+            if (groupName === null) {
+              groupName = row.getCell(7).value;
+              startRow = rowNumber;
+            } else if (groupName !== row.getCell(7).value) {
+              endRow = rowNumber - 1;
+              let total = 0;
+              for (let index = startRow; index <= endRow; index++) {
+                total =
+                  total + parseFloat(finalSheet.getCell(`N${index}`).value);
+              }
+              finalSheet.getCell(`O${startRow}`).value = total;
+              finalSheet.mergeCells(`O${startRow}:O${endRow}`);
+              groupName = row.getCell(7).value;
+              startRow = rowNumber;
+            } else if (rowNumber === finalSheet.rowCount) {
+              endRow = rowNumber;
+              let total = 0;
+              for (let index = startRow; index <= endRow; index++) {
+                total =
+                  total + parseFloat(finalSheet.getCell(`N${index}`).value);
+              }
+              finalSheet.getCell(`O${startRow}`).value = total;
+              finalSheet.mergeCells(`O${startRow}:O${endRow}`);
+            }
+          }
+        });
       }
       if (key === 1) {
         sheet.views = [
@@ -586,7 +697,7 @@ const Content = ({ action }) => {
                   Sắp xếp theo khoa
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   onClick={(e) => {
                     e.preventDefault();
@@ -595,7 +706,7 @@ const Content = ({ action }) => {
                 >
                   Tổng thưởng
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         ) : (
